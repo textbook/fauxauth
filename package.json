@@ -1,0 +1,39 @@
+{
+  "name": "fauxauth",
+  "version": "0.0.1",
+  "description": "Helper application for testing OAuth clients ",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel src --out-dir lib",
+    "lint": "eslint .",
+    "start": "node lib/server.js",
+    "test": "jest",
+    "test:cover": "npm run test -- --coverage",
+    "test:watch": "npm run test -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/textbook/fauxauth.git"
+  },
+  "author": "Jonathan Sharpe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/textbook/fauxauth/issues"
+  },
+  "homepage": "https://github.com/textbook/fauxauth#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "morgan": "^1.9.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "eslint": "^5.7.0",
+    "jest": "^23.6.0",
+    "regenerator-runtime": "^0.12.1",
+    "supertest": "^3.3.0"
+  }
+}
