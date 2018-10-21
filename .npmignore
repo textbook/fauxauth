@@ -1,7 +1,9 @@
 .babelrc
 .dockerignore
+.envrc
 .eslintignore
 .eslintrc.json
+.nvmrc
 .travis.yml
 deploy-docker.sh
 Dockerfile
