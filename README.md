@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/textbook/fauxauth.svg?branch=master)](https://travis-ci.org/textbook/fauxauth)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/ec914e9fdeba3ccb3e0b/test_coverage)](https://codeclimate.com/github/textbook/fauxauth/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ec914e9fdeba3ccb3e0b/maintainability)](https://codeclimate.com/github/textbook/fauxauth/maintainability)
+[![NPM Version](https://img.shields.io/npm/v/fauxauth.svg)](https://www.npmjs.com/package/fauxauth)
 [![Docker Image](https://img.shields.io/microbadger/image-size/textbook/fauxauth/latest.svg)](https://hub.docker.com/r/textbook/fauxauth/)
 
 Helper application for testing OAuth clients
@@ -12,7 +13,7 @@ Helper application for testing OAuth clients
 
 `fauxauth` is a mock server for testing applications that are using OAuth
 authentication. Specifically, it was created to pretend to be GitHub's OAuth
-flow.
+flow, as documented [here][4].
 
 ## How can I use it?
 
@@ -78,3 +79,4 @@ You can configure the port that the `fauxauth` server runs on by setting the
 [1]: https://docs.docker.com/compose/
 [2]: https://www.npmjs.com/package/concurrently
 [3]: https://www.npmjs.com/package/cross-env
+[4]: https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#web-application-flow
