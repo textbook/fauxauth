@@ -7,6 +7,7 @@
 .travis.yml
 deploy-docker.sh
 Dockerfile
+.vscode/
 coverage/
 node_modules/
 src/

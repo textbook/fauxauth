@@ -19,9 +19,8 @@ flow, as documented [here][4].
 
 `fauxauth` is set up for two primary use cases:
 
-- **Docker**: if you're developing or testing your app using Docker
-  containers, you can make `fauxauth` part of a multi-container network using
-  [Compose][1].
+- **Docker**: if you're developing or testing your app using Docker containers,
+  you can make `fauxauth` part of a multi-container network using [Compose][1].
 
   Assuming an app that will locate the OAuth provider via an `OAUTH_URL`
   environment variable, your `docker-compose.yml` could look something like:
@@ -79,4 +78,5 @@ You can configure the port that the `fauxauth` server runs on by setting the
 [1]: https://docs.docker.com/compose/
 [2]: https://www.npmjs.com/package/concurrently
 [3]: https://www.npmjs.com/package/cross-env
-[4]: https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#web-application-flow
+[4]:
+  https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#web-application-flow
