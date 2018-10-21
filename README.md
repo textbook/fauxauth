@@ -7,3 +7,74 @@
 [![Docker Image](https://img.shields.io/microbadger/image-size/textbook/fauxauth/latest.svg)](https://hub.docker.com/r/textbook/fauxauth/)
 
 Helper application for testing OAuth clients
+
+## What is this?
+
+`fauxauth` is a mock server for testing applications that are using OAuth
+authentication. Specifically, it was created to pretend to be GitHub's OAuth
+flow.
+
+## How can I use it?
+
+`fauxauth` is set up for two primary use cases:
+
+- **Docker**: if you're developing or testing your app using Docker
+  containers, you can make `fauxauth` part of a multi-container network using
+  [Compose][1].
+
+  Assuming an app that will locate the OAuth provider via an `OAUTH_URL`
+  environment variable, your `docker-compose.yml` could look something like:
+
+  ```
+  version: '3'
+  services:
+      some_app:
+          ...
+          links:
+            - oauth
+          environment:
+              OAUTH_URL: http://oauth:3000
+      ...
+      oauth:
+          image: textbook/fauxauth
+          ports: 3000:3000
+  ```
+
+- **Node Dependency**: alternatively, you may want to run `fauxauth` directly.
+  You can install it from NPM as follows:
+
+  ```bash
+  npm install fauxauth --save-dev  # or "yarn add fauxauth -D"
+  ```
+
+  Once installed, you can add it to one of your `package.json` scripts. I find
+  [`concurrently`][2] useful for simplifying development tasks like this, e.g.
+
+  ```json
+  {
+      ...
+      "scripts": {
+          ...
+          "dev": "concurrently -n \"fauxauth,some_app\" \"npm run fauxauth\" \"npm start\""
+      }
+  }
+  ```
+
+### Configuration
+
+You can configure the port that the `fauxauth` server runs on by setting the
+`PORT` environment variable, e.g. using [`cross-env`][3] in your scripts:
+
+```json
+{
+    ...
+    "scripts": {
+        ...
+        "fauxauth": "cross-env PORT=3210 fauxauth"
+    }
+}
+```
+
+[1]: https://docs.docker.com/compose/
+[2]: https://www.npmjs.com/package/concurrently
+[3]: https://www.npmjs.com/package/cross-env
