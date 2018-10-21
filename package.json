@@ -1,6 +1,14 @@
 {
   "name": "fauxauth",
   "version": "0.0.3",
+  "keywords": [
+    "express",
+    "mock",
+    "oauth",
+    "stub",
+    "test",
+    "testing"
+  ],
   "bin": {
     "fauxauth": "./lib/server.js"
   },
