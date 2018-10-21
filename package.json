@@ -1,8 +1,7 @@
 {
   "name": "fauxauth",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Helper application for testing OAuth clients",
-  "main": "index.js",
   "scripts": {
     "build": "babel src --out-dir lib",
     "lint": "eslint .",

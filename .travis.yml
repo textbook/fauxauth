@@ -24,7 +24,15 @@ script:
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
+before_deploy:
+  - npm run build
+
 deploy:
+  - provider: npm
+    email: $NPM_EMAIL_ADDRESS
+    api_key: $NPM_AUTH_TOKEN
+    on:
+      tags: true
   - provider: script
     script: bash deploy-docker.sh
     on:

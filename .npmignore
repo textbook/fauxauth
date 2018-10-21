@@ -1,0 +1,11 @@
+.babelrc
+.dockerignore
+.eslintignore
+.eslintrc.json
+.travis.yml
+deploy-docker.sh
+Dockerfile
+coverage/
+node_modules/
+src/
+tests/
