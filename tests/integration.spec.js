@@ -44,4 +44,41 @@ describe("fauxauth", () => {
         .expect("Location", /code=helloworld/);
     });
   });
+
+  describe("access_token endpoint", () => {
+    const endpoint = "/access_token";
+
+    it("returns an access token", () => {
+      return request(app)
+        .post(endpoint)
+        .query({
+          code: "helloworld",
+          client_id: "yourid",
+          client_secret: "yoursecret",
+        })
+        .expect(
+          200,
+          "access_token=e72e16c7e42f292c6912e7710c838347ae178b4a&token_type=bearer"
+        );
+    });
+
+    describe("accept types", () => {
+      const query = {
+        code: "helloworld",
+        client_id: "yourid",
+        client_secret: "yoursecret",
+      };
+
+      it("handles application/json", () => {
+        return request(app)
+          .post(endpoint)
+          .query(query)
+          .accept("json")
+          .expect(200, {
+            access_token: "e72e16c7e42f292c6912e7710c838347ae178b4a",
+            token_type: "bearer",
+          });
+      });
+    });
+  });
 });
