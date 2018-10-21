@@ -1,6 +1,9 @@
 {
   "name": "fauxauth",
   "version": "0.0.2",
+  "bin": {
+    "fauxauth": "./lib/server.js"
+  },
   "description": "Helper application for testing OAuth clients",
   "scripts": {
     "build": "babel src --out-dir lib",
