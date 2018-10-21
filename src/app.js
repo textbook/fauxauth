@@ -7,12 +7,16 @@ export const app = express();
 app.use(morgan("dev"));
 
 app.get("/authorize", (req, res) => {
-  const { state, redirect_uri: redirectUri } = req.query;
+  const { state, redirect_uri: pathname } = req.query;
+  const query = { code: "helloworld" };
+  if (state) {
+    query.state = state;
+  }
 
   res.redirect(
     url.format({
-      pathname: redirectUri,
-      query: state ? { state } : {},
+      pathname,
+      query,
     })
   );
 });

@@ -13,7 +13,7 @@ describe("fauxauth", () => {
         .get(endpoint)
         .query({ client_id: "yourid", redirect_uri: redirectUri })
         .expect(302)
-        .expect("Location", redirectUri);
+        .expect("Location", new RegExp(`^${redirectUri}`));
     });
 
     it("includes the state if specified", () => {
@@ -28,6 +28,20 @@ describe("fauxauth", () => {
         })
         .expect(302)
         .expect("Location", new RegExp(`state=${state}`));
+    });
+
+    it("provides a code", () => {
+      const state = "randomstate";
+
+      return request(app)
+        .get(endpoint)
+        .query({
+          client_id: "yourid",
+          redirect_uri: "http://example.org",
+          state,
+        })
+        .expect(302)
+        .expect("Location", /code=helloworld/);
     });
   });
 });
