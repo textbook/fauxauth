@@ -34,7 +34,8 @@
   "homepage": "https://github.com/textbook/fauxauth#readme",
   "dependencies": {
     "express": "^4.16.4",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "xml2js": "^0.4.19"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",

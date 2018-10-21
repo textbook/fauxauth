@@ -1,5 +1,6 @@
 import { Router } from "express";
 import qs from "querystring";
+import { Builder } from "xml2js";
 
 const router = new Router();
 
@@ -13,6 +14,10 @@ router.post("/", (req, res) => {
 
   if (accept === "application/json") {
     return res.json(payload);
+  }
+
+  if (accept === "application/xml") {
+    return res.type(accept).send(new Builder().buildObject({ OAuth: payload }));
   }
 
   res.send(qs.stringify(payload));
