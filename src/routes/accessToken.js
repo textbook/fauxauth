@@ -2,6 +2,7 @@ import { Router } from "express";
 import qs from "querystring";
 import { Builder } from "xml2js";
 
+const builder = new Builder({ renderOpts: { pretty: false }, headless: true });
 const router = new Router();
 
 router.post("/", (req, res) => {
@@ -17,7 +18,7 @@ router.post("/", (req, res) => {
   }
 
   if (accept === "application/xml") {
-    return res.type(accept).send(new Builder().buildObject({ OAuth: payload }));
+    return res.type(accept).send(builder.buildObject({ OAuth: payload }));
   }
 
   res.send(qs.stringify(payload));
