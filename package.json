@@ -6,6 +6,7 @@
   },
   "description": "Helper application for testing OAuth clients",
   "scripts": {
+    "prepublishOnly": "rimraf lib/* && npm run build",
     "build": "babel src --out-dir lib",
     "lint": "eslint .",
     "start": "node lib/server.js",
@@ -36,6 +37,7 @@
     "eslint": "^5.7.0",
     "jest": "^23.6.0",
     "regenerator-runtime": "^0.12.1",
+    "rimraf": "^2.6.2",
     "supertest": "^3.3.0"
   }
 }
