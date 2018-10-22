@@ -12,6 +12,8 @@ RUN npm run build
 
 FROM node:alpine
 
+LABEL maintainer="Jonathan Sharpe"
+
 COPY /package.json .
 COPY /package-lock.json .
 
@@ -19,4 +21,7 @@ RUN npm install --only=prod
 
 COPY --from=build /lib /lib
 
-CMD npm start
+EXPOSE 3000
+
+ENTRYPOINT [ "npm" ]
+CMD [ "start" ]
