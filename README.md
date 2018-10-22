@@ -75,6 +75,11 @@ You can configure the port that the `fauxauth` server runs on by setting the
 }
 ```
 
+The client ID and secret are hardcoded as follows:
+
+- `client_id`: `"1ae9b0ca17e754106b51"`
+- `client_secret`: `"3efb56fdbac1cb21f3d4fea9b70036e04a34d068"`
+
 [1]: https://docs.docker.com/compose/
 [2]: https://www.npmjs.com/package/concurrently
 [3]: https://www.npmjs.com/package/cross-env

@@ -1,17 +1,22 @@
 import request from "supertest";
 import { parseString } from "xml2js";
 
-import { app } from "../src/app";
+import appFactory from "../src/app";
 
 describe("access_token endpoint", () => {
+  const configuration = {
+    clientId: "your-name-here",
+    clientSecret: "squirrel",
+  };
+  const app = appFactory(configuration);
   const endpoint = "/access_token";
 
   it("returns an access token", () => {
     return request(app)
       .post(endpoint)
       .query({
-        client_id: "yourid",
-        client_secret: "yoursecret",
+        client_id: configuration.clientId,
+        client_secret: configuration.clientSecret,
         code: "helloworld",
       })
       .expect(
@@ -20,10 +25,33 @@ describe("access_token endpoint", () => {
       );
   });
 
+  it("rejects unknown clients", () => {
+    return request(app)
+      .post(endpoint)
+      .query({
+        client_id: "something",
+      })
+      .expect(404);
+  });
+
+  it("provides error details on invalid credentials", () => {
+    return request(app)
+      .post(endpoint)
+      .query({
+        client_id: configuration.clientId,
+        client_secret: "everyoneknowsthis",
+      })
+      .accept("json")
+      .expect(200)
+      .then((res) => {
+        expect(res.body.error).toBe("incorrect_client_credentials");
+      });
+  });
+
   describe("accept types", () => {
     const query = {
-      client_id: "yourid",
-      client_secret: "yoursecret",
+      client_id: configuration.clientId,
+      client_secret: configuration.clientSecret,
       code: "helloworld",
     };
 

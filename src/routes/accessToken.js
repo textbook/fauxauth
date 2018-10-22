@@ -2,26 +2,43 @@ import { Router } from "express";
 import qs from "querystring";
 import { Builder } from "xml2js";
 
-const builder = new Builder({ renderOpts: { pretty: false }, headless: true });
-const router = new Router();
+export default (configuration) => {
+  const builder = new Builder({
+    renderOpts: { pretty: false },
+    headless: true,
+  });
+  const router = new Router();
 
-router.post("/", (req, res) => {
-  const accept = req.get("accept");
+  router.post("/", (req, res) => {
+    const { client_id: clientId, client_secret: clientSecret } = req.query;
 
-  const payload = {
-    access_token: "e72e16c7e42f292c6912e7710c838347ae178b4a",
-    token_type: "bearer",
-  };
+    if (clientId !== configuration.clientId) {
+      return res.sendStatus(404);
+    }
 
-  if (accept === "application/json") {
-    return res.json(payload);
-  }
+    const accept = req.get("accept");
 
-  if (accept === "application/xml") {
-    return res.type(accept).send(builder.buildObject({ OAuth: payload }));
-  }
+    let payload = {};
 
-  res.send(qs.stringify(payload));
-});
+    if (clientSecret === configuration.clientSecret) {
+      payload = {
+        access_token: "e72e16c7e42f292c6912e7710c838347ae178b4a",
+        token_type: "bearer",
+      };
+    } else {
+      payload = { error: "incorrect_client_credentials" };
+    }
 
-export default router;
+    if (accept === "application/json") {
+      return res.json(payload);
+    }
+
+    if (accept === "application/xml") {
+      return res.type(accept).send(builder.buildObject({ OAuth: payload }));
+    }
+
+    res.send(qs.stringify(payload));
+  });
+
+  return router;
+};
