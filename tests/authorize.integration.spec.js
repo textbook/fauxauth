@@ -6,10 +6,22 @@ import appFactory from "../src/app";
 describe("authorize endpoint", () => {
   const endpoint = "/authorize";
   const clientId = "your-name-here";
-  const app = appFactory({ clientId });
+  const baseUrl = "http://example.org/";
+  const app = appFactory({ clientId, callbackUrl: baseUrl });
 
-  it("redirects you back to the specified location", () => {
-    const redirectUri = "http://example.org/";
+  it("redirects you back to the default callback URL", () => {
+    return request(app)
+      .get(endpoint)
+      .query({ client_id: clientId })
+      .expect(302)
+      .then((res) => {
+        const { query, search, ...url } = parse(res.get("Location"), true);
+        expect(format(url)).toBe(baseUrl);
+      });
+  });
+
+  it("redirects you back to the specified location if valid", () => {
+    const redirectUri = `${baseUrl}foo/`;
 
     return request(app)
       .get(endpoint)
@@ -21,6 +33,18 @@ describe("authorize endpoint", () => {
       });
   });
 
+  it("rejects invalid redirect URIs", () => {
+    return request(app)
+      .get(endpoint)
+      .query({ client_id: clientId, redirect_uri: "http://elsewhere.com" })
+      .expect(302)
+      .then((res) => {
+        const { query, search, ...url } = parse(res.get("Location"), true);
+        expect(format(url)).toBe(baseUrl);
+        expect(query.error).toBe("redirect_uri_mismatch");
+      });
+  });
+
   it("includes the state if specified", () => {
     const state = "randomstate";
 
@@ -28,7 +52,6 @@ describe("authorize endpoint", () => {
       .get(endpoint)
       .query({
         client_id: clientId,
-        redirect_uri: "http://example.org",
         state,
       })
       .expect(302)
@@ -39,14 +62,10 @@ describe("authorize endpoint", () => {
   });
 
   it("provides a code", () => {
-    const state = "randomstate";
-
     return request(app)
       .get(endpoint)
       .query({
         client_id: clientId,
-        redirect_uri: "http://example.org",
-        state,
       })
       .expect(302)
       .then((res) => {
