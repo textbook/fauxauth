@@ -36,15 +36,11 @@ export default (configuration) => {
 };
 
 export const validateRedirect = (redirectUri, callbackUrl) => {
-  const { host: redirectHost, port: redirectPort, path: redirectPath } = parse(
-    redirectUri
-  );
-  const { host: callbackHost, port: callbackPort, path: callbackPath } = parse(
-    callbackUrl
-  );
+  const redirect = parse(redirectUri);
+  const callback = parse(callbackUrl);
   return (
-    redirectHost === callbackHost
-    && redirectPort === callbackPort
-    && redirectPath.indexOf(callbackPath) === 0
+    redirect.host === callback.host
+    && redirect.port === callback.port
+    && redirect.path.indexOf(callback.path) === 0
   );
 };
