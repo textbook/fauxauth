@@ -1,4 +1,5 @@
 import request from "supertest";
+import { parse, format } from "url";
 
 import appFactory from "../src/app";
 
@@ -8,13 +9,16 @@ describe("authorize endpoint", () => {
   const app = appFactory({ clientId });
 
   it("redirects you back to the specified location", () => {
-    const redirectUri = "http://example.org";
+    const redirectUri = "http://example.org/";
 
     return request(app)
       .get(endpoint)
       .query({ client_id: clientId, redirect_uri: redirectUri })
       .expect(302)
-      .expect("Location", new RegExp(`^${redirectUri}`));
+      .then((res) => {
+        const { query, search, ...url } = parse(res.get("Location"), true);
+        expect(format(url)).toBe(redirectUri);
+      });
   });
 
   it("includes the state if specified", () => {
@@ -28,7 +32,10 @@ describe("authorize endpoint", () => {
         state,
       })
       .expect(302)
-      .expect("Location", new RegExp(`state=${state}`));
+      .then((res) => {
+        const { query } = parse(res.get("Location"), true);
+        expect(query.state).toBe(state);
+      });
   });
 
   it("provides a code", () => {
@@ -42,7 +49,10 @@ describe("authorize endpoint", () => {
         state,
       })
       .expect(302)
-      .expect("Location", /code=helloworld/);
+      .then((res) => {
+        const { query } = parse(res.get("Location"), true);
+        expect(query.code).toBe("helloworld");
+      });
   });
 
   it("rejects unknown clients", () => {

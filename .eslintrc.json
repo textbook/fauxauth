@@ -15,6 +15,7 @@
     "curly": "error",
     "indent": ["error", 2],
     "linebreak-style": ["error", "unix"],
+    "no-unused-vars": ["error", { "ignoreRestSiblings": true }],
     "quotes": ["error", "double"],
     "semi": ["error", "always"]
   }
