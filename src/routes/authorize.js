@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { format, parse } from "url";
 
+import { generateHex } from "../utils";
+
 export default (configuration) => {
   const router = new Router();
 
@@ -26,7 +28,9 @@ export default (configuration) => {
     }
 
     if (!query.error) {
-      query.code = "helloworld";
+      const code = generateHex(20);
+      configuration.codes.push(code);
+      query.code = code;
     }
 
     res.redirect(format({ pathname, query }));

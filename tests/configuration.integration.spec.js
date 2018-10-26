@@ -7,28 +7,68 @@ describe("_configure endpoint", () => {
   const clientId = "your-name-here";
   const clientSecret = "sshhh";
 
-  const app = appFactory({ clientId, clientSecret });
+  let initialConfig;
+  let app;
+
+  beforeEach(() => {
+    initialConfig = { clientId, clientSecret, codes: [] };
+    app = appFactory(initialConfig);
+  });
 
   it("exposes current configuration", () => {
     return request(app)
       .get(endpoint)
-      .expect(200, { clientId, clientSecret });
+      .expect(200, initialConfig);
   });
 
   it("allows overriding initial configuration", async () => {
     const newClientId = "something-else";
 
     await request(app)
-      .get(`/authorize?client_id=${clientId}`)
+      .get("/authorize")
+      .query({ client_id: clientId })
       .expect(302);
 
     await request(app)
       .patch(endpoint)
-      .send([{ op: "replace", path: "/clientId", value: "something-else" }])
-      .expect(200, { clientId: newClientId, clientSecret });
+      .send([{ op: "replace", path: "/clientId", value: newClientId }])
+      .expect(200, { ...initialConfig, clientId: newClientId });
 
     await request(app)
-      .get(`/authorize?client_id=${clientId}`)
+      .get("/authorize")
+      .query({ client_id: clientId })
       .expect(404);
+  });
+
+  it("allows adding codes directly", async () => {
+    const code = "somenewcode";
+    await request(app)
+      .patch(endpoint)
+      .send([{ op: "add", path: "/codes/-", value: code }])
+      .expect(200, { ...initialConfig, codes: [code] });
+
+    await request(app)
+      .post("/access_token")
+      .query({ client_id: clientId, client_secret: clientSecret, code })
+      .expect(200);
+  });
+
+  it("allows setting a specific access token", async () => {
+    const accessToken = "helloworld";
+    const code = "itsasecret";
+    initialConfig.codes.push(code);
+    await request(app)
+      .patch(endpoint)
+      .send([{ op: "add", path: "/accessToken", value: accessToken }])
+      .expect(200, { ...initialConfig, accessToken });
+
+    return request(app)
+      .post("/access_token")
+      .query({ client_id: clientId, client_secret: clientSecret, code })
+      .accept("json")
+      .expect(200)
+      .then((res) => {
+        expect(res.body.access_token).toBe(accessToken);
+      });
   });
 });

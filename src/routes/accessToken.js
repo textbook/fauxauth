@@ -2,6 +2,8 @@ import { Router } from "express";
 import qs from "querystring";
 import { Builder } from "xml2js";
 
+import { generateHex } from "../utils";
+
 export default (configuration) => {
   const builder = new Builder({
     renderOpts: { pretty: false },
@@ -26,11 +28,14 @@ export default (configuration) => {
 
     if (clientSecret !== configuration.clientSecret) {
       payload = { error: "incorrect_client_credentials" };
-    } else if (code !== "helloworld") {
+    } else if (configuration.codes.indexOf(code) === -1) {
       payload = { error: "bad_verification_code" };
     } else {
+      configuration.codes = configuration.codes.filter(
+        (existingCode) => existingCode !== code
+      );
       payload = {
-        access_token: "e72e16c7e42f292c6912e7710c838347ae178b4a",
+        access_token: configuration.accessToken || generateHex(40),
         token_type: "bearer",
       };
     }

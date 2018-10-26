@@ -7,7 +7,7 @@ describe("authorize endpoint", () => {
   const endpoint = "/authorize";
   const clientId = "your-name-here";
   const baseUrl = "http://example.org/";
-  const app = appFactory({ clientId, callbackUrl: baseUrl });
+  const app = appFactory({ clientId, callbackUrl: baseUrl, codes: [] });
 
   it("redirects you back to the default callback URL", () => {
     return request(app)
@@ -70,7 +70,7 @@ describe("authorize endpoint", () => {
       .expect(302)
       .then((res) => {
         const { query } = parse(res.get("Location"), true);
-        expect(query.code).toBe("helloworld");
+        expect(query.code).toMatch(/[0-9a-f]{20}/);
       });
   });
 
