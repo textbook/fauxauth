@@ -1,17 +1,16 @@
 import request from "supertest";
 
 import appFactory from "../src/app";
+import { generateConfiguration } from "../src/utils";
 
 describe("_configure endpoint", () => {
   const endpoint = "/_configuration";
-  const clientId = "your-name-here";
-  const clientSecret = "sshhh";
 
   let initialConfig;
   let app;
 
   beforeEach(() => {
-    initialConfig = { clientId, clientSecret, codes: [] };
+    initialConfig = generateConfiguration();
     app = appFactory(initialConfig);
   });
 
@@ -22,11 +21,12 @@ describe("_configure endpoint", () => {
   });
 
   it("allows overriding initial configuration", async () => {
+    const oldClientId = initialConfig.clientId;
     const newClientId = "something-else";
 
     await request(app)
       .get("/authorize")
-      .query({ client_id: clientId })
+      .query({ client_id: oldClientId })
       .expect(302);
 
     await request(app)
@@ -36,7 +36,7 @@ describe("_configure endpoint", () => {
 
     await request(app)
       .get("/authorize")
-      .query({ client_id: clientId })
+      .query({ client_id: oldClientId })
       .expect(404);
   });
 
@@ -49,7 +49,11 @@ describe("_configure endpoint", () => {
 
     await request(app)
       .post("/access_token")
-      .query({ client_id: clientId, client_secret: clientSecret, code })
+      .query({
+        client_id: initialConfig.clientId,
+        client_secret: initialConfig.clientSecret,
+        code,
+      })
       .expect(200);
   });
 
@@ -64,7 +68,11 @@ describe("_configure endpoint", () => {
 
     return request(app)
       .post("/access_token")
-      .query({ client_id: clientId, client_secret: clientSecret, code })
+      .query({
+        client_id: initialConfig.clientId,
+        client_secret: initialConfig.clientSecret,
+        code,
+      })
       .accept("json")
       .expect(200)
       .then((res) => {

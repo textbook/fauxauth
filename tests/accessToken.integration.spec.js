@@ -4,24 +4,23 @@ import { parse } from "url";
 import { parseString } from "xml2js";
 
 import appFactory from "../src/app";
+import { generateConfiguration } from "../src/utils";
 
 describe("access_token endpoint", () => {
+  let app;
   let code;
+  let defaultConfiguration;
 
-  const configuration = {
-    clientId: "your-name-here",
-    clientSecret: "squirrel",
-    codes: [],
-  };
-  const app = appFactory(configuration);
   const endpoint = "/access_token";
 
   beforeEach(async () => {
+    defaultConfiguration = generateConfiguration();
+    app = appFactory(defaultConfiguration);
     await request(app)
       .get("/authorize")
       .query({
-        client_id: configuration.clientId,
-        client_secret: configuration.clientSecret,
+        client_id: defaultConfiguration.clientId,
+        client_secret: defaultConfiguration.clientSecret,
       })
       .expect(302)
       .then((res) => {
@@ -34,8 +33,8 @@ describe("access_token endpoint", () => {
     return request(app)
       .post(endpoint)
       .query({
-        client_id: configuration.clientId,
-        client_secret: configuration.clientSecret,
+        client_id: defaultConfiguration.clientId,
+        client_secret: defaultConfiguration.clientSecret,
         code,
       })
       .expect(200)
@@ -50,8 +49,8 @@ describe("access_token endpoint", () => {
     return request(app)
       .post(endpoint)
       .query({
-        client_id: configuration.clientId,
-        client_secret: configuration.clientSecret,
+        client_id: defaultConfiguration.clientId,
+        client_secret: defaultConfiguration.clientSecret,
         code: "badcode",
       })
       .accept("json")
@@ -65,8 +64,8 @@ describe("access_token endpoint", () => {
     await request(app)
       .post(endpoint)
       .query({
-        client_id: configuration.clientId,
-        client_secret: configuration.clientSecret,
+        client_id: defaultConfiguration.clientId,
+        client_secret: defaultConfiguration.clientSecret,
         code,
       })
       .accept("json")
@@ -78,8 +77,8 @@ describe("access_token endpoint", () => {
     await request(app)
       .post(endpoint)
       .query({
-        client_id: configuration.clientId,
-        client_secret: configuration.clientSecret,
+        client_id: defaultConfiguration.clientId,
+        client_secret: defaultConfiguration.clientSecret,
         code,
       })
       .accept("json")
@@ -102,7 +101,7 @@ describe("access_token endpoint", () => {
     return request(app)
       .post(endpoint)
       .query({
-        client_id: configuration.clientId,
+        client_id: defaultConfiguration.clientId,
         client_secret: "everyoneknowsthis",
       })
       .accept("json")
@@ -113,15 +112,14 @@ describe("access_token endpoint", () => {
   });
 
   describe("accept types", () => {
-    const query = {
-      client_id: configuration.clientId,
-      client_secret: configuration.clientSecret,
-    };
-
     it("handles application/json", () => {
       return request(app)
         .post(endpoint)
-        .query({ ...query, code })
+        .query({
+          client_id: defaultConfiguration.clientId,
+          client_secret: defaultConfiguration.clientSecret,
+          code,
+        })
         .accept("json")
         .expect(200)
         .then((res) => {
@@ -133,7 +131,11 @@ describe("access_token endpoint", () => {
     it("handles application/xml", () => {
       return request(app)
         .post(endpoint)
-        .query({ ...query, code })
+        .query({
+          client_id: defaultConfiguration.clientId,
+          client_secret: defaultConfiguration.clientSecret,
+          code,
+        })
         .accept("application/xml")
         .expect("Content-Type", /application\/xml/)
         .then((res) => parseXml(res.text))

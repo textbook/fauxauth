@@ -2,30 +2,39 @@ import request from "supertest";
 import { parse, format } from "url";
 
 import appFactory from "../src/app";
+import { generateConfiguration } from "../src/utils";
 
 describe("authorize endpoint", () => {
   const endpoint = "/authorize";
-  const clientId = "your-name-here";
-  const baseUrl = "http://example.org/";
-  const app = appFactory({ clientId, callbackUrl: baseUrl, codes: [] });
+
+  let app;
+  let defaultConfiguration;
+
+  beforeEach(() => {
+    defaultConfiguration = generateConfiguration();
+    app = appFactory(defaultConfiguration);
+  });
 
   it("redirects you back to the default callback URL", () => {
     return request(app)
       .get(endpoint)
-      .query({ client_id: clientId })
+      .query({ client_id: defaultConfiguration.clientId })
       .expect(302)
       .then((res) => {
         const { query, search, ...url } = parse(res.get("Location"), true);
-        expect(format(url)).toBe(baseUrl);
+        expect(format(url)).toBe(defaultConfiguration.callbackUrl);
       });
   });
 
   it("redirects you back to the specified location if valid", () => {
-    const redirectUri = `${baseUrl}foo/`;
+    const redirectUri = `${defaultConfiguration.callbackUrl}foo/`;
 
     return request(app)
       .get(endpoint)
-      .query({ client_id: clientId, redirect_uri: redirectUri })
+      .query({
+        client_id: defaultConfiguration.clientId,
+        redirect_uri: redirectUri,
+      })
       .expect(302)
       .then((res) => {
         const { query, search, ...url } = parse(res.get("Location"), true);
@@ -36,11 +45,14 @@ describe("authorize endpoint", () => {
   it("rejects invalid redirect URIs", () => {
     return request(app)
       .get(endpoint)
-      .query({ client_id: clientId, redirect_uri: "http://elsewhere.com" })
+      .query({
+        client_id: defaultConfiguration.clientId,
+        redirect_uri: "http://elsewhere.com",
+      })
       .expect(302)
       .then((res) => {
         const { query, search, ...url } = parse(res.get("Location"), true);
-        expect(format(url)).toBe(baseUrl);
+        expect(format(url)).toBe(defaultConfiguration.callbackUrl);
         expect(query.error).toBe("redirect_uri_mismatch");
       });
   });
@@ -51,7 +63,7 @@ describe("authorize endpoint", () => {
     return request(app)
       .get(endpoint)
       .query({
-        client_id: clientId,
+        client_id: defaultConfiguration.clientId,
         state,
       })
       .expect(302)
@@ -65,7 +77,7 @@ describe("authorize endpoint", () => {
     return request(app)
       .get(endpoint)
       .query({
-        client_id: clientId,
+        client_id: defaultConfiguration.clientId,
       })
       .expect(302)
       .then((res) => {
