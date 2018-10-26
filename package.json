@@ -14,10 +14,9 @@
   },
   "description": "Helper application for testing OAuth clients",
   "scripts": {
-    "prebuild": "rimraf lib/*",
     "build": "babel src --out-dir lib",
     "lint": "eslint .",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "rimraf lib/* && npm run build",
     "ship": "npm run lint && npm run test",
     "start": "node lib/server.js",
     "test": "jest",
