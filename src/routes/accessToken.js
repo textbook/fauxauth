@@ -10,7 +10,11 @@ export default (configuration) => {
   const router = new Router();
 
   router.post("/", (req, res) => {
-    const { client_id: clientId, client_secret: clientSecret } = req.query;
+    const {
+      client_id: clientId,
+      client_secret: clientSecret,
+      code,
+    } = req.query;
 
     if (clientId !== configuration.clientId) {
       return res.sendStatus(404);
@@ -20,13 +24,15 @@ export default (configuration) => {
 
     let payload = {};
 
-    if (clientSecret === configuration.clientSecret) {
+    if (clientSecret !== configuration.clientSecret) {
+      payload = { error: "incorrect_client_credentials" };
+    } else if (code !== "helloworld") {
+      payload = { error: "bad_verification_code" };
+    } else {
       payload = {
         access_token: "e72e16c7e42f292c6912e7710c838347ae178b4a",
         token_type: "bearer",
       };
-    } else {
-      payload = { error: "incorrect_client_credentials" };
     }
 
     if (accept === "application/json") {

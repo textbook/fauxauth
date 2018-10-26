@@ -25,6 +25,21 @@ describe("access_token endpoint", () => {
       );
   });
 
+  it("rejects unrecognised codes", () => {
+    return request(app)
+      .post(endpoint)
+      .query({
+        client_id: configuration.clientId,
+        client_secret: configuration.clientSecret,
+        code: "badcode",
+      })
+      .accept("json")
+      .expect(200)
+      .then((res) => {
+        expect(res.body.error).toBe("bad_verification_code");
+      });
+  });
+
   it("rejects unknown clients", () => {
     return request(app)
       .post(endpoint)
