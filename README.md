@@ -75,14 +75,21 @@ You can configure the port that the `fauxauth` server runs on by setting the
 }
 ```
 
-The configuration is initially hardcoded as follows:
+You can also set the OAuth configuration; it is initially hardcoded as follows:
 
-- `client_id`: `"1ae9b0ca17e754106b51"`
-- `client_secret`: `"3efb56fdbac1cb21f3d4fea9b70036e04a34d068"`
-- `redirect_uri`: `"http://example.org/"`
+| Name           | Description                                                | Initial value                                |
+| -------------- | ---------------------------------------------------------- | -------------------------------------------- |
+| `callbackUrl`  | The base URL to return or validate `redirect_uri` against  | `"http://example.org/"`                      |
+| `clientId`     | The client ID to be accepted by the `/authorize` endpoint  | `"1ae9b0ca17e754106b51"`                     |
+| `clientSecret` | The client secret required by the `/access_token` endpoint | `"3efb56fdbac1cb21f3d4fea9b70036e04a34d068"` |
+
+You can update this configuration by sending a `PATCH` to the `/_configuration`
+endpoint, which accepts the changes as a [JSON patch][5] request. A `GET` to the
+same endpoint provides the current configuration.
 
 [1]: https://docs.docker.com/compose/
 [2]: https://www.npmjs.com/package/concurrently
 [3]: https://www.npmjs.com/package/cross-env
 [4]:
   https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#web-application-flow
+[5]: http://jsonpatch.com/

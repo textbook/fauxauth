@@ -35,6 +35,7 @@
   "homepage": "https://github.com/textbook/fauxauth#readme",
   "dependencies": {
     "express": "^4.16.4",
+    "jiff": "^0.7.3",
     "morgan": "^1.9.1",
     "xml2js": "^0.4.19"
   },
