@@ -8,7 +8,7 @@ RUN npm install
 COPY .babelrc .
 COPY /src ./src
 
-RUN npm run build
+RUN npm run babel
 
 FROM node:alpine
 
