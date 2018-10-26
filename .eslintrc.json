@@ -19,5 +19,13 @@
     "operator-linebreak": ["error", "before"],
     "quotes": ["error", "double"],
     "semi": ["error", "always"]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.spec.js"],
+      "env": {
+        "jest": true
+      }
+    }
+  ]
 }
