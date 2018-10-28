@@ -57,6 +57,24 @@ describe("_configure endpoint", () => {
       .expect(200);
   });
 
+  it("allows returning to default configuration", async () => {
+    await request(app)
+      .patch(endpoint)
+      .send([
+        { op: "add", path: "/accessToken", value: "helloworld" },
+        { op: "add", path: "/codes/-", value: "foobar" },
+      ])
+      .expect(200);
+
+    await request(app)
+      .delete(endpoint)
+      .expect(204);
+
+    await request(app)
+      .get(endpoint)
+      .expect(200, generateConfiguration());
+  });
+
   it("allows setting a specific access token", async () => {
     const accessToken = "helloworld";
     const code = "itsasecret";
