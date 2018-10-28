@@ -87,7 +87,8 @@ You can also set the OAuth configuration; it is initially hardcoded as follows:
 
 You can update this configuration by sending a `PATCH` to the `/_configuration`
 endpoint, which accepts the changes as a [JSON patch][5] request. A `GET` to the
-same endpoint provides the current configuration.
+same endpoint provides the current configuration. You can reset to the default
+configuration using a `DELETE` request.
 
 [1]: https://docs.docker.com/compose/
 [2]: https://www.npmjs.com/package/concurrently
