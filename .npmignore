@@ -6,7 +6,10 @@
 .nvmrc
 .travis.yml
 deploy-docker.sh
+docker-compose.yml
 Dockerfile
+Dockerfile-e2e
+jest.config.e2e.json
 .idea/
 .vscode/
 coverage/
