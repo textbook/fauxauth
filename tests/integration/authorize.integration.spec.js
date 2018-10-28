@@ -1,8 +1,8 @@
 import request from "supertest";
 import { parse, format } from "url";
 
-import appFactory from "../src/app";
-import { generateConfiguration } from "../src/utils";
+import appFactory from "../../src/app";
+import { generateConfiguration } from "../../src/utils";
 
 describe("authorize endpoint", () => {
   const endpoint = "/authorize";

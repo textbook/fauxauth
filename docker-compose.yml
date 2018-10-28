@@ -1,0 +1,16 @@
+version: "3.3"
+services:
+  fauxauth:
+    build:
+      context: .
+      labels:
+        - version=$TRAVIS_TAG
+    image: textbook/fauxauth
+  e2e:
+    build:
+      context: .
+      dockerfile: Dockerfile-e2e
+    environment:
+      - FAUXAUTH_URL=http://fauxauth:3000
+    links:
+      - fauxauth

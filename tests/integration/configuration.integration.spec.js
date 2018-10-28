@@ -1,7 +1,7 @@
 import request from "supertest";
 
-import appFactory from "../src/app";
-import { generateConfiguration } from "../src/utils";
+import appFactory from "../../src/app";
+import { generateConfiguration } from "../../src/utils";
 
 describe("_configure endpoint", () => {
   const endpoint = "/_configuration";

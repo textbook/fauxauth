@@ -15,11 +15,15 @@
   "description": "Helper application for testing OAuth clients",
   "scripts": {
     "babel": "babel src --out-dir lib",
+    "pree2e": "docker-compose build",
+    "e2e": "docker-compose run e2e run -d e2e:test",
+    "e2e:test": "jest --config jest.config.e2e.json",
+    "poste2e": "docker-compose down",
     "prebuild": "rimraf lib/*",
     "build": "npm run babel",
     "lint": "eslint .",
     "prepublishOnly": "npm run build",
-    "ship": "npm run lint && npm run test",
+    "ship": "npm run lint && npm run test && npm run e2e",
     "start": "node lib/server.js",
     "test": "jest",
     "test:cover": "npm run test -- --coverage",
@@ -50,6 +54,7 @@
     "eslint": "^5.7.0",
     "jest": "^23.6.0",
     "regenerator-runtime": "^0.12.1",
+    "request": "^2.88.0",
     "rimraf": "^2.6.2",
     "supertest": "^3.3.0"
   }
