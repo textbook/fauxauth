@@ -9,7 +9,8 @@ RUN npm install --only=prod
 
 COPY /lib /lib
 
-EXPOSE 3000
+ENV PORT=80
+EXPOSE 80
 
 ENTRYPOINT [ "npm" ]
 CMD [ "start" ]

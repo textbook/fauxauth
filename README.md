@@ -33,11 +33,10 @@ flow, as documented [here][4].
           links:
             - oauth
           environment:
-              OAUTH_URL: http://oauth:3000
+              OAUTH_URL: http://oauth
       ...
       oauth:
           image: textbook/fauxauth
-          ports: 3000:3000
   ```
 
 - **Node Dependency**: alternatively, you may want to run `fauxauth` directly.

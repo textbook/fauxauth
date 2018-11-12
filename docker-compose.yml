@@ -11,6 +11,6 @@ services:
       context: .
       dockerfile: tests/e2e/Dockerfile
     environment:
-      - FAUXAUTH_URL=http://fauxauth:3000
+      - FAUXAUTH_URL=http://fauxauth
     links:
       - fauxauth
