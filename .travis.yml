@@ -10,6 +10,7 @@ services:
   - docker
 
 before_script:
+  # prettier-ignore
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
@@ -17,6 +18,7 @@ before_script:
 script:
   - npm run lint
   - npm run test:cover
+  - npm run build
   - npm run e2e
 
 after_script:
