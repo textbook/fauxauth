@@ -9,7 +9,7 @@ services:
   e2e:
     build:
       context: .
-      dockerfile: Dockerfile-e2e
+      dockerfile: tests/e2e/Dockerfile
     environment:
       - FAUXAUTH_URL=http://fauxauth:3000
     links:

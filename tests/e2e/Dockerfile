@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:dubnium-alpine
 WORKDIR /e2e
 
 COPY package.json .
