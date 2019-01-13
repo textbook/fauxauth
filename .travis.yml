@@ -29,3 +29,8 @@ deploy:
     script: bash deploy-docker.sh
     on:
       tags: true
+  - provider: npm
+    email: $NPM_EMAIL_ADDRESS
+    api_key: $NPM_AUTH_TOKEN
+    on:
+      tags: true
