@@ -89,6 +89,11 @@ endpoint, which accepts the changes as a [JSON patch][5] request. A `GET` to the
 same endpoint provides the current configuration. You can reset to the default
 configuration using a `DELETE` request.
 
+Alternatively, provide a JSON string as the `FAUXAUTH_CONFIG` environment
+variable to override all or part of the initial configuration (**note** that a
+`DELETE` reset will return to the combination of the hardcoded configuration
+above and whatever is provided via this environment variable).
+
 [1]: https://docs.docker.com/compose/
 [2]: https://www.npmjs.com/package/concurrently
 [3]: https://www.npmjs.com/package/cross-env

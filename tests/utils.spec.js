@@ -10,6 +10,20 @@ describe("generateConfiguration function", () => {
       codes: [],
     });
   });
+
+  it("includes overrides from the environment", () => {
+    process.env.FAUXAUTH_CONFIG = "{\"clientId\": \"deadbeef\"}";
+
+    expect(generateConfiguration()).toEqual({
+      accessToken: null,
+      callbackUrl: "http://example.org/",
+      clientId: "deadbeef",
+      clientSecret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
+      codes: [],
+    });
+
+    delete process.env.FAUXAUTH_CONFIG;
+  });
 });
 
 describe("generateHex function", () => {
