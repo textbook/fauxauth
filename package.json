@@ -12,6 +12,9 @@
   "bin": {
     "fauxauth": "./lib/server.js"
   },
+  "files": [
+    "/lib"
+  ],
   "description": "Helper application for testing OAuth clients",
   "scripts": {
     "babel": "babel src --out-dir lib",
