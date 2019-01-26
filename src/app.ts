@@ -1,11 +1,12 @@
 import express from "express";
 import morgan from "morgan";
 
+import tokenRouter from "./routes/accessToken";
 import authRouter from "./routes/authorize";
 import configRouter from "./routes/configuration";
-import tokenRouter from "./routes/accessToken";
+import { Configuration } from "./utils";
 
-export default (configuration) => {
+export default (configuration: Configuration) => {
   const app = express();
 
   app.use(express.json());

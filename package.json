@@ -17,14 +17,13 @@
   ],
   "description": "Helper application for testing OAuth clients",
   "scripts": {
-    "babel": "babel src --out-dir lib",
     "pree2e": "docker-compose build",
     "e2e": "docker-compose run e2e run -d e2e:test",
-    "e2e:test": "jest --config jest.config.e2e.json",
+    "e2e:test": "jest --config jest.config.e2e.js",
     "poste2e": "docker-compose down",
     "prebuild": "rimraf lib/*",
-    "build": "npm run babel",
-    "lint": "eslint .",
+    "build": "tsc",
+    "lint": "tslint -c tslint.json 'src/**/*.ts' 'tests/**/*.ts'",
     "prepublishOnly": "npm run build",
     "ship": "npm run lint && npm run test && npm run build && npm run e2e",
     "start": "node lib/server.js",
@@ -49,16 +48,19 @@
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.2",
-    "@babel/core": "^7.1.2",
-    "@babel/preset-env": "^7.1.0",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.6.0",
-    "eslint": "^5.7.0",
+    "@types/express": "^4.16.1",
+    "@types/jest": "^23.3.13",
+    "@types/morgan": "^1.7.35",
+    "@types/request": "^2.48.1",
+    "@types/supertest": "^2.0.7",
+    "@types/xml2js": "^0.4.3",
     "jest": "^23.6.0",
-    "regenerator-runtime": "^0.12.1",
     "request": "^2.88.0",
     "rimraf": "^2.6.2",
-    "supertest": "^3.3.0"
+    "supertest": "^3.3.0",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.17.0",
+    "typescript": "^3.2.4"
   }
 }

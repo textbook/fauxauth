@@ -6,8 +6,9 @@ COPY package-lock.json .
 
 RUN npm install
 
-COPY .babelrc .
 COPY /tests/e2e ./tests
-COPY jest.config.e2e.json .
+COPY jest.config.js .
+COPY jest.config.e2e.js .
+COPY tsconfig.json .
 
 ENTRYPOINT [ "npm" ]

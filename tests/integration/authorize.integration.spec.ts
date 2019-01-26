@@ -1,14 +1,15 @@
+import { Application } from "express";
 import request from "supertest";
-import { parse, format } from "url";
+import { format, parse } from "url";
 
 import appFactory from "../../src/app";
-import { generateConfiguration } from "../../src/utils";
+import { Configuration, generateConfiguration } from "../../src/utils";
 
 describe("authorize endpoint", () => {
   const endpoint = "/authorize";
 
-  let app;
-  let defaultConfiguration;
+  let app: Application;
+  let defaultConfiguration: Configuration;
 
   beforeEach(() => {
     defaultConfiguration = generateConfiguration();

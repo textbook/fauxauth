@@ -1,15 +1,16 @@
+import { Application } from "express";
 import qs from "querystring";
 import request from "supertest";
 import { parse } from "url";
 import { parseString } from "xml2js";
 
 import appFactory from "../../src/app";
-import { generateConfiguration } from "../../src/utils";
+import { Configuration, generateConfiguration } from "../../src/utils";
 
 describe("access_token endpoint", () => {
-  let app;
-  let code;
-  let defaultConfiguration;
+  let app: Application;
+  let code: string;
+  let defaultConfiguration: Configuration;
 
   const endpoint = "/access_token";
 
@@ -25,7 +26,7 @@ describe("access_token endpoint", () => {
       .expect(302)
       .then((res) => {
         const { query } = parse(res.get("Location"), true);
-        code = query.code;
+        code = query.code as string;
       });
   });
 
@@ -145,7 +146,7 @@ describe("access_token endpoint", () => {
         });
     });
 
-    function parseXml(text) {
+    function parseXml(text: string): Promise<any> {
       return new Promise((resolve, reject) => {
         parseString(text, { explicitArray: false }, (err, result) => {
           if (err) {

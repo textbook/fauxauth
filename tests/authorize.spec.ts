@@ -6,7 +6,7 @@ describe("validateRedirect function", () => {
   /**
    * Examples from :
    * https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#redirect-urls
-   * */
+   */
 
   [
     { redirect: "http://example.com/path", valid: true },

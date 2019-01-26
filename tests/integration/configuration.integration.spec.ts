@@ -1,13 +1,14 @@
+import { Application } from "express";
 import request from "supertest";
 
 import appFactory from "../../src/app";
-import { generateConfiguration } from "../../src/utils";
+import { Configuration, generateConfiguration } from "../../src/utils";
 
 describe("_configure endpoint", () => {
   const endpoint = "/_configuration";
 
-  let initialConfig;
-  let app;
+  let app: Application;
+  let initialConfig: Configuration;
 
   beforeEach(() => {
     initialConfig = generateConfiguration();

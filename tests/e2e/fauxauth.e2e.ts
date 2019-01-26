@@ -1,5 +1,5 @@
-import request from "request";
-import { parse, format } from "url";
+import request, { Options, Response } from "request";
+import { format, parse } from "url";
 
 const baseUrl = process.env.FAUXAUTH_URL || "http://localhost:3000";
 
@@ -19,7 +19,7 @@ describe("fauxauth", () => {
     })
       .then((res) => {
         expect(res.statusCode).toBe(302);
-        const { query, search, ...url } = parse(res.headers.location, true);
+        const { query, search, ...url } = parse(res.headers.location!, true);
         expect(format(url)).toBe("http://example.org/");
         expect(query.state).toBe(state);
         expect(query.code).toMatch(/[0-9a-f]{20}/);
@@ -34,7 +34,7 @@ describe("fauxauth", () => {
             code,
             state,
           },
-        })
+        }),
       )
       .then((res) => {
         expect(res.statusCode).toBe(200);
@@ -46,8 +46,6 @@ describe("fauxauth", () => {
     const code = "deadbeef";
     const token = "somereallylongtoken";
     await makeRequest("/_configuration", {
-      method: "PATCH",
-      json: true,
       body: [
         {
           op: "add",
@@ -57,6 +55,8 @@ describe("fauxauth", () => {
         { op: "replace", path: "/clientSecret", value: "notsosecret" },
         { op: "add", path: "/accessToken", value: token },
       ],
+      json: true,
+      method: "PATCH",
     })
       .then((res) => {
         expect(res.statusCode).toBe(200);
@@ -76,7 +76,10 @@ describe("fauxauth", () => {
   });
 });
 
-const makeRequest = (url, options) => {
+const makeRequest = (
+  url: string,
+  options: Partial<Options>,
+): Promise<Response> => {
   return new Promise((resolve, reject) => {
     request(
       {
@@ -88,7 +91,7 @@ const makeRequest = (url, options) => {
           return reject(err);
         }
         resolve(res);
-      }
+      },
     );
   });
 };

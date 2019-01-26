@@ -2,14 +2,14 @@ import { Router } from "express";
 import qs from "querystring";
 import { Builder } from "xml2js";
 
-import { generateHex } from "../utils";
+import { Configuration, generateHex } from "../utils";
 
-export default (configuration) => {
+export default (configuration: Configuration) => {
   const builder = new Builder({
-    renderOpts: { pretty: false },
     headless: true,
+    renderOpts: { pretty: false },
   });
-  const router = new Router();
+  const router = Router();
 
   router.post("/", (req, res) => {
     const {
@@ -32,7 +32,7 @@ export default (configuration) => {
       payload = { error: "bad_verification_code" };
     } else {
       configuration.codes = configuration.codes.filter(
-        (existingCode) => existingCode !== code
+        (existingCode: string) => existingCode !== code,
       );
       payload = {
         access_token: configuration.accessToken || generateHex(40),

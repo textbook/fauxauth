@@ -1,19 +1,25 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import { format, parse } from "url";
 
-import { generateHex } from "../utils";
+import { Configuration, generateHex } from "../utils";
 
-export default (configuration) => {
-  const router = new Router();
+export interface Query {
+  code?: string;
+  error?: string;
+  state?: string;
+}
 
-  router.get("/", (req, res) => {
+export default (configuration: Configuration) => {
+  const router = Router();
+
+  router.get("/", (req: Request, res: Response) => {
     const { state, redirect_uri: redirectUri, client_id: clientId } = req.query;
     if (clientId !== configuration.clientId) {
       return res.sendStatus(404);
     }
 
     let pathname = configuration.callbackUrl;
-    const query = {};
+    const query: Query = {};
 
     if (state) {
       query.state = state;
@@ -39,12 +45,15 @@ export default (configuration) => {
   return router;
 };
 
-export const validateRedirect = (redirectUri, callbackUrl) => {
+export const validateRedirect = (
+  redirectUri: string,
+  callbackUrl: string,
+): boolean => {
   const redirect = parse(redirectUri);
   const callback = parse(callbackUrl);
   return (
-    redirect.host === callback.host
-    && redirect.port === callback.port
-    && redirect.path.indexOf(callback.path) === 0
+    redirect.host === callback.host &&
+    redirect.port === callback.port &&
+    redirect.path!.indexOf(callback.path!) === 0
   );
 };

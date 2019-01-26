@@ -1,5 +1,5 @@
 {
   "editor.formatOnSave": true,
-  "prettier.eslintIntegration": true,
-  "prettier.proseWrap": "always"
+  "prettier.proseWrap": "always",
+  "prettier.tslintIntegration": true
 }
