@@ -1,5 +1,5 @@
-ARG NODE_VERSION='dubnium-alpine'
-FROM node:${NODE_VERSION}
+ARG NODE_VERSION
+FROM node:${NODE_VERSION}-alpine
 
 LABEL maintainer="Jonathan Sharpe"
 

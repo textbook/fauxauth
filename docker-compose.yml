@@ -2,9 +2,11 @@ version: "3.3"
 services:
   fauxauth:
     build:
+      args:
+        - NODE_VERSION=${NODE_VERSION:-dubnium}
       context: .
       labels:
-        - version=$TRAVIS_TAG
+        - version=${TRAVIS_TAG}
     image: textbook/fauxauth
   e2e:
     build:

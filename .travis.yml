@@ -6,32 +6,42 @@ cache:
   directories:
     - "node_modules"
 
-services:
-  - docker
+jobs:
+  include:
+    - stage: unit test
+      before_script:
+        # prettier-ignore
+        - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+        - chmod +x ./cc-test-reporter
+        - ./cc-test-reporter before-build
+      script:
+        - npm run lint
+        - npm run test:cover
+      after_script:
+        - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+    - stage: e2e test
+      services:
+        - docker
+      env:
+        - NODE_VERSION=boron
+        - NODE_VERSION=carbon
+        - NODE_VERSION=dubnium
+      script: npm run e2e
+    - stage: deploy
+      services:
+        - docker
+      env: NODE_VERSION=dubnium
+      script: npm run pree2e
+      deploy:
+        - provider: script
+          script: bash deploy-docker.sh
+        - provider: npm
+          email: $NPM_EMAIL_ADDRESS
+          api_key: $NPM_AUTH_TOKEN
+          skip_cleanup: true
 
-before_script:
-  # prettier-ignore
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-
-script:
-  - npm run lint
-  - npm run test:cover
-  - npm run build
-  - npm run e2e
-
-after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-
-deploy:
-  - provider: script
-    script: bash deploy-docker.sh
-    on:
-      tags: true
-  - provider: npm
-    email: $NPM_EMAIL_ADDRESS
-    api_key: $NPM_AUTH_TOKEN
-    skip_cleanup: true
-    on:
-      tags: true
+stages:
+  - unit test
+  - e2e test
+  - name: deploy
+    if: branch = master AND tag = true
