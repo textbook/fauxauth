@@ -6,6 +6,16 @@ cache:
   directories:
     - "node_modules"
 
+services:
+  - docker
+
+env:
+  - NODE_VERSION=boron
+  - NODE_VERSION=carbon
+  - NODE_VERSION=dubnium
+
+script: npm run e2e
+
 jobs:
   include:
     - stage: unit test
@@ -19,13 +29,7 @@ jobs:
         - npm run test:cover
       after_script:
         - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-    - stage: e2e test
-      services:
-        - docker
-      script: npm run e2e
     - stage: deploy
-      services:
-        - docker
       env: NODE_VERSION=dubnium
       script: npm run pree2e
       deploy:
@@ -38,10 +42,6 @@ jobs:
 
 stages:
   - unit test
-  - name: e2e test
-    env:
-      - NODE_VERSION=boron
-      - NODE_VERSION=carbon
-      - NODE_VERSION=dubnium
+  - test
   - name: deploy
     if: branch = master AND tag = true
