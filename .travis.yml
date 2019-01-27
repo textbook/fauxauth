@@ -22,10 +22,6 @@ jobs:
     - stage: e2e test
       services:
         - docker
-      env:
-        - NODE_VERSION=boron
-        - NODE_VERSION=carbon
-        - NODE_VERSION=dubnium
       script: npm run e2e
     - stage: deploy
       services:
@@ -42,6 +38,10 @@ jobs:
 
 stages:
   - unit test
-  - e2e test
+  - name: e2e test
+    env:
+      - NODE_VERSION=boron
+      - NODE_VERSION=carbon
+      - NODE_VERSION=dubnium
   - name: deploy
     if: branch = master AND tag = true
