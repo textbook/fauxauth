@@ -17,7 +17,7 @@
   ],
   "description": "Helper application for testing OAuth clients",
   "scripts": {
-    "pree2e": "npm run build && docker-compose build",
+    "pree2e": "docker-compose build",
     "e2e": "docker-compose run e2e run -d e2e:test",
     "e2e:test": "jest --config jest.config.e2e.js",
     "poste2e": "docker-compose down",
