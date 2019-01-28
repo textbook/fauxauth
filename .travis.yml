@@ -6,6 +6,7 @@ cache:
   pip: true
   directories:
     - "node_modules"
+    - "$HOME/.npm"
 
 services:
   - docker
@@ -28,6 +29,7 @@ script: npm run e2e
 jobs:
   include:
     - stage: unit test
+      install: npm ci
       before_script:
         - pip install --user awscli
         # prettier-ignore
