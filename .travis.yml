@@ -54,13 +54,17 @@ jobs:
       deploy:
         - provider: script
           script: bash deploy-docker.sh
+          on:
+            tags: true
         - provider: npm
           email: $NPM_EMAIL_ADDRESS
           api_key: $NPM_AUTH_TOKEN
           skip_cleanup: true
+          on:
+            tags: true
 
 stages:
   - unit test
   - test
   - name: deploy
-    if: branch = master AND tag = true
+    if: tag IS present
