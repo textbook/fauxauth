@@ -21,7 +21,6 @@ install: true
 before_script:
   - pip install --user awscli
   - mkdir -p ./lib
-  # prettier-ignore
   - aws s3 sync s3://fauxauth-travis-ci/$TRAVIS_BUILD_NUMBER ./lib
 
 script: npm run e2e
@@ -43,7 +42,6 @@ jobs:
       after_script:
         - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
       after_success:
-        # prettier-ignore
         - aws s3 sync ./lib s3://fauxauth-travis-ci/$TRAVIS_BUILD_NUMBER
     - stage: deploy
       env: NODE_VERSION=dubnium
@@ -51,7 +49,6 @@ jobs:
       before_script:
         - pip install --user awscli
         - mkdir -p ./lib
-        # prettier-ignore
         - aws s3 sync s3://fauxauth-travis-ci/$TRAVIS_BUILD_NUMBER ./lib
       script: npm run pree2e
       deploy:
