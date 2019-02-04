@@ -1,5 +1,5 @@
 ARG NODE_VERSION
-FROM node:${NODE_VERSION}-alpine
+FROM node:${NODE_VERSION:-dubnium}-alpine
 
 LABEL maintainer="Jonathan Sharpe"
 

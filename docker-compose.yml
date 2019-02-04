@@ -3,7 +3,7 @@ services:
   fauxauth:
     build:
       args:
-        - NODE_VERSION=${NODE_VERSION:-dubnium}
+        - NODE_VERSION=${NODE_VERSION}
       context: .
       labels:
         - version=${TRAVIS_TAG}
