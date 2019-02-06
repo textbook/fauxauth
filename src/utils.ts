@@ -1,4 +1,4 @@
-const hexChars = "0123456789abcdef";
+import leftPad from "left-pad";
 
 export interface Configuration {
   accessToken: string | null;
@@ -15,11 +15,9 @@ const initialConfiguration: Partial<Configuration> = {
   clientSecret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
 };
 
-export const generateHex = (length: number) => {
-  return Array(length)
-    .fill(null)
-    .map(() => hexChars[Math.floor(Math.random() * hexChars.length)])
-    .join("");
+export const generateHex = (length: number): string => {
+  const value = Math.random() * (16 ** length - 1);
+  return leftPad(value.toString(16), length, "0");
 };
 
 export const generateConfiguration = (): Configuration => ({
