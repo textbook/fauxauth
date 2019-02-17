@@ -23,9 +23,23 @@ before_script:
 
 script: npm run e2e
 
+deploy:
+  - provider: script
+    script: bash deploy-docker.sh
+    on:
+      tags: true
+      condition: env(NODE_RELEASE) = "dubnium"
+  - provider: npm
+    email: $NPM_EMAIL_ADDRESS
+    api_key: $NPM_AUTH_TOKEN
+    skip_cleanup: true
+    on:
+      tags: true
+      condition: env(NODE_RELEASE) = "dubnium"
+
 jobs:
   include:
-    - stage: unit test
+    - stage: build
       services: []
       install: npm ci
       before_script:
@@ -42,30 +56,15 @@ jobs:
         - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
       after_success:
         - aws s3 sync ./lib s3://fauxauth-travis-ci/$TRAVIS_BUILD_NUMBER
-    - stage: deploy
-      install: true
-      script: true
-      deploy:
-        - provider: script
-          script: bash deploy-docker.sh
-          on:
-            tags: true
-        - provider: npm
-          email: $NPM_EMAIL_ADDRESS
-          api_key: $NPM_AUTH_TOKEN
-          skip_cleanup: true
-          on:
-            tags: true
     - stage: smoke
+      cache: {}
       services: []
       install: true
       before_script: true
       script: ./e2e/smoke-test.sh
 
 stages:
-  - unit test
+  - build
   - test
-  - name: deploy
-    if: tag IS present
   - name: smoke
     if: tag IS present
