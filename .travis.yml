@@ -25,7 +25,7 @@ script: npm run e2e
 
 jobs:
   include:
-    - stage: unit test
+    - stage: build
       services: []
       install: npm ci
       before_script:
@@ -44,7 +44,8 @@ jobs:
         - aws s3 sync ./lib s3://fauxauth-travis-ci/$TRAVIS_BUILD_NUMBER
     - stage: deploy
       install: true
-      script: true
+      # prettier-ignore
+      script: docker build . -t 'textbook/fauxauth' -t "textbook/fauxauth:$TRAVIS_TAG"
       deploy:
         - provider: script
           script: bash deploy-docker.sh
@@ -57,13 +58,14 @@ jobs:
           on:
             tags: true
     - stage: smoke
+      cache: {}
       services: []
       install: true
       before_script: true
       script: ./e2e/smoke-test.sh
 
 stages:
-  - unit test
+  - build
   - test
   - name: deploy
     if: tag IS present

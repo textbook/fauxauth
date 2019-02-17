@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-docker tag 'textbook/fauxauth' "textbook/fauxauth:$TRAVIS_TAG"
+set -e -x
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
