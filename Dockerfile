@@ -1,12 +1,17 @@
-ARG NODE_VERSION
-FROM node:${NODE_VERSION:-dubnium}-alpine
+ARG NODE_RELEASE
+FROM node:${NODE_RELEASE:-dubnium}-alpine
+
+ARG NODE_RELEASE
 
 LABEL maintainer="Jonathan Sharpe"
 
 COPY /package.json .
 COPY /package-lock.json .
 
-RUN npm ci --only=prod
+RUN if [ ${NODE_RELEASE:-dubnium} = "boron" ]; \
+  then npm install --only=prod; \
+  else npm ci --only=prod; \
+  fi
 
 COPY /lib /lib
 

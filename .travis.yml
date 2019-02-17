@@ -12,9 +12,9 @@ services:
   - docker
 
 env:
-  - NODE_VERSION=dubnium
-  - NODE_VERSION=carbon
-  - NODE_VERSION=boron
+  - NODE_RELEASE=dubnium
+  - NODE_RELEASE=carbon
+  - NODE_RELEASE=boron
 
 install: true
 
@@ -44,7 +44,7 @@ jobs:
       after_success:
         - aws s3 sync ./lib s3://fauxauth-travis-ci/$TRAVIS_BUILD_NUMBER
     - stage: deploy
-      env: NODE_VERSION=dubnium
+      env: NODE_RELEASE=dubnium
       install: true
       before_script:
         - pip install --user awscli

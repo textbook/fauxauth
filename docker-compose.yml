@@ -3,7 +3,7 @@ services:
   fauxauth:
     build:
       args:
-        - NODE_VERSION=${NODE_VERSION}
+        - NODE_RELEASE=${NODE_RELEASE}
       context: .
       labels:
         - version=${TRAVIS_TAG}
