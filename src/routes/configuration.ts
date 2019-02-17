@@ -11,6 +11,12 @@ export default (configuration: Configuration) => {
   });
 
   router.patch("/", (req: Request, res: Response) => {
+    try {
+      // Ensure patch can be fully applied
+      jiff.patch(req.body, configuration);
+    } catch (e) {
+      return res.status(422).send(configuration);
+    }
     jiff.patchInPlace(req.body, configuration);
     res.send(configuration);
   });

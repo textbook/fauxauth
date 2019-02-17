@@ -6,6 +6,7 @@ import { Configuration, generateConfiguration } from "../../src/utils";
 
 describe("_configure endpoint", () => {
   const endpoint = "/_configuration";
+  const startingConfiguration = generateConfiguration();
 
   let app: Application;
   let initialConfig: Configuration;
@@ -97,5 +98,20 @@ describe("_configure endpoint", () => {
       .then((res) => {
         expect(res.body.access_token).toBe(accessToken);
       });
+  });
+
+  it("rejects invalid configuration changes", async () => {
+    await request(app)
+      .patch(endpoint)
+      .send([
+        { op: "add", path: "/accessToken", value: "something" },
+        { op: "test", path: "/accessToken", value: "somethingelse" },
+        { op: "add", path: "/callbackUrl", value: "http://failure.com/" },
+      ])
+      .expect(422, startingConfiguration);
+
+    return request(app)
+      .get(endpoint)
+      .expect(200, startingConfiguration);
   });
 });
