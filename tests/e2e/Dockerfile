@@ -4,7 +4,7 @@ WORKDIR /e2e
 COPY package.json .
 COPY package-lock.json .
 
-RUN npm install
+RUN npm ci
 
 COPY /tests/e2e ./tests
 COPY jest.config.js .
