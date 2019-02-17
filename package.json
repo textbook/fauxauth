@@ -23,7 +23,6 @@
     "prebuild": "rimraf lib/*",
     "build": "tsc",
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'tests/**/*.ts'",
-    "prepublishOnly": "npm run build",
     "ship": "npm run lint && npm run test && npm run build && npm run e2e",
     "start": "node lib/server.js",
     "test": "jest",

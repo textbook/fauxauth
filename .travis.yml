@@ -43,6 +43,7 @@ jobs:
       after_success:
         - aws s3 sync ./lib s3://fauxauth-travis-ci/$TRAVIS_BUILD_NUMBER
     - stage: deploy
+      cache: {}
       install: true
       # prettier-ignore
       script: docker build . -t 'textbook/fauxauth' -t "textbook/fauxauth:$TRAVIS_TAG"
