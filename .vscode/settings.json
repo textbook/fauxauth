@@ -1,5 +1,8 @@
 {
   "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.tslint": true
+  },
   "prettier.proseWrap": "always",
   "prettier.tslintIntegration": true
 }
