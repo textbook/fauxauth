@@ -62,9 +62,14 @@ jobs:
           skip_cleanup: true
           on:
             tags: true
+    - stage: smoke
+      install: true
+      script: ./e2e/smoke-test.sh
 
 stages:
   - unit test
   - test
   - name: deploy
+    if: tag IS present
+  - name: smoke
     if: tag IS present

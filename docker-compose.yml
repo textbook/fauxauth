@@ -10,8 +10,7 @@ services:
     image: textbook/fauxauth
   e2e:
     build:
-      context: .
-      dockerfile: tests/e2e/Dockerfile
+      context: e2e
     environment:
       - FAUXAUTH_URL=http://fauxauth
     links:

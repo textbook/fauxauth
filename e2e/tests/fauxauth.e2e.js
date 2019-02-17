@@ -1,11 +1,11 @@
-import request, { Options, Response } from "request";
-import { format, parse } from "url";
+const request = require("request");
+const { format, parse } = require("url");
 
 const baseUrl = process.env.FAUXAUTH_URL || "http://localhost:3000";
 
 describe("fauxauth", () => {
   beforeEach(async () => {
-    await makeRequest("/_configuration", { method: "DELETE" }).then((res) => {
+    await makeRequest("/_configuration", { method: "DELETE" }).then(res => {
       expect(res.statusCode).toBe(204);
     });
   });
@@ -15,28 +15,28 @@ describe("fauxauth", () => {
 
     await makeRequest("/authorize", {
       followRedirect: false,
-      qs: { client_id: "1ae9b0ca17e754106b51", state },
+      qs: { client_id: "1ae9b0ca17e754106b51", state }
     })
-      .then((res) => {
+      .then(res => {
         expect(res.statusCode).toBe(302);
-        const { query, search, ...url } = parse(res.headers.location!, true);
+        const { query, search, ...url } = parse(res.headers.location, true);
         expect(format(url)).toBe("http://example.org/");
         expect(query.state).toBe(state);
         expect(query.code).toMatch(/[0-9a-f]{20}/);
         return query.code;
       })
-      .then((code) =>
+      .then(code =>
         makeRequest("/access_token", {
           method: "POST",
           qs: {
             client_id: "1ae9b0ca17e754106b51",
             client_secret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
             code,
-            state,
-          },
-        }),
+            state
+          }
+        })
       )
-      .then((res) => {
+      .then(res => {
         expect(res.statusCode).toBe(200);
         expect(res.body).toMatch(/access_token=[0-9a-f]{40}/);
       });
@@ -50,48 +50,45 @@ describe("fauxauth", () => {
         {
           op: "add",
           path: "/codes/-",
-          value: code,
+          value: code
         },
         { op: "replace", path: "/clientSecret", value: "notsosecret" },
-        { op: "add", path: "/accessToken", value: token },
+        { op: "add", path: "/accessToken", value: token }
       ],
       json: true,
-      method: "PATCH",
+      method: "PATCH"
     })
-      .then((res) => {
+      .then(res => {
         expect(res.statusCode).toBe(200);
         return makeRequest("/access_token", {
           method: "POST",
           qs: {
             client_id: "1ae9b0ca17e754106b51",
             client_secret: "notsosecret",
-            code,
-          },
+            code
+          }
         });
       })
-      .then((res) => {
+      .then(res => {
         expect(res.statusCode).toBe(200);
         expect(res.body).toContain(`access_token=${token}`);
       });
   });
 });
 
-const makeRequest = (
-  url: string,
-  options: Partial<Options>,
-): Promise<Response> => {
+const makeRequest = (url, options) => {
   return new Promise((resolve, reject) => {
     request(
       {
         ...options,
-        uri: `${baseUrl}${url}`,
+        uri: `${baseUrl}${url}`
       },
       (err, res) => {
         if (err) {
           return reject(err);
         }
         resolve(res);
-      },
+      }
     );
   });
 };

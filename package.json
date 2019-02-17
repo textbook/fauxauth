@@ -18,8 +18,7 @@
   "description": "Helper application for testing OAuth clients",
   "scripts": {
     "pree2e": "docker-compose build",
-    "e2e": "docker-compose run e2e run -d e2e:test",
-    "e2e:test": "jest --config jest.config.e2e.js",
+    "e2e": "docker-compose run e2e run -d test",
     "poste2e": "docker-compose down",
     "prebuild": "rimraf lib/*",
     "build": "tsc",
@@ -56,7 +55,6 @@
     "@types/supertest": "^2.0.7",
     "@types/xml2js": "^0.4.3",
     "jest": "^23.6.0",
-    "request": "^2.88.0",
     "rimraf": "^2.6.2",
     "supertest": "^3.3.0",
     "ts-jest": "^23.10.5",
