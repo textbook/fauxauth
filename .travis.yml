@@ -1,9 +1,8 @@
 language: node_js
 
 cache:
-  pip: true
   directories:
-    - "node_modules"
+    - "$HOME/.cache/pip"
     - "$HOME/.npm"
 
 services:
@@ -43,7 +42,6 @@ jobs:
       after_success:
         - aws s3 sync ./lib s3://fauxauth-travis-ci/$TRAVIS_BUILD_NUMBER
     - stage: deploy
-      cache: {}
       install: true
       # prettier-ignore
       script: docker build . -t 'textbook/fauxauth' -t "textbook/fauxauth:$TRAVIS_TAG"
@@ -59,7 +57,6 @@ jobs:
           on:
             tags: true
     - stage: smoke
-      cache: {}
       services: []
       install: true
       before_script: true
