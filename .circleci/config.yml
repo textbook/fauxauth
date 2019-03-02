@@ -1,0 +1,153 @@
+dubnium: &dubnium
+  docker:
+    - image: circleci/node:10
+
+e2e: &e2e
+  steps:
+    - checkout
+    - attach_workspace:
+        at: .
+    - restore_cache:
+        keys:
+          - fauxauth-{{ checksum "package-lock.json" }}
+    - run:
+        name: Install Fauxauth
+        command: npm install --only=production
+    - run:
+        name: Run Fauxauth
+        command: npm run bin
+        background: true
+    - run:
+        name: Install E2E
+        command: npm install
+        working_directory: e2e
+    - run:
+        name: Test
+        command: npm run test
+        working_directory: e2e
+
+version: 2
+jobs:
+  dependencies:
+    <<: *dubnium
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - fauxauth-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install
+          command: npm ci
+      - save_cache:
+          key: fauxauth-{{ checksum "package-lock.json" }}
+          paths:
+            - "$HOME/.npm"
+
+  lint:
+    <<: *dubnium
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - fauxauth-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install
+          command: npm ci
+      - run:
+          name: Lint
+          command: npm run lint
+
+  test:
+    <<: *dubnium
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - fauxauth-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install
+          command: npm ci
+      - run:
+          name: Install CodeClimate Reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+            ./cc-test-reporter before-build
+      - run:
+          name: Test
+          command: npm run test:report
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/jest
+      - run:
+          name: Use CodeClimate Reporter
+          command: ./cc-test-reporter after-build
+      - store_test_results:
+          path: ./reports
+
+  build:
+    <<: *dubnium
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - fauxauth-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install
+          command: npm ci
+      - save_cache:
+          key: fauxauth-{{ checksum "package-lock.json" }}
+          paths:
+            - "$HOME/.npm"
+      - attach_workspace:
+          at: .
+      - run:
+          name: Build
+          command: npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./lib
+
+  e2e-dubnium:
+    <<: *e2e
+    <<: *dubnium
+
+  e2e-carbon:
+    <<: *e2e
+    docker:
+      - image: circleci/node:8
+
+  e2e-boron:
+    <<: *e2e
+    docker:
+      - image: circleci/node:6
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - dependencies
+      - lint:
+          requires:
+            - dependencies
+      - test:
+          requires:
+            - dependencies
+      - build:
+          requires:
+            - dependencies
+      - e2e-dubnium:
+          requires:
+            - lint
+            - test
+            - build
+      - e2e-carbon:
+          requires:
+            - lint
+            - test
+            - build
+      - e2e-boron:
+          requires:
+            - lint
+            - test
+            - build

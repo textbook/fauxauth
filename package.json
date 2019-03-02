@@ -22,11 +22,12 @@
     "poste2e": "docker-compose down",
     "prebuild": "rimraf lib/*",
     "build": "tsc",
+    "bin": "node $npm_package_bin_fauxauth",
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'tests/**/*.ts'",
     "ship": "npm run lint && npm run test && npm run build && npm run e2e",
     "start": "node lib/server.js",
     "test": "jest",
-    "test:cover": "npm run test -- --coverage",
+    "test:report": "npm run test -- --coverage --reporters=\"default\" --reporters=\"jest-junit\"",
     "test:watch": "npm run test -- --watch"
   },
   "repository": {
@@ -53,6 +54,7 @@
     "@types/supertest": "^2.0.7",
     "@types/xml2js": "^0.4.4",
     "jest": "^24.8.0",
+    "jest-junit": "^6.3.0",
     "rimraf": "^3.0.0",
     "supertest": "^4.0.2",
     "ts-jest": "^24.0.2",
