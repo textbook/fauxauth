@@ -33,7 +33,7 @@ e2e: &e2e
         environment:
           JEST_JUNIT_OUTPUT_DIR: ./reports/jest
     - store_test_results:
-        path: ./reports
+        path: ./e2e/reports
 
 version: 2
 jobs:
