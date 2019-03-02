@@ -2,6 +2,11 @@ dubnium: &dubnium
   docker:
     - image: circleci/node:10
 
+any_branch: &any_branch
+  filters:
+    branches:
+      only: /.*/
+
 e2e: &e2e
   steps:
     - checkout
@@ -126,27 +131,34 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - dependencies
+      - dependencies:
+          <<: *any_branch
       - lint:
+          <<: *any_branch
           requires:
             - dependencies
       - test:
+          <<: *any_branch
           requires:
             - dependencies
       - build:
+          <<: *any_branch
           requires:
             - dependencies
       - e2e-dubnium:
+          <<: *any_branch
           requires:
             - lint
             - test
             - build
       - e2e-carbon:
+          <<: *any_branch
           requires:
             - lint
             - test
             - build
       - e2e-boron:
+          <<: *any_branch
           requires:
             - lint
             - test
