@@ -17,14 +17,22 @@ e2e: &e2e
           - fauxauth-{{ checksum "package-lock.json" }}
     - run:
         name: Install Fauxauth
-        command: npm install --only=production
+        command: |
+          if [[ $(node -v) =~ v6. ]]; \
+          then npm install --only=prod; \
+          else npm ci --only=prod; \
+          fi
     - run:
         name: Run Fauxauth
         command: npm run bin
         background: true
     - run:
         name: Install E2E
-        command: npm install
+        command: |
+          if [[ $(node -v) =~ v6. ]]; \
+          then npm install --only=prod; \
+          else npm ci --only=prod; \
+          fi
         working_directory: e2e
     - run:
         name: Test
