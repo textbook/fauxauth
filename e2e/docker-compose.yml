@@ -1,0 +1,11 @@
+version: "3.3"
+services:
+  fauxauth:
+    image: textbook/fauxauth:${CIRCLE_TAG}
+  e2e:
+    build:
+      context: .
+    environment:
+      - FAUXAUTH_URL=http://fauxauth
+    links:
+      - fauxauth

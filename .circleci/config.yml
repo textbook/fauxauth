@@ -1,3 +1,5 @@
+version: 2
+
 dubnium: &dubnium
   docker:
     - image: circleci/node:10
@@ -6,6 +8,11 @@ any_branch: &any_branch
   filters:
     branches:
       only: /.*/
+
+release_tag: &release_tag
+  filters:
+    tags:
+      only: /v\d+(\.\d+)*/
 
 e2e: &e2e
   steps:
@@ -43,7 +50,6 @@ e2e: &e2e
     - store_test_results:
         path: ./e2e/reports
 
-version: 2
 jobs:
   dependencies:
     <<: *dubnium
@@ -139,6 +145,36 @@ jobs:
     docker:
       - image: circleci/node:6
 
+  deploy:
+    <<: *dubnium
+    steps:
+      - checkout
+      - setup_remote_docker
+      - attach_workspace:
+          at: .
+      - run:
+          name: Deploy to NPM
+          command: |
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > "$HOME/.npmrc"
+            npm publish
+      - run:
+          name: Deploy to Docker Hub
+          command: ./deploy-docker.sh
+
+  smoke-test:
+    <<: *dubnium
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Install E2E
+          command: npm ci
+          working_directory: e2e
+      - run:
+          name: Smoke Test
+          command: ./smoke-test.sh
+          working_directory: e2e
+
 workflows:
   version: 2
   build_and_test:
@@ -175,3 +211,13 @@ workflows:
             - lint
             - test
             - build
+      - deploy:
+          <<: *release_tag
+          requires:
+            - e2e-boron
+            - e2e-carbon
+            - e2e-dubnium
+      - smoke-test:
+          <<: *release_tag
+          requires:
+            - deploy

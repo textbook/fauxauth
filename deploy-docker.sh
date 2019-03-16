@@ -2,6 +2,11 @@
 
 set -e -x
 
-echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+
+docker build . \
+  --label="version=$CIRCLE_TAG" \
+  -t 'textbook/fauxauth' \
+  -t "textbook/fauxauth:$CIRCLE_TAG"
 
 docker push textbook/fauxauth
