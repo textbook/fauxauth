@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "concurrently": "^4.1.0",
-    "jest": "^23.6.0",
+    "jest": "^24.8.0",
     "request": "^2.88.0"
   },
   "jest": {
