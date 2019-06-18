@@ -1,4 +1,4 @@
-const request = require("request");
+const axios = require("axios");
 const { format, parse } = require("url");
 
 const baseUrl = process.env.FAUXAUTH_URL || "http://localhost:3000";
@@ -77,18 +77,19 @@ describe("fauxauth", () => {
 });
 
 const makeRequest = (url, options) => {
-  return new Promise((resolve, reject) => {
-    request(
-      {
-        ...options,
-        uri: `${baseUrl}${url}`
-      },
-      (err, res) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(res);
-      }
-    );
-  });
+  return axios
+    .request({
+      baseURL: baseUrl,
+      data: options.body,
+      method: options.method,
+      params: options.qs,
+      maxRedirects: options.followRedirect !== false ? 5 : 0,
+      url
+    })
+    .catch(error => error.response)
+    .then(({ data, headers, status }) => ({
+      body: data,
+      headers,
+      statusCode: status
+    }));
 };
