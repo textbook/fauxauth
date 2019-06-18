@@ -1,13 +1,8 @@
 import { Request, Response, Router } from "express";
+import { ParsedUrlQueryInput } from "querystring";
 import { format, parse } from "url";
 
 import { Configuration, generateHex } from "../utils";
-
-export interface Query {
-  code?: string;
-  error?: string;
-  state?: string;
-}
 
 export default (configuration: Configuration) => {
   const router = Router();
@@ -19,7 +14,7 @@ export default (configuration: Configuration) => {
     }
 
     let pathname = configuration.callbackUrl;
-    const query: Query = {};
+    const query: ParsedUrlQueryInput = {};
 
     if (state) {
       query.state = state;
