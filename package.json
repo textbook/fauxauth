@@ -54,7 +54,7 @@
     "@types/xml2js": "^0.4.4",
     "jest": "^24.8.0",
     "rimraf": "^2.6.3",
-    "supertest": "^3.4.2",
+    "supertest": "^4.0.2",
     "ts-jest": "^24.0.2",
     "tslint": "^5.17.0",
     "tslint-config-prettier": "^1.18.0",
