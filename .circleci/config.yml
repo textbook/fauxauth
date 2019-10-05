@@ -160,7 +160,7 @@ jobs:
     docker:
       - image: circleci/node:6
 
-  deploy:
+  deploy-docker:
     <<: *dubnium
     steps:
       - checkout
@@ -168,13 +168,20 @@ jobs:
       - attach_workspace:
           at: .
       - run:
+          name: Deploy to Docker Hub
+          command: ./deploy-docker.sh
+
+  deploy-npm:
+    <<: *dubnium
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
           name: Deploy to NPM
           command: |
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > "$HOME/.npmrc"
             npm publish
-      - run:
-          name: Deploy to Docker Hub
-          command: ./deploy-docker.sh
 
   smoke-test:
     <<: *dubnium
@@ -226,7 +233,13 @@ workflows:
             - lint
             - test
             - build
-      - deploy:
+      - deploy-docker:
+          <<: *release_tag
+          requires:
+            - e2e-boron
+            - e2e-carbon
+            - e2e-dubnium
+      - deploy-npm:
           <<: *release_tag
           requires:
             - e2e-boron
@@ -235,4 +248,5 @@ workflows:
       - smoke-test:
           <<: *release_tag
           requires:
-            - deploy
+            - deploy-docker
+            - deploy-npm

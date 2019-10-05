@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 
-set -e -x
+set -e
 
-docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
 
 docker build . \
   --label="version=$CIRCLE_TAG" \
