@@ -4,22 +4,25 @@ const { format, parse } = require("url");
 const baseUrl = process.env.FAUXAUTH_URL || "http://localhost:3000";
 
 describe("fauxauth", () => {
-  beforeEach(async () => {
-    await makeRequest("/_configuration", { method: "DELETE" }).then(res => {
+  beforeEach(() => {
+    return makeRequest("/_configuration", { method: "DELETE" }).then(res => {
       expect(res.statusCode).toBe(204);
     });
   });
 
-  it("works with default configuration", async () => {
+  it("works with default configuration", () => {
     const state = "testing";
 
-    await makeRequest("/authorize", {
+    return makeRequest("/authorize", {
       followRedirect: false,
       qs: { client_id: "1ae9b0ca17e754106b51", state }
     })
       .then(res => {
         expect(res.statusCode).toBe(302);
-        const { query, search, ...url } = parse(res.headers.location, true);
+        const url = parse(res.headers.location, true);
+        const query = url.query;
+        delete url.query;
+        delete url.search;
         expect(format(url)).toBe("http://example.org/");
         expect(query.state).toBe(state);
         expect(query.code).toMatch(/[0-9a-f]{20}/);
@@ -42,10 +45,10 @@ describe("fauxauth", () => {
       });
   });
 
-  it("works with custom configuration", async () => {
+  it("works with custom configuration", () => {
     const code = "deadbeef";
     const token = "somereallylongtoken";
-    await makeRequest("/_configuration", {
+    return makeRequest("/_configuration", {
       body: [
         {
           op: "add",

@@ -1,0 +1,238 @@
+version: 2
+
+dubnium: &dubnium
+  docker:
+    - image: circleci/node:10.16.3
+
+any_branch: &any_branch
+  filters:
+    branches:
+      only: /.*/
+
+release_tag: &release_tag
+  filters:
+    branches:
+      only: master
+    tags:
+      only: /v\d+(\.\d+)*/
+
+e2e: &e2e
+  steps:
+    - checkout
+    - attach_workspace:
+        at: .
+    - restore_cache:
+        keys:
+          - fauxauth-npm-{{ checksum "package-lock.json" }}
+    - run:
+        name: Info
+        command: 'echo "Node: $(node -v)" && echo "NPM: v$(npm -v)"'
+    - run:
+        name: Install Fauxauth
+        command: |
+          if [[ $(node -v) =~ v6. ]]; \
+          then npm install --only=prod; \
+          else npm ci --only=prod; \
+          fi
+    - run:
+        name: Run Fauxauth
+        command: npm run bin
+        background: true
+    - run:
+        name: Install E2E
+        command: |
+          if [[ $(node -v) =~ v6. ]]; \
+          then npm install --only=prod; \
+          else npm ci --only=prod; \
+          fi
+        working_directory: e2e
+    - run:
+        name: Test
+        command: npm run test
+        working_directory: e2e
+        environment:
+          JEST_JUNIT_OUTPUT_DIR: ./reports/jest
+    - store_test_results:
+        path: ./e2e/reports
+
+jobs:
+  dependencies:
+    <<: *dubnium
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - fauxauth-npm-{{ checksum "package-lock.json" }}
+      - run:
+          name: Info
+          command: 'echo "Node: $(node -v)" && echo "NPM: v$(npm -v)"'
+      - run:
+          name: Check Node
+          command: |
+            if [[ "$(node -v)" == "v$(cat .nvmrc)" ]]; \
+            then echo 'Node version OK'; \
+            else echo 'Node version mismatch' && exit 1; \
+            fi
+      - run:
+          name: Install
+          command: npm ci
+      - save_cache:
+          key: fauxauth-npm-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/.npm
+
+  lint:
+    <<: *dubnium
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - fauxauth-npm-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install
+          command: npm ci
+      - run:
+          name: Lint
+          command: npm run lint
+
+  test:
+    <<: *dubnium
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - fauxauth-npm-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install
+          command: npm ci
+      - run:
+          name: Install CodeClimate Reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+            ./cc-test-reporter before-build
+      - run:
+          name: Test
+          command: npm run test:report
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/jest
+      - run:
+          name: Use CodeClimate Reporter
+          command: ./cc-test-reporter after-build
+      - store_test_results:
+          path: ./reports
+
+  build:
+    <<: *dubnium
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - fauxauth-npm-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install
+          command: npm ci
+      - save_cache:
+          key: fauxauth-npm-{{ checksum "package-lock.json" }}
+          paths:
+            - "$HOME/.npm"
+      - attach_workspace:
+          at: .
+      - run:
+          name: Build
+          command: npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./lib
+
+  e2e-dubnium:
+    <<: *e2e
+    <<: *dubnium
+
+  e2e-carbon:
+    <<: *e2e
+    docker:
+      - image: circleci/node:8
+
+  e2e-boron:
+    <<: *e2e
+    docker:
+      - image: circleci/node:6
+
+  deploy:
+    <<: *dubnium
+    steps:
+      - checkout
+      - setup_remote_docker
+      - attach_workspace:
+          at: .
+      - run:
+          name: Deploy to NPM
+          command: |
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > "$HOME/.npmrc"
+            npm publish
+      - run:
+          name: Deploy to Docker Hub
+          command: ./deploy-docker.sh
+
+  smoke-test:
+    <<: *dubnium
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Install E2E
+          command: npm ci
+          working_directory: e2e
+      - run:
+          name: Smoke Test
+          command: ./smoke-test.sh
+          working_directory: e2e
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - dependencies:
+          <<: *any_branch
+      - lint:
+          <<: *any_branch
+          requires:
+            - dependencies
+      - test:
+          <<: *any_branch
+          requires:
+            - dependencies
+      - build:
+          <<: *any_branch
+          requires:
+            - dependencies
+      - e2e-dubnium:
+          <<: *any_branch
+          requires:
+            - lint
+            - test
+            - build
+      - e2e-carbon:
+          <<: *any_branch
+          requires:
+            - lint
+            - test
+            - build
+      - e2e-boron:
+          <<: *any_branch
+          requires:
+            - lint
+            - test
+            - build
+      - deploy:
+          <<: *release_tag
+          requires:
+            - e2e-boron
+            - e2e-carbon
+            - e2e-dubnium
+      - smoke-test:
+          <<: *release_tag
+          requires:
+            - deploy

@@ -5,11 +5,11 @@ services:
       args:
         - NODE_RELEASE=${NODE_RELEASE}
       context: .
-      labels:
-        - version=${TRAVIS_TAG}
     image: textbook/fauxauth
   e2e:
     build:
+      args:
+        - NODE_RELEASE=${NODE_RELEASE}
       context: e2e
     environment:
       - FAUXAUTH_URL=http://fauxauth
