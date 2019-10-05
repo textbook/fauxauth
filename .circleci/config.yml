@@ -11,6 +11,8 @@ any_branch: &any_branch
 
 release_tag: &release_tag
   filters:
+    branches:
+      only: master
     tags:
       only: /v\d+(\.\d+)*/
 
@@ -58,6 +60,10 @@ jobs:
       - restore_cache:
           keys:
             - fauxauth-{{ checksum "package-lock.json" }}
+      - run:
+          name: Info
+          command:
+            'echo "Node: $(node -v)" && echo "NPM: v$(npm -v)" && echo "Cache: $(npm config get cache)"'
       - run:
           name: Install
           command: npm ci
