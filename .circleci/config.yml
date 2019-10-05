@@ -23,7 +23,7 @@ e2e: &e2e
         at: .
     - restore_cache:
         keys:
-          - fauxauth-{{ checksum "package-lock.json" }}
+          - fauxauth-npm-{{ checksum "package-lock.json" }}
     - run:
         name: Install Fauxauth
         command: |
@@ -59,7 +59,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - fauxauth-{{ checksum "package-lock.json" }}
+            - fauxauth-npm-{{ checksum "package-lock.json" }}
       - run:
           name: Info
           command:
@@ -68,9 +68,9 @@ jobs:
           name: Install
           command: npm ci
       - save_cache:
-          key: fauxauth-{{ checksum "package-lock.json" }}
+          key: fauxauth-npm-{{ checksum "package-lock.json" }}
           paths:
-            - "$HOME/.npm"
+            - ~/.npm
 
   lint:
     <<: *dubnium
@@ -78,7 +78,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - fauxauth-{{ checksum "package-lock.json" }}
+            - fauxauth-npm-{{ checksum "package-lock.json" }}
       - run:
           name: Install
           command: npm ci
@@ -92,7 +92,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - fauxauth-{{ checksum "package-lock.json" }}
+            - fauxauth-npm-{{ checksum "package-lock.json" }}
       - run:
           name: Install
           command: npm ci
@@ -119,12 +119,12 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - fauxauth-{{ checksum "package-lock.json" }}
+            - fauxauth-npm-{{ checksum "package-lock.json" }}
       - run:
           name: Install
           command: npm ci
       - save_cache:
-          key: fauxauth-{{ checksum "package-lock.json" }}
+          key: fauxauth-npm-{{ checksum "package-lock.json" }}
           paths:
             - "$HOME/.npm"
       - attach_workspace:
