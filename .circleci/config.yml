@@ -8,11 +8,11 @@ any_branch: &any_branch
   filters:
     branches:
       only: /.*/
+    tags:
+      only: /v\d+(\.\d+)*/
 
 release_tag: &release_tag
   filters:
-    branches:
-      only: master
     tags:
       only: /v\d+(\.\d+)*/
 
