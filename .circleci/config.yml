@@ -62,8 +62,7 @@ jobs:
             - fauxauth-npm-{{ checksum "package-lock.json" }}
       - run:
           name: Info
-          command:
-            'echo "Node: $(node -v)" && echo "NPM: v$(npm -v)" && echo "Cache: $(npm config get cache)"'
+          command: 'echo "Node: $(node -v)" && echo "NPM: v$(npm -v)"'
       - run:
           name: Install
           command: npm ci
