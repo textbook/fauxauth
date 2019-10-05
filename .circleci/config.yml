@@ -2,7 +2,7 @@ version: 2
 
 dubnium: &dubnium
   docker:
-    - image: circleci/node:10.15.1
+    - image: circleci/node:10.16.3
 
 any_branch: &any_branch
   filters:
