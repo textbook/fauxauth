@@ -4,6 +4,8 @@ services:
     image: textbook/fauxauth:${CIRCLE_TAG}
   e2e:
     build:
+      args:
+        - NODE_RELEASE=${NODE_RELEASE}
       context: .
     environment:
       - FAUXAUTH_URL=http://fauxauth

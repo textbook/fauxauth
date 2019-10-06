@@ -1,5 +1,5 @@
 ARG NODE_RELEASE
-FROM node:${NODE_RELEASE:-dubnium}-alpine
+FROM node:${NODE_RELEASE}-alpine
 
 ARG NODE_RELEASE
 
