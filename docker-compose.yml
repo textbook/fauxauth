@@ -5,7 +5,7 @@ services:
       args:
         - NODE_RELEASE=${NODE_RELEASE}
       context: .
-    image: textbook/fauxauth
+    image: fauxauth_app:e2e-${NODE_RELEASE}
   e2e:
     build:
       args:
@@ -13,5 +13,6 @@ services:
       context: e2e
     environment:
       - FAUXAUTH_URL=http://fauxauth
+    image: fauxauth_e2e:e2e-${NODE_RELEASE}
     links:
       - fauxauth
