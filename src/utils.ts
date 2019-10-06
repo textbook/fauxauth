@@ -1,4 +1,4 @@
-import leftPad from "left-pad";
+import "./polyfill";
 
 export interface Configuration {
   accessToken: string | null;
@@ -17,7 +17,7 @@ const initialConfiguration: Partial<Configuration> = {
 
 export const generateHex = (length: number): string => {
   const value = Math.random() * (16 ** length - 1);
-  return leftPad(value.toString(16), length, "0");
+  return value.toString(16).padStart(length, "0");
 };
 
 export const generateConfiguration = (): Configuration => ({
