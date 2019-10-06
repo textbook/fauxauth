@@ -6,13 +6,13 @@ dubnium: &dubnium
 
 any_branch: &any_branch
   filters:
-    branches:
-      only: /.*/
     tags:
       only: /v\d+(\.\d+)*/
 
 release_tag: &release_tag
   filters:
+    branches:
+      ignore: /.*/
     tags:
       only: /v\d+(\.\d+)*/
 
