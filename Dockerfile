@@ -8,10 +8,7 @@ LABEL maintainer="Jonathan Sharpe"
 COPY /package.json .
 COPY /package-lock.json .
 
-RUN if [ ${NODE_RELEASE:-dubnium} = "boron" ]; \
-  then npm install --only=prod; \
-  else npm ci --only=prod; \
-  fi
+RUN npm ci --only=prod || npm install --only=prod
 
 COPY /lib /lib
 

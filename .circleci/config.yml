@@ -29,22 +29,14 @@ e2e: &e2e
         command: 'echo "Node: $(node -v)" && echo "NPM: v$(npm -v)"'
     - run:
         name: Install Fauxauth
-        command: |
-          if [[ $(node -v) =~ v6. ]]; \
-          then npm install --only=prod; \
-          else npm ci --only=prod; \
-          fi
+        command: npm ci --only=prod || npm install --only=prod
     - run:
         name: Run Fauxauth
         command: npm start
         background: true
     - run:
         name: Install E2E
-        command: |
-          if [[ $(node -v) =~ v6. ]]; \
-          then npm install --only=prod; \
-          else npm ci --only=prod; \
-          fi
+        command: npm ci --only=prod || npm install --only=prod
         working_directory: e2e
     - run:
         name: Test
