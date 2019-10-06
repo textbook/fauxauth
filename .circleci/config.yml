@@ -187,7 +187,7 @@ jobs:
           working_directory: e2e
       - run:
           name: Smoke Test
-          command: ./smoke-test.sh
+          command: './smoke-test.sh "$CIRCLE_TAG"'
           working_directory: e2e
 
 workflows:

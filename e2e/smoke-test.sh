@@ -1,6 +1,14 @@
 #! /usr/bin/env bash
 
-set -x -e
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+  echo "usage: ./smoke-test.sh <tag>"
+  echo "This will run the smoke tests for the specified release tag"
+  exit 1
+fi
+
+TAG=$1
 
 HERE="$(dirname "$0")"
 
@@ -11,7 +19,7 @@ pushd "$HERE"
     echo "Node version $NODE_RELEASE"
 
     npm ci
-    npm install "fauxauth@$CIRCLE_TAG" --no-save
+    npm install "fauxauth@$TAG" --no-save
     npm run e2e
-    NODE_RELEASE="$NODE_RELEASE" docker-compose run e2e run -d test
+    NODE_RELEASE="$NODE_RELEASE" TAG="$TAG" docker-compose run e2e run -d test
 popd
