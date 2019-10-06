@@ -36,7 +36,7 @@ e2e: &e2e
           fi
     - run:
         name: Run Fauxauth
-        command: npm run bin
+        command: npm start
         background: true
     - run:
         name: Install E2E

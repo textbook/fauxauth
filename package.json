@@ -23,10 +23,9 @@
     "e2e:all": "for NODE in boron carbon dubnium; do NODE_RELEASE=$NODE npm run e2e || exit 1; done",
     "prebuild": "rimraf lib/*",
     "build": "tsc",
-    "bin": "node $npm_package_bin_fauxauth",
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'tests/**/*.ts'",
     "ship": "npm run lint && npm run test && npm run build && npm run e2e:all",
-    "start": "node lib/server.js",
+    "start": "node $npm_package_bin_fauxauth",
     "test": "jest",
     "test:report": "npm run test -- --coverage --reporters=\"default\" --reporters=\"jest-junit\"",
     "test:watch": "npm run test -- --watch"
