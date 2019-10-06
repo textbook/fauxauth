@@ -1,15 +1,15 @@
 version: 2
 
-dubnium: &dubnium
+node: &node
   docker:
     - image: circleci/node:10.16.3
 
-any_branch: &any_branch
+all_builds: &all_builds
   filters:
     tags:
       only: /v\d+(\.\d+)*/
 
-release_tag: &release_tag
+release_only: &release_only
   filters:
     branches:
       ignore: /.*/
@@ -49,7 +49,7 @@ e2e: &e2e
 
 jobs:
   dependencies:
-    <<: *dubnium
+    <<: *node
     steps:
       - checkout
       - restore_cache:
@@ -74,7 +74,7 @@ jobs:
             - ~/.npm
 
   lint:
-    <<: *dubnium
+    <<: *node
     steps:
       - checkout
       - restore_cache:
@@ -88,7 +88,7 @@ jobs:
           command: npm run lint
 
   test:
-    <<: *dubnium
+    <<: *node
     steps:
       - checkout
       - restore_cache:
@@ -115,7 +115,7 @@ jobs:
           path: ./reports
 
   build:
-    <<: *dubnium
+    <<: *node
     steps:
       - checkout
       - restore_cache:
@@ -138,9 +138,14 @@ jobs:
           paths:
             - ./lib
 
+  e2e:
+    <<: *node
+    <<: *e2e
+
   e2e-dubnium:
     <<: *e2e
-    <<: *dubnium
+    docker:
+      - image: circleci/node:10
 
   e2e-carbon:
     <<: *e2e
@@ -153,7 +158,7 @@ jobs:
       - image: circleci/node:6
 
   deploy-docker:
-    <<: *dubnium
+    <<: *node
     steps:
       - checkout
       - setup_remote_docker
@@ -164,7 +169,7 @@ jobs:
           command: ./deploy-docker.sh
 
   deploy-npm:
-    <<: *dubnium
+    <<: *node
     steps:
       - checkout
       - attach_workspace:
@@ -176,7 +181,7 @@ jobs:
             npm publish
 
   smoke-test:
-    <<: *dubnium
+    <<: *node
     steps:
       - checkout
       - setup_remote_docker
@@ -194,51 +199,55 @@ workflows:
   build_and_test:
     jobs:
       - dependencies:
-          <<: *any_branch
+          <<: *all_builds
       - lint:
-          <<: *any_branch
+          <<: *all_builds
           requires:
             - dependencies
       - test:
-          <<: *any_branch
+          <<: *all_builds
           requires:
             - dependencies
       - build:
-          <<: *any_branch
+          <<: *all_builds
           requires:
             - dependencies
+      - e2e:
+          <<: *all_builds
+          requires:
+            - build
       - e2e-dubnium:
-          <<: *any_branch
+          <<: *all_builds
           requires:
             - lint
             - test
-            - build
+            - e2e
       - e2e-carbon:
-          <<: *any_branch
+          <<: *all_builds
           requires:
             - lint
             - test
-            - build
+            - e2e
       - e2e-boron:
-          <<: *any_branch
+          <<: *all_builds
           requires:
             - lint
             - test
-            - build
+            - e2e
       - deploy-docker:
-          <<: *release_tag
+          <<: *release_only
           requires:
             - e2e-boron
             - e2e-carbon
             - e2e-dubnium
       - deploy-npm:
-          <<: *release_tag
+          <<: *release_only
           requires:
             - e2e-boron
             - e2e-carbon
             - e2e-dubnium
       - smoke-test:
-          <<: *release_tag
+          <<: *release_only
           requires:
             - deploy-docker
             - deploy-npm
