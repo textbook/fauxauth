@@ -1,5 +1,3 @@
-import "./polyfill";
-
 export interface Configuration {
   accessToken: string | null;
   callbackUrl: string;

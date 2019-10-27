@@ -2,7 +2,7 @@ version: 2
 
 node: &node
   docker:
-    - image: circleci/node:10.16.3
+    - image: circleci/node:12.13.0
 
 all_builds: &all_builds
   filters:
@@ -29,14 +29,14 @@ e2e: &e2e
         command: 'echo "Node: $(node -v)" && echo "NPM: v$(npm -v)"'
     - run:
         name: Install Fauxauth
-        command: npm ci --only=prod || npm install --only=prod
+        command: npm ci --only=prod
     - run:
         name: Run Fauxauth
         command: npm start
         background: true
     - run:
         name: Install E2E
-        command: npm ci --only=prod || npm install --only=prod
+        command: npm ci --only=prod
         working_directory: e2e
     - run:
         name: Test
@@ -138,6 +138,11 @@ jobs:
     <<: *node
     <<: *e2e
 
+  e2e-erbium:
+    <<: *e2e
+    docker:
+      - image: circleci/node:12
+
   e2e-dubnium:
     <<: *e2e
     docker:
@@ -147,11 +152,6 @@ jobs:
     <<: *e2e
     docker:
       - image: circleci/node:8
-
-  e2e-boron:
-    <<: *e2e
-    docker:
-      - image: circleci/node:6
 
   deploy-docker:
     <<: *node
@@ -212,6 +212,12 @@ workflows:
           <<: *all_builds
           requires:
             - build
+      - e2e-erbium:
+          <<: *all_builds
+          requires:
+            - lint
+            - test
+            - e2e
       - e2e-dubnium:
           <<: *all_builds
           requires:
@@ -224,24 +230,18 @@ workflows:
             - lint
             - test
             - e2e
-      - e2e-boron:
-          <<: *all_builds
-          requires:
-            - lint
-            - test
-            - e2e
       - deploy-docker:
           <<: *release_only
           requires:
-            - e2e-boron
             - e2e-carbon
             - e2e-dubnium
+            - e2e-erbium
       - deploy-npm:
           <<: *release_only
           requires:
-            - e2e-boron
             - e2e-carbon
             - e2e-dubnium
+            - e2e-erbium
       - smoke-test:
           <<: *release_only
           requires:

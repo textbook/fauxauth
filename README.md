@@ -62,9 +62,9 @@ flow, as documented [here][4].
 ### Compatibility
 
 The compiled version of `fauxauth`, as released to NPM, is tested against the
-latest versions of three Node LTS releases: Boron (6), Carbon (8) and Dubnium
-(10). Compilation is carried out using TypeScript in the Node version specified
-in `.nvmrc`.
+latest versions of three Node LTS releases: Carbon (8), Dubnium (10) and
+Erbium (12). Compilation is carried out using TypeScript in the Node version
+specified in `.nvmrc`.
 
 ### Configuration
 

@@ -19,10 +19,7 @@ describe("fauxauth", () => {
     })
       .then(res => {
         expect(res.statusCode).toBe(302);
-        const url = parse(res.headers.location, true);
-        const query = url.query;
-        delete url.query;
-        delete url.search;
+        const { query, search, ...url } = parse(res.headers.location, true);
         expect(format(url)).toBe("http://example.org/");
         expect(query.state).toBe(state);
         expect(query.code).toMatch(/[0-9a-f]{20}/);

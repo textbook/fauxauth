@@ -20,7 +20,7 @@
     "pree2e": "docker-compose build",
     "e2e": "docker-compose run e2e run -d test || (npm run poste2e && exit 1)",
     "poste2e": "docker-compose down",
-    "e2e:all": "for NODE in boron carbon \"$(cat .nvmrc)\"; do NODE_RELEASE=$NODE npm run e2e || exit 1; done",
+    "e2e:all": "for NODE in carbon dubnium \"$(cat .nvmrc)\"; do NODE_RELEASE=$NODE npm run e2e; done",
     "prebuild": "rimraf lib/*",
     "build": "tsc",
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'tests/**/*.ts'",

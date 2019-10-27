@@ -8,7 +8,7 @@ LABEL maintainer="Jonathan Sharpe"
 COPY /package.json .
 COPY /package-lock.json .
 
-RUN npm ci --only=prod || npm install --only=prod
+RUN npm ci --only=prod
 
 COPY /lib /lib
 
