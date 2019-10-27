@@ -2,6 +2,9 @@
   "name": "fauxauth-e2e",
   "version": "1.0.0",
   "scripts": {
+    "predocker": "docker-compose build",
+    "docker": "docker-compose run e2e test || (npm run postdocker && exit 1)",
+    "postdocker": "docker-compose down",
     "e2e": "concurrently -k -s first -n \"app,e2e\" \"npm start\" \"npm test\"",
     "start": "fauxauth",
     "test": "jest --reporters=\"default\" --reporters=\"jest-junit\""

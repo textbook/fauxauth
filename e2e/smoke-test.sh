@@ -21,5 +21,5 @@ pushd "$HERE"
     npm ci
     npm install "fauxauth@$TAG" --no-save
     npm run e2e
-    NODE_RELEASE="$NODE_RELEASE" TAG="$TAG" docker-compose run e2e run -d test
+    NODE_RELEASE="$NODE_RELEASE" TAG="$TAG" npm run docker
 popd
