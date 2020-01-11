@@ -48,11 +48,11 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.0",
-    "@types/jest": "^24.0.15",
+    "@types/jest": "^24.0.25",
     "@types/morgan": "^1.7.35",
     "@types/supertest": "^2.0.7",
     "@types/xml2js": "^0.4.4",
-    "jest": "^24.8.0",
+    "jest": "^24.9.0",
     "jest-junit": "^10.0.0",
     "rimraf": "^3.0.0",
     "supertest": "^4.0.2",
