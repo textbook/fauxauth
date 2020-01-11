@@ -10,12 +10,13 @@
     "test": "jest --reporters=\"default\" --reporters=\"jest-junit\""
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.19.1",
     "concurrently": "^5.0.2",
     "jest": "^24.9.0",
     "jest-junit": "^10.0.0"
   },
   "jest": {
+    "testEnvironment": "node",
     "testMatch": [
       "**/*.e2e.js"
     ]
