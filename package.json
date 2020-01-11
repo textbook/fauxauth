@@ -41,6 +41,8 @@
   },
   "homepage": "https://github.com/textbook/fauxauth#readme",
   "dependencies": {
+    "@types/cors": "^2.8.6",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "jiff": "^0.7.3",
     "morgan": "^1.9.1",

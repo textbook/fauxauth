@@ -16,6 +16,12 @@ describe("authorize endpoint", () => {
     app = appFactory(defaultConfiguration);
   });
 
+  it("adds CORS headers", () => {
+    return request(app)
+      .get(endpoint)
+      .expect("access-control-allow-origin", "*");
+  });
+
   it("redirects you back to the default callback URL", () => {
     return request(app)
       .get(endpoint)
