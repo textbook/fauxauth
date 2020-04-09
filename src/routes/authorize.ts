@@ -4,11 +4,21 @@ import { format, parse } from "url";
 
 import { Configuration, generateHex } from "../utils";
 
+type AuthorizeQuery = {
+  client_id: string;
+  redirect_uri?: string;
+  state?: string;
+};
+
 export default (configuration: Configuration) => {
   const router = Router();
 
   router.get("/", (req: Request, res: Response) => {
-    const { state, redirect_uri: redirectUri, client_id: clientId } = req.query;
+    const {
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      state,
+    } = req.query as AuthorizeQuery;
     if (clientId !== configuration.clientId) {
       return res.sendStatus(404);
     }

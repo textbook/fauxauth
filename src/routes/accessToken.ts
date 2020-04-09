@@ -4,6 +4,12 @@ import { Builder } from "xml2js";
 
 import { Configuration, generateHex } from "../utils";
 
+type AccessTokenQuery = {
+  client_id: string;
+  client_secret: string;
+  code: string;
+};
+
 export default (configuration: Configuration) => {
   const builder = new Builder({
     headless: true,
@@ -16,7 +22,7 @@ export default (configuration: Configuration) => {
       client_id: clientId,
       client_secret: clientSecret,
       code,
-    } = req.query;
+    } = req.query as AccessTokenQuery;
 
     if (clientId !== configuration.clientId) {
       return res.sendStatus(404);
