@@ -10,5 +10,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
+  "files": [
+    "src/jiff.d.ts"
+  ],
   "include": ["src/**/*"]
 }
