@@ -39,6 +39,12 @@ flow, as documented [here][4].
           image: textbook/fauxauth
   ```
 
+  You should generally specify a tag to use, rather than use the default
+  `:latest`; the build process for release `vX.Y.Z` creates the tags `:vX`,
+  `:vX.Y` and `:vX.Y.Z` and publishes them all to Docker Hub, so you can pick
+  a level of stability you're comfortable with (e.g. `:v2` is equivalent to
+  NPM semver's `^2.0.0`, whereas `:v2.1` is equivalent to `~2.1.0`).
+
 - **Node Dependency**: alternatively, you may want to run `fauxauth` directly.
   You can install it from NPM as follows:
 
