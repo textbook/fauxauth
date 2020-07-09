@@ -8,17 +8,24 @@ describe("validateRedirect function", () => {
    * https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#redirect-urls
    */
 
+   [
+    "http://example.com/path",
+    "http://example.com/path/subdir/other",
+   ].forEach((validRedirect) => {
+    it(`should accept ${validRedirect}`, () => {
+      expect(validateRedirect(validRedirect, callback)).toBe(true);
+    });
+  });
+
   [
-    { redirect: "http://example.com/path", valid: true },
-    { redirect: "http://example.com/path/subdir/other", valid: true },
-    { redirect: "http://example.com/bar", valid: false },
-    { redirect: "http://example.com/", valid: false },
-    { redirect: "http://example.com:8080/path", valid: false },
-    { redirect: "http://oauth.example.com:8080/path", valid: false },
-    { redirect: "http://example.org", valid: false },
-  ].forEach(({ redirect, valid }) => {
-    it(`should ${valid ? "accept" : "reject"} ${redirect}`, () => {
-      expect(validateRedirect(redirect, callback)).toBe(valid);
+    "http://example.com/bar",
+    "http://example.com/",
+    "http://example.com:8080/path",
+    "http://oauth.example.com:8080/path",
+    "http://example.org",
+   ].forEach((invalidRedirect) => {
+    it(`should reject ${invalidRedirect}`, () => {
+      expect(validateRedirect(invalidRedirect, callback)).toBe(false);
     });
   });
 });
