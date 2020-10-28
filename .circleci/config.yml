@@ -2,7 +2,7 @@ version: 2
 
 node: &node
   docker:
-    - image: circleci/node:14.2.0
+    - image: circleci/node:14.14.0
 
 all_builds: &all_builds
   filters:

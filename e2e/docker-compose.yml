@@ -5,7 +5,7 @@ services:
   e2e:
     build:
       args:
-        - NODE_RELEASE=${NODE_RELEASE}
+        - NODE_RELEASE=14.14.0
       context: .
     environment:
       - FAUXAUTH_URL=http://fauxauth

@@ -9,10 +9,10 @@ services:
   e2e:
     build:
       args:
-        - NODE_RELEASE=${NODE_RELEASE}
+        - NODE_RELEASE=14.14.0
       context: e2e
     environment:
       - FAUXAUTH_URL=http://fauxauth
-    image: fauxauth_e2e:e2e-${NODE_RELEASE}
+    image: fauxauth_e2e:e2e-14.14.0
     links:
       - fauxauth
