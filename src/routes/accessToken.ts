@@ -22,7 +22,7 @@ export default (configuration: Configuration) => {
       client_id: clientId,
       client_secret: clientSecret,
       code,
-    } = req.query as AccessTokenQuery;
+    } = req.body as AccessTokenQuery;
 
     if (clientId !== configuration.clientId) {
       return res.sendStatus(404);

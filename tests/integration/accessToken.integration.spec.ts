@@ -33,7 +33,8 @@ describe("access_token endpoint", () => {
   it("returns an access token", () => {
     return request(app)
       .post(endpoint)
-      .query({
+      .type("form")
+      .send({
         client_id: defaultConfiguration.clientId,
         client_secret: defaultConfiguration.clientSecret,
         code,
@@ -49,7 +50,8 @@ describe("access_token endpoint", () => {
   it("rejects unrecognised codes", () => {
     return request(app)
       .post(endpoint)
-      .query({
+      .type("form")
+      .send({
         client_id: defaultConfiguration.clientId,
         client_secret: defaultConfiguration.clientSecret,
         code: "badcode",
@@ -64,7 +66,8 @@ describe("access_token endpoint", () => {
   it("rejects already-used codes", async () => {
     await request(app)
       .post(endpoint)
-      .query({
+      .type("form")
+      .send({
         client_id: defaultConfiguration.clientId,
         client_secret: defaultConfiguration.clientSecret,
         code,
@@ -77,7 +80,8 @@ describe("access_token endpoint", () => {
 
     await request(app)
       .post(endpoint)
-      .query({
+      .type("form")
+      .send({
         client_id: defaultConfiguration.clientId,
         client_secret: defaultConfiguration.clientSecret,
         code,
@@ -92,7 +96,8 @@ describe("access_token endpoint", () => {
   it("rejects unknown clients", () => {
     return request(app)
       .post(endpoint)
-      .query({
+      .type("form")
+      .send({
         client_id: "something",
       })
       .expect(404);
@@ -101,7 +106,8 @@ describe("access_token endpoint", () => {
   it("provides error details on invalid credentials", () => {
     return request(app)
       .post(endpoint)
-      .query({
+      .type("form")
+      .send({
         client_id: defaultConfiguration.clientId,
         client_secret: "everyoneknowsthis",
       })
@@ -116,7 +122,8 @@ describe("access_token endpoint", () => {
     it("handles application/json", () => {
       return request(app)
         .post(endpoint)
-        .query({
+        .type("form")
+        .send({
           client_id: defaultConfiguration.clientId,
           client_secret: defaultConfiguration.clientSecret,
           code,
@@ -132,7 +139,8 @@ describe("access_token endpoint", () => {
     it("handles application/xml", () => {
       return request(app)
         .post(endpoint)
-        .query({
+        .type("form")
+        .send({
           client_id: defaultConfiguration.clientId,
           client_secret: defaultConfiguration.clientSecret,
           code,

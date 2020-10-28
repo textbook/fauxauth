@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { format, parse } = require("url");
+const { format, parse, URLSearchParams } = require("url");
 
 const baseUrl = process.env.FAUXAUTH_URL || "http://localhost:3000";
 
@@ -28,12 +28,12 @@ describe("fauxauth", () => {
       .then(code =>
         makeRequest("/access_token", {
           method: "POST",
-          qs: {
+          body: new URLSearchParams({
             client_id: "1ae9b0ca17e754106b51",
             client_secret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
             code,
             state
-          }
+          }).toString()
         })
       )
       .then(res => {
@@ -62,11 +62,11 @@ describe("fauxauth", () => {
         expect(res.statusCode).toBe(200);
         return makeRequest("/access_token", {
           method: "POST",
-          qs: {
+          body: new URLSearchParams({
             client_id: "1ae9b0ca17e754106b51",
             client_secret: "notsosecret",
             code
-          }
+          }).toString()
         });
       })
       .then(res => {

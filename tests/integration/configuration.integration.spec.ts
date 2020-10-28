@@ -51,7 +51,8 @@ describe("_configure endpoint", () => {
 
     await request(app)
       .post("/access_token")
-      .query({
+      .type("form")
+      .send({
         client_id: initialConfig.clientId,
         client_secret: initialConfig.clientSecret,
         code,
@@ -88,7 +89,8 @@ describe("_configure endpoint", () => {
 
     return request(app)
       .post("/access_token")
-      .query({
+      .type("form")
+      .send({
         client_id: initialConfig.clientId,
         client_secret: initialConfig.clientSecret,
         code,
