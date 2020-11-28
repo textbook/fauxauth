@@ -11,7 +11,7 @@
     "selenium": "webdriver-manager start",
     "serve": "serve",
     "start": "fauxauth",
-    "pretest": "wait-on -l tcp:4444",
+    "pretest": "wait-on -t 30000 -l \"http-get://${SELENIUM_HOST:-localhost}:4444/wd/hub\"",
     "test": "jest --reporters=\"default\" --reporters=\"jest-junit\""
   },
   "dependencies": {

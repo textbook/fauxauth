@@ -9,5 +9,9 @@ services:
       context: .
     environment:
       - FAUXAUTH_URL=http://fauxauth
+      - SELENIUM_HOST=selenium
     links:
       - fauxauth
+      - selenium
+  selenium:
+    image: selenium/standalone-chrome

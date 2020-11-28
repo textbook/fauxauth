@@ -188,6 +188,8 @@ jobs:
           name: Smoke Test
           command: './smoke-test.sh "$CIRCLE_TAG"'
           working_directory: e2e
+          environment:
+            CHROMEDRIVER: false
 
 workflows:
   version: 2

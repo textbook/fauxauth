@@ -19,6 +19,7 @@ pushd "$HERE"
     echo "Node version $NODE_RELEASE"
 
     npm ci
+    npm run chromedriver -- --chrome="${CHROMEDRIVER:-true}"
     npm install "fauxauth@$TAG" --no-save
     npm run e2e
     NODE_RELEASE="$NODE_RELEASE" TAG="$TAG" npm run docker
