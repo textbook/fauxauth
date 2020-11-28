@@ -38,6 +38,7 @@ e2e: &e2e
         name: Test
         command: npm run e2e
         environment:
+          CHROME_VERSION: $(google-chrome --version | awk '{print $3}')
           JEST_JUNIT_OUTPUT_DIR: ./reports/jest
     - store_test_results:
         path: ./e2e/reports
