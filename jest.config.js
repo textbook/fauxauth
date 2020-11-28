@@ -11,7 +11,7 @@ module.exports = {
   },
   moduleFileExtensions: ["js", "jsx", "ts", "tsx"],
   testEnvironment: "node",
-  testMatch: ["**/*.spec.ts"],
+  testPathIgnorePatterns: ["e2e/"],
   transform: {
     "^.+\\.(ts)$": "ts-jest"
   }

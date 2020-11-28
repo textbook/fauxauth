@@ -31,17 +31,12 @@ e2e: &e2e
         name: Install Fauxauth
         command: npm ci --only=prod
     - run:
-        name: Run Fauxauth
-        command: npm start
-        background: true
-    - run:
         name: Install E2E
         command: npm ci --only=prod
         working_directory: e2e
     - run:
         name: Test
-        command: npm run test
-        working_directory: e2e
+        command: npm run e2e
         environment:
           JEST_JUNIT_OUTPUT_DIR: ./reports/jest
     - store_test_results:
