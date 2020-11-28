@@ -21,7 +21,6 @@
     "e2e": "npm --prefix=e2e run e2e:dev",
     "prebuild": "rimraf lib/*",
     "build": "tsc",
-    "postbuild": "cp -r views/ ./lib/views/",
     "install:all": "npm ci && npm --prefix=e2e ci && npm --prefix=e2e run chromedriver",
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'tests/**/*.ts'",
     "ship": "npm run lint && npm run test && npm run build && npm run e2e",
