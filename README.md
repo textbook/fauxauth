@@ -155,7 +155,8 @@ in" as.
 
 Fork and clone the repository to your local machine, then run `npm run
 install:all` to install the relevant dependencies in both the root directory
-and `e2e/`.
+and `e2e/`. If you need to install a specific version of Chromedriver, you can
+set the `CHROME_VERSION` environment variable while running `install:all`.
 
 To run the full automated validation suite (lint, build and test), run `npm
 run ship`.
