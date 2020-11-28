@@ -102,4 +102,13 @@ describe("authorize endpoint", () => {
       })
       .expect(404);
   });
+
+  it("uses a token map if provided", () => {
+    const tokenMap = { role: "tokenforthatrole" };
+    return request(appFactory({ ...defaultConfiguration, tokenMap }))
+      .get(endpoint)
+      .query({ client_id: defaultConfiguration.clientId })
+      .expect(200)
+      .expect("Content-Type", /html/);
+  });
 });

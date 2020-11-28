@@ -4,6 +4,7 @@ export interface Configuration {
   clientId: string;
   clientSecret: string;
   codes: string[];
+  tokenMap?: { [role: string]: string };
 }
 
 const initialConfiguration: Partial<Configuration> = {

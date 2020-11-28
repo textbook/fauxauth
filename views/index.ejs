@@ -1,0 +1,24 @@
+<form action="" id="root-form">
+    <label for="role-select">
+        Select token
+        <select id="role-select">
+            <% roles.forEach(function (role) { %>
+                <%- `<option value="${role}">${role}</option>` %>
+            <% }); %>
+        </select>
+    </label>
+    <button id="submit-button" type="submit">Authenticate</button>
+</form>
+
+<script>
+  var redirectUrl = "<%= redirectUrl %>";
+  window.addEventListener("load", function () {
+    document.getElementById("root-form").onsubmit = function () {
+      window.location = redirectUrl.replace(
+        /code=[a-z0-9]{20}/i,
+        `code=${document.getElementById("role-select").value}`
+      );
+      return false;
+    };
+  });
+</script>

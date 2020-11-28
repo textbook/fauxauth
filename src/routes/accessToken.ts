@@ -34,6 +34,11 @@ export default (configuration: Configuration) => {
 
     if (clientSecret !== configuration.clientSecret) {
       payload = { error: "incorrect_client_credentials" };
+    } else if (configuration.tokenMap && configuration.tokenMap[code]) {
+      payload = {
+        access_token: configuration.tokenMap[code],
+        token_type: "bearer",
+      };
     } else if (configuration.codes.indexOf(code) === -1) {
       payload = { error: "bad_verification_code" };
     } else {

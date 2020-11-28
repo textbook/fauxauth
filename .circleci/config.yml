@@ -2,7 +2,7 @@ version: 2
 
 node: &node
   docker:
-    - image: circleci/node:14.14.0
+    - image: circleci/node:14.14.0-browsers
 
 all_builds: &all_builds
   filters:
@@ -136,17 +136,17 @@ jobs:
   e2e-fermium:
     <<: *e2e
     docker:
-      - image: circleci/node:14
+      - image: circleci/node:14-browsers
 
   e2e-erbium:
     <<: *e2e
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:12-browsers
 
   e2e-dubnium:
     <<: *e2e
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:10-browsers
 
   deploy-docker:
     <<: *node

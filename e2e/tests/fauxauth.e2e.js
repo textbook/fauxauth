@@ -1,12 +1,33 @@
 const axios = require("axios");
 const { format, parse, URLSearchParams } = require("url");
+const { remote } = require("webdriverio");
 
 const baseUrl = process.env.FAUXAUTH_URL || "http://localhost:3000";
 
+const webdriverConfig = {
+  baseUrl,
+  capabilities: { browserName: "chrome" },
+  hostname: process.env.SELENIUM_HOST || "localhost",
+  logLevel: "warn",
+  path: "/wd/hub",
+};
+
 describe("fauxauth", () => {
+  let browser;
+
+  beforeAll(async () => {
+    browser = await remote(webdriverConfig);
+  });
+
   beforeEach(async () => {
     const { statusCode } = await makeRequest("/_configuration", { method: "DELETE" });
     expect(statusCode).toBe(204);
+  });
+
+  afterAll(async () => {
+    if (browser) {
+      await browser.deleteSession();
+    }
   });
 
   it("works with default configuration", async () => {
@@ -63,6 +84,47 @@ describe("fauxauth", () => {
     });
     expect(res.statusCode).toBe(200);
     expect(res.body).toContain(`access_token=${token}`);
+  });
+
+  it("works with a token map", async () => {
+    let res = await makeRequest("/_configuration", {
+      body: [
+        {
+          op: "add",
+          path: "/tokenMap",
+          value: {
+            "Administrator": "secretadmintoken",
+            "User": "secretusertoken",
+          },
+        },
+        { op: "replace", path: "/callbackUrl", value: "http://localhost:5000" },
+      ],
+      json: true,
+      method: "PATCH"
+    });
+    expect(res.statusCode).toBe(200);
+
+    await browser.url("/authorize?client_id=1ae9b0ca17e754106b51");
+    const select = await browser.$("#role-select");
+    await select.selectByVisibleText("User");
+    const button = await browser.$("#submit-button");
+    await button.click();
+
+    const url = await browser.getUrl();
+    const codePattern = /code=([^?]+)/i;
+    expect(url).toMatch(codePattern);
+    const [, code] = codePattern.exec(url);
+
+    res = await makeRequest("/access_token", {
+      method: "POST",
+      body: new URLSearchParams({
+        client_id: "1ae9b0ca17e754106b51",
+        client_secret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
+        code
+      }).toString()
+    });
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toContain("access_token=secretusertoken");
   });
 });
 

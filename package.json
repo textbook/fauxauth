@@ -13,13 +13,16 @@
     "fauxauth": "./lib/server.js"
   },
   "files": [
-    "/lib"
+    "/lib",
+    "/views"
   ],
   "description": "Helper application for testing OAuth clients",
   "scripts": {
     "e2e": "npm --prefix=e2e run e2e:dev",
     "prebuild": "rimraf lib/*",
     "build": "tsc",
+    "postbuild": "cp -r views/ ./lib/views/",
+    "install:all": "npm ci && npm --prefix=e2e ci",
     "lint": "tslint -c tslint.json 'src/**/*.ts' 'tests/**/*.ts'",
     "ship": "npm run lint && npm run test && npm run build && npm run e2e",
     "start": "node $npm_package_bin_fauxauth",
@@ -40,6 +43,7 @@
   "dependencies": {
     "@types/cors": "^2.8.6",
     "cors": "^2.8.5",
+    "ejs": "^3.1.5",
     "express": "^4.17.1",
     "jiff": "^0.7.3",
     "morgan": "^1.9.1",

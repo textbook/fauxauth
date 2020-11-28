@@ -118,6 +118,26 @@ describe("access_token endpoint", () => {
       });
   });
 
+  it("handles a token map", () => {
+    const role = "foo";
+    const token = "hello";
+    return request(appFactory({ ...defaultConfiguration, tokenMap: { [role]: token } }))
+      .post(endpoint)
+      .type("form")
+      .send({
+        client_id: defaultConfiguration.clientId,
+        client_secret: defaultConfiguration.clientSecret,
+        code: "foo",
+      })
+      .accept("json")
+      .expect(200)
+      .then((res) => {
+        expect(res.body.error).toBeUndefined();
+        expect(res.body.access_token).toBe("hello");
+        expect(res.body.token_type).toBe("bearer");
+      });
+  });
+
   describe("accept types", () => {
     it("handles application/json", () => {
       return request(app)

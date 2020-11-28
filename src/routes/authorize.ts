@@ -44,7 +44,16 @@ export default (configuration: Configuration) => {
       query.code = code;
     }
 
-    res.redirect(format({ pathname, query }));
+    const redirectUrl = format({ pathname, query });
+
+    if (configuration.tokenMap) {
+      res.render("index", {
+        redirectUrl,
+        roles: Object.keys(configuration.tokenMap),
+      });
+    } else {
+      res.redirect(redirectUrl);
+    }
   });
 
   return router;

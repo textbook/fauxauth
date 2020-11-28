@@ -16,6 +16,7 @@ ENV PORT=80
 RUN npm ci
 
 COPY ./lib ./lib
+COPY ./views ./views
 
 EXPOSE 80
 
