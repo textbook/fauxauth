@@ -2,7 +2,7 @@ import { Router } from "express";
 import qs from "querystring";
 import { Builder } from "xml2js";
 
-import { Configuration, generateHex } from "../utils";
+import { Configuration } from "../utils";
 
 type AccessTokenQuery = {
   client_id: string;
@@ -34,21 +34,12 @@ export default (configuration: Configuration) => {
 
     if (clientSecret !== configuration.clientSecret) {
       payload = { error: "incorrect_client_credentials" };
-    } else if (configuration.tokenMap && configuration.tokenMap[code]) {
-      payload = {
-        access_token: configuration.tokenMap[code],
-        token_type: "bearer",
-      };
-    } else if (configuration.codes.indexOf(code) === -1) {
-      payload = { error: "bad_verification_code" };
+    } else if (configuration.codes[code]) {
+      const token = configuration.codes[code];
+      delete configuration.codes[code];
+      payload = { access_token: token, token_type: "bearer" };
     } else {
-      configuration.codes = configuration.codes.filter(
-        (existingCode: string) => existingCode !== code,
-      );
-      payload = {
-        access_token: configuration.accessToken || generateHex(40),
-        token_type: "bearer",
-      };
+      payload = { error: "bad_verification_code" };
     }
 
     if (accept === "application/json") {

@@ -63,11 +63,10 @@ describe("fauxauth", () => {
       body: [
         {
           op: "add",
-          path: "/codes/-",
-          value: code
+          path: `/codes/${code}`,
+          value: token
         },
         { op: "replace", path: "/clientSecret", value: "notsosecret" },
-        { op: "add", path: "/accessToken", value: token }
       ],
       json: true,
       method: "PATCH"
@@ -111,7 +110,7 @@ describe("fauxauth", () => {
     await button.click();
 
     const url = await browser.getUrl();
-    const codePattern = /code=([^?]+)/i;
+    const codePattern = /code=([a-z0-9]{20})/i;
     expect(url).toMatch(codePattern);
     const [, code] = codePattern.exec(url);
 

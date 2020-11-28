@@ -44,10 +44,11 @@ describe("_configure endpoint", () => {
 
   it("allows adding codes directly", async () => {
     const code = "somenewcode";
+    const token = "andthetokenforit";
     await request(app)
       .patch(endpoint)
-      .send([{ op: "add", path: "/codes/-", value: code }])
-      .expect(200, { ...initialConfig, codes: [code] });
+      .send([{ op: "add", path: `/codes/${code}`, value: token }])
+      .expect(200, { ...initialConfig, codes: { [code]: token } });
 
     await request(app)
       .post("/access_token")
@@ -64,8 +65,8 @@ describe("_configure endpoint", () => {
     await request(app)
       .patch(endpoint)
       .send([
-        { op: "add", path: "/accessToken", value: "helloworld" },
-        { op: "add", path: "/codes/-", value: "foobar" },
+        { op: "replace", path: "/clientId", value: "helloworld" },
+        { op: "add", path: "/codes/foo", value: "bar" },
       ])
       .expect(200);
 
@@ -76,30 +77,6 @@ describe("_configure endpoint", () => {
     await request(app)
       .get(endpoint)
       .expect(200, generateConfiguration());
-  });
-
-  it("allows setting a specific access token", async () => {
-    const accessToken = "helloworld";
-    const code = "itsasecret";
-    initialConfig.codes.push(code);
-    await request(app)
-      .patch(endpoint)
-      .send([{ op: "add", path: "/accessToken", value: accessToken }])
-      .expect(200, { ...initialConfig, accessToken });
-
-    return request(app)
-      .post("/access_token")
-      .type("form")
-      .send({
-        client_id: initialConfig.clientId,
-        client_secret: initialConfig.clientSecret,
-        code,
-      })
-      .accept("json")
-      .expect(200)
-      .then((res) => {
-        expect(res.body.access_token).toBe(accessToken);
-      });
   });
 
   it("rejects invalid configuration changes", async () => {

@@ -38,22 +38,28 @@ export default (configuration: Configuration) => {
       }
     }
 
-    if (!query.error) {
-      const code = generateHex(20);
-      configuration.codes.push(code);
-      query.code = code;
+    if (query.error) {
+      return res.redirect(format({ pathname, query }));
     }
 
+    if (!configuration.tokenMap) {
+      const code = generateHex(20);
+      configuration.codes[code] = generateHex(40);
+      query.code = code;
+      return res.redirect(format({ pathname, query }));
+    }
+
+    query.code = "placeholder";
     const redirectUrl = format({ pathname, query });
 
-    if (configuration.tokenMap) {
-      res.render("index", {
-        redirectUrl,
-        roles: Object.keys(configuration.tokenMap),
-      });
-    } else {
-      res.redirect(redirectUrl);
-    }
+    const roles: { [role: string]: string } = {};
+    Object.keys(configuration.tokenMap).forEach((role) => {
+      const code = generateHex(20);
+      roles[role] = code;
+      configuration.codes[code] = configuration.tokenMap![role];
+    });
+
+    res.render("index", { redirectUrl, roles });
   });
 
   return router;

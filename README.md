@@ -91,11 +91,10 @@ You can also set the OAuth configuration; it is initially hardcoded as follows:
 
 | Name           | Description                                                | Initial value                                |
 | -------------- | ---------------------------------------------------------- | -------------------------------------------- |
-| `accessToken`  | The access token to return (randomly generated otherwise)  | `null`                                       |
 | `callbackUrl`  | The base URL to return or validate `redirect_uri` against  | `"http://example.org/"`                      |
 | `clientId`     | The client ID to be accepted by the `/authorize` endpoint  | `"1ae9b0ca17e754106b51"`                     |
 | `clientSecret` | The client secret required by the `/access_token` endpoint | `"3efb56fdbac1cb21f3d4fea9b70036e04a34d068"` |
-| `codes`        | The array of valid codes accepted by `/access_token`       | `[]`                                         |
+| `codes`        | The codes accepted by `/access_token` and their tokens     | `{}`                                         |
 | `tokenMap`     | A map from choices (e.g. roles) to a token for that choice | `undefined`                                  |
 
 You can update this configuration by sending a `PATCH` to the `/_configuration`
@@ -133,9 +132,9 @@ something like the following form will be rendered:
     <label for="role-select">
         Select token
         <select id="role-select">
-                <option value="Headteacher">Headteacher</option>
-                <option value="Teacher">Teacher</option>
-                <option value="Student">Student</option>
+            <option value="288e5e60aa9220000000">Headteacher</option>
+            <option value="c4f9e4bfffa600000000">Teacher</option>
+            <option value="76555f344527c0000000">Student</option>
         </select>
     </label>
     <button id="submit-button" type="submit">Authenticate</button>
@@ -144,11 +143,11 @@ something like the following form will be rendered:
 
 When the form is submitted, the location will be changed to the specified
 redirect URI but with the code replaced with the choice value (e.g.
-`http://example.org/?code=Teacher`). The correct request to the
-`/access_token` endpoint with that code will recover the token
+`http://example.org/?code=c4f9e4bfffa600000000`). The correct request to the
+`/access_token` endpoint with that code will recover the specified token,
 `1d4fdc5bb3aefa5a01dd`.
 
-For example, this allows you to configure tokens representing different roles
+For example, this allows you to configure tokens representing different roles,
 so that a developer or automated test can choose the appropriate role to "log
 in" as.
 
@@ -158,8 +157,8 @@ Fork and clone the repository to your local machine, then run `npm run
 install:all` to install the relevant dependencies in both the root directory
 and `e2e/`.
 
-To run the full automated checking suite (lint, build and test), run `npm run
-ship`.
+To run the full automated validation suite (lint, build and test), run `npm
+run ship`.
 
 [1]: https://docs.docker.com/compose/
 [2]: https://www.npmjs.com/package/concurrently
