@@ -181,15 +181,11 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: Install E2E
-          command: npm ci
-          working_directory: e2e
-      - run:
           name: Smoke Test
           command: './smoke-test.sh "$CIRCLE_TAG"'
           working_directory: e2e
           environment:
-            CHROMEDRIVER: false
+            CHROMEDRIVER: 'false'
 
 workflows:
   version: 2
