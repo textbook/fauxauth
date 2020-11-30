@@ -6,10 +6,9 @@
     "predocker": "docker-compose build",
     "docker": "docker-compose run e2e test || (npm run postdocker && exit 1)",
     "postdocker": "docker-compose down",
-    "e2e": "concurrently -k -s first -n \"app,e2e,srv,sln\" \"npm start\" \"npm test\" \"npm run serve\" \"npm run selenium\"",
-    "e2e:dev": "concurrently -k -s first -n \"app,e2e,srv,sln\" \"npm --prefix=.. start\" \"npm test\" \"npm run serve\" \"npm run selenium\"",
+    "e2e": "concurrently -k -s first -n \"app,e2e,sln\" \"npm start\" \"npm test\" \"npm run selenium\"",
+    "e2e:dev": "concurrently -k -s first -n \"app,e2e,sln\" \"npm --prefix=.. start\" \"npm test\" \"npm run selenium\"",
     "selenium": "webdriver-manager start",
-    "serve": "serve",
     "start": "fauxauth",
     "pretest": "wait-on -t 30000 -l \"http-get://${SELENIUM_HOST:-localhost}:4444/wd/hub\"",
     "test": "jest --reporters=\"default\" --reporters=\"jest-junit\""
@@ -20,7 +19,6 @@
     "express": "^4.17.1",
     "jest": "^26.6.3",
     "jest-junit": "^12.0.0",
-    "serve": "^11.3.2",
     "wait-on": "^5.2.0",
     "webdriver-manager": "^12.1.7",
     "webdriverio": "^6.10.2"

@@ -96,7 +96,6 @@ describe("fauxauth", () => {
             "User": "secretusertoken",
           },
         },
-        { op: "replace", path: "/callbackUrl", value: "http://localhost:5000" },
       ],
       json: true,
       method: "PATCH"
