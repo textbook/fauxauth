@@ -103,12 +103,36 @@ describe("authorize endpoint", () => {
       .expect(404);
   });
 
-  it("uses a token map if provided", () => {
+  describe("with token map", () => {
     const tokenMap = { role: "tokenforthatrole" };
-    return request(appFactory({ ...defaultConfiguration, tokenMap }))
-      .get(endpoint)
-      .query({ client_id: defaultConfiguration.clientId })
-      .expect(200)
-      .expect("Content-Type", /html/);
+
+    beforeEach(() => {
+      app = appFactory({ ...defaultConfiguration, tokenMap });
+    });
+
+    it("uses a token map if provided", () => {
+      return request(app)
+        .get(endpoint)
+        .query({ client_id: defaultConfiguration.clientId })
+        .expect(200)
+        .expect("Content-Type", /html/);
+    });
+
+    it("handles the post from the form", () => {
+      const code = "mycode";
+      const redirectUri = "/path/to";
+      const state = "state";
+
+      return request(app)
+        .post(endpoint)
+        .type("form")
+        .send({ redirect_uri: redirectUri, state, code })
+        .expect(302)
+        .then((res) => {
+          const { query, pathname } = parse(res.get("Location"), true);
+          expect(pathname).toBe(redirectUri);
+          expect(query).toEqual({ code, state });
+        });
+    });
   });
 });

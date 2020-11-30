@@ -128,15 +128,18 @@ token they want to use. For example, given the following `FAUXAUTH_CONFIG`:
 something like the following form will be rendered:
 
 ```html
-<form action="" id="root-form">
+<form action="/authorize" method="post" id="root-form">
     <label for="role-select">
         Select token
-        <select id="role-select">
+        <select id="role-select" name="code">
             <option value="288e5e60aa9220000000">Headteacher</option>
             <option value="c4f9e4bfffa600000000">Teacher</option>
             <option value="76555f344527c0000000">Student</option>
         </select>
     </label>
+
+    <!-- hidden inputs -->
+
     <button id="submit-button" type="submit">Authenticate</button>
 </form>
 ```

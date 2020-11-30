@@ -59,7 +59,12 @@ export default (configuration: Configuration) => {
       configuration.codes[code] = configuration.tokenMap![role];
     });
 
-    res.render("index", { redirectUrl, roles });
+    res.render("index", { query: { ...query, redirect_uri: redirectUrl }, roles });
+  });
+
+  router.post("/", (req, res) => {
+    const { redirect_uri: pathname, ...query } = req.body;
+    res.redirect(format({ pathname, query }));
   });
 
   return router;

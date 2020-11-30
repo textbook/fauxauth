@@ -1,24 +1,17 @@
-<form action="" id="root-form">
+<form action="/authorize" method="post" id="root-form">
     <label for="role-select">
         Select token
-        <select id="role-select">
+        <select id="role-select" name="code">
             <% Object.keys(roles).forEach(function (role) { %>
                 <%- `<option value="${roles[role]}">${role}</option>` %>
             <% }); %>
         </select>
     </label>
+
+    <% Object.keys(query).forEach(function (param) { %>
+        <%- `<input hidden name="${param}" type="text" value="${query[param]}" />` %>
+    <% }); %>
+
+
     <button id="submit-button" type="submit">Authenticate</button>
 </form>
-
-<script>
-  var redirectUrl = "<%= redirectUrl %>";
-  window.addEventListener("load", function () {
-    document.getElementById("root-form").onsubmit = function () {
-      window.location = redirectUrl.replace(
-        "code=placeholder",
-        `code=${document.getElementById("role-select").value}`
-      );
-      return false;
-    };
-  });
-</script>

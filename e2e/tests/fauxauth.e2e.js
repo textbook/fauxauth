@@ -102,14 +102,16 @@ describe("fauxauth", () => {
     });
     expect(res.statusCode).toBe(200);
 
-    await browser.url("/authorize?client_id=1ae9b0ca17e754106b51");
+    await browser.url("/authorize?client_id=1ae9b0ca17e754106b51&state=bananas&redirect_uri=http%3A%2F%2Fexample.org%2Ftest");
     const select = await browser.$("#role-select");
     await select.selectByVisibleText("User");
     const button = await browser.$("#submit-button");
     await button.click();
 
-    const url = await browser.getUrl();
     const codePattern = /code=([a-z0-9]{20})/i;
+    const url = await browser.getUrl();
+    expect(url).toMatch(/^http:\/\/example.org\/test/);
+    expect(url).toMatch(/state=bananas/);
     expect(url).toMatch(codePattern);
     const [, code] = codePattern.exec(url);
 
