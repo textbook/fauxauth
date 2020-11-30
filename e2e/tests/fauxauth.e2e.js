@@ -21,7 +21,9 @@ describe("fauxauth", () => {
 
   beforeEach(async () => {
     const { statusCode } = await makeRequest("/_configuration", { method: "DELETE" });
-    expect(statusCode).toBe(204);
+    if (statusCode !== 204) {
+      throw new Error("failed to reset configuration");
+    }
   });
 
   afterAll(async () => {
@@ -35,7 +37,7 @@ describe("fauxauth", () => {
 
     let res = await makeRequest("/authorize", {
       followRedirect: false,
-      qs: { client_id: "1ae9b0ca17e754106b51", state }
+      qs: { client_id: "1ae9b0ca17e754106b51", state },
     });
     expect(res.statusCode).toBe(302);
     const { query, search, ...url } = parse(res.headers.location, true);
@@ -49,8 +51,8 @@ describe("fauxauth", () => {
         client_id: "1ae9b0ca17e754106b51",
         client_secret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
         code: query.code,
-        state
-      }).toString()
+        state,
+      }).toString(),
     });
     expect(res.statusCode).toBe(200);
     expect(res.body).toMatch(/access_token=[0-9a-f]{40}/);
@@ -64,12 +66,12 @@ describe("fauxauth", () => {
         {
           op: "add",
           path: `/codes/${code}`,
-          value: token
+          value: token,
         },
         { op: "replace", path: "/clientSecret", value: "notsosecret" },
       ],
       json: true,
-      method: "PATCH"
+      method: "PATCH",
     });
     expect(res.statusCode).toBe(200);
 
@@ -78,8 +80,8 @@ describe("fauxauth", () => {
       body: new URLSearchParams({
         client_id: "1ae9b0ca17e754106b51",
         client_secret: "notsosecret",
-        code
-      }).toString()
+        code,
+      }).toString(),
     });
     expect(res.statusCode).toBe(200);
     expect(res.body).toContain(`access_token=${token}`);
@@ -98,7 +100,7 @@ describe("fauxauth", () => {
         },
       ],
       json: true,
-      method: "PATCH"
+      method: "PATCH",
     });
     expect(res.statusCode).toBe(200);
 
@@ -120,8 +122,8 @@ describe("fauxauth", () => {
       body: new URLSearchParams({
         client_id: "1ae9b0ca17e754106b51",
         client_secret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
-        code
-      }).toString()
+        code,
+      }).toString(),
     });
     expect(res.statusCode).toBe(200);
     expect(res.body).toContain("access_token=secretusertoken");
@@ -135,11 +137,11 @@ const makeRequest = (url, options) => axios
     method: options.method,
     params: options.qs,
     maxRedirects: options.followRedirect !== false ? 5 : 0,
-    url
+    url,
   })
-  .catch(error => error.response)
+  .catch((error) => error.response)
   .then(({ data, headers, status }) => ({
     body: data,
     headers,
-    statusCode: status
+    statusCode: status,
   }));

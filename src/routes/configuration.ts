@@ -3,7 +3,7 @@ import jiff from "jiff";
 
 import { Configuration, generateConfiguration } from "../utils";
 
-export default (configuration: Configuration) => {
+export default (configuration: Configuration): Router => {
   const router = Router();
 
   router.get("/", (_: Request, res: Response) => {

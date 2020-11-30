@@ -6,13 +6,13 @@ module.exports = {
   coverageDirectory: "coverage",
   globals: {
     "ts-jest": {
-      tsConfig: "tsconfig.json"
-    }
+      tsConfig: "tsconfig.json",
+    },
   },
   moduleFileExtensions: ["js", "jsx", "ts", "tsx"],
   testEnvironment: "node",
   testPathIgnorePatterns: ["e2e/"],
   transform: {
-    "^.+\\.(ts)$": "ts-jest"
-  }
+    "^.+\\.(ts)$": "ts-jest",
+  },
 };

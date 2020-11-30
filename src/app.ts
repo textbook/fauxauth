@@ -1,5 +1,5 @@
 import cors from "cors";
-import express from "express";
+import express, { Application } from "express";
 import morgan from "morgan";
 import path from "path";
 
@@ -8,7 +8,7 @@ import authRouter from "./routes/authorize";
 import configRouter from "./routes/configuration";
 import { Configuration } from "./utils";
 
-export default (configuration: Configuration) => {
+export default (configuration: Configuration): Application => {
   const app = express();
 
   app.set("view engine", "ejs");

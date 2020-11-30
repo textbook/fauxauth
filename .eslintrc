@@ -1,0 +1,50 @@
+{
+  "env": {
+    "node": true
+  },
+  "extends": [
+    "@codeyourfuture/standard",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "overrides": [
+    {
+      "env": {
+        "node": true
+      },
+      "files": [
+        "**/*.js"
+      ],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    },
+    {
+      "extends": [
+        "plugin:jest/recommended"
+      ],
+      "files": [
+        "**/*.spec.ts",
+        "**/*.e2e.js"
+      ],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
+        "jest/expect-expect": "off"
+      }
+    }
+  ],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-non-null-assertion": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "ignoreRestSiblings": true
+      }
+    ],
+    "indent": [
+      "error",
+      2
+    ]
+  }
+}

@@ -10,7 +10,7 @@ type AccessTokenQuery = {
   code: string;
 };
 
-export default (configuration: Configuration) => {
+export default (configuration: Configuration): Router => {
   const builder = new Builder({
     headless: true,
     renderOpts: { pretty: false },

@@ -10,7 +10,7 @@ type AuthorizeQuery = {
   state?: string;
 };
 
-export default (configuration: Configuration) => {
+export default (configuration: Configuration): Router => {
   const router = Router();
 
   router.get("/", (req: Request, res: Response) => {
@@ -53,11 +53,11 @@ export default (configuration: Configuration) => {
     const redirectUrl = format({ pathname, query });
 
     const roles: { [role: string]: string } = {};
-    Object.keys(configuration.tokenMap).forEach((role) => {
+    for (const role of Object.keys(configuration.tokenMap)) {
       const code = generateHex(20);
       roles[role] = code;
-      configuration.codes[code] = configuration.tokenMap![role];
-    });
+      configuration.codes[code] = configuration.tokenMap[role];
+    }
 
     res.render("index", { query: { ...query, redirect_uri: redirectUrl }, roles });
   });
@@ -77,8 +77,10 @@ export const validateRedirect = (
   const redirect = parse(redirectUri);
   const callback = parse(callbackUrl);
   return (
-    redirect.host === callback.host &&
-    redirect.port === callback.port &&
-    redirect.path!.indexOf(callback.path!) === 0
+    redirect.host === callback.host
+    && redirect.port === callback.port
+    && typeof redirect.path === "string"
+    && typeof callback.path === "string"
+    && redirect.path.indexOf(callback.path) === 0
   );
 };
