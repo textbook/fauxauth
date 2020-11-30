@@ -2,8 +2,7 @@
 
 import http from "http";
 
-import appFactory from "./app";
-import { generateConfiguration } from "./utils";
+import appFactory, { generateConfiguration } from ".";
 
 const port = parseInt(process.env.PORT || "3000", 10);
 

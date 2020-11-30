@@ -4,8 +4,7 @@ import request from "supertest";
 import { parse } from "url";
 import { parseString } from "xml2js";
 
-import appFactory from "../../src/app";
-import { Configuration, generateConfiguration } from "../../src/utils";
+import appFactory, { Configuration, generateConfiguration } from "../../src";
 
 describe("access_token endpoint", () => {
 	let app: Application;

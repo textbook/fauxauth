@@ -65,6 +65,32 @@ flow, as documented [here][4].
   }
   ```
 
+### Roll your own
+
+_(New in v4.2)_
+
+You can also import the app factory and configuration generator, and create
+your own app:
+
+```js
+const { default: appFactory, generateConfiguration } = require("fauxauth");
+// or `import appFactory, { generateConfiguration } from "fauxauth";`
+
+const configuration = {
+	...generateConfiguration(),
+	redirectUrl: "http://localhost:3001",
+};
+
+const app = appFactory(configuration);
+
+app.listen(4200, () => {
+	console.log("I'm listening...");
+});
+```
+
+However, note that calling `DELETE /_configuration` (see below) will reset to
+the default configuration and ignore any overrides you made.
+
 ### Compatibility
 
 The compiled version of `fauxauth`, as released to NPM, is tested against the
@@ -109,7 +135,7 @@ above and whatever is provided via this environment variable).
 
 ### Token map
 
-_(New in v4)_
+_(New in v4.0)_
 
 If you set a token map, instead of immediately redirecting to the specified
 redirect URI, `fauxauth` will render a page where the user can select which

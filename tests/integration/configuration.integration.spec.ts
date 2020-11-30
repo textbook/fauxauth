@@ -1,8 +1,7 @@
 import { Application } from "express";
 import request from "supertest";
 
-import appFactory from "../../src/app";
-import { Configuration, generateConfiguration } from "../../src/utils";
+import appFactory, { Configuration, generateConfiguration } from "../../src";
 
 describe("_configure endpoint", () => {
 	const endpoint = "/_configuration";

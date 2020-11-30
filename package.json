@@ -12,6 +12,7 @@
   "bin": {
     "fauxauth": "./lib/server.js"
   },
+  "main": "lib/index.js",
   "files": [
     "/lib",
     "/views"
