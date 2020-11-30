@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "declaration": true,
     "esModuleInterop": true,
-    "target": "es6",
-    "strict": true,
+    "module": "commonjs",
     "moduleResolution": "node",
-    "sourceMap": false,
-    "outDir": "lib",
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "outDir": "lib",
+    "sourceMap": false,
+    "strict": true,
+    "target": "es6"
   },
   "files": [
     "src/jiff.d.ts"
