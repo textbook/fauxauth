@@ -12,6 +12,6 @@ const server = http.createServer(appFactory(generateConfiguration()));
 server.listen(port);
 
 server.on("listening", () => {
-  // tslint:disable-next-line:no-console
-  console.log(`listening on port ${port}`);
+	// tslint:disable-next-line:no-console
+	console.log(`listening on port ${port}`);
 });

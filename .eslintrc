@@ -34,6 +34,7 @@
     }
   ],
   "rules": {
+    "@typescript-eslint/indent": ["error", "tab"],
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-non-null-assertion": "error",
     "@typescript-eslint/no-unused-vars": [
@@ -41,10 +42,6 @@
       {
         "ignoreRestSiblings": true
       }
-    ],
-    "indent": [
-      "error",
-      2
     ]
   }
 }

@@ -2,17 +2,17 @@
 // https://jestjs.io/docs/en/configuration.html
 
 module.exports = {
-  clearMocks: false,
-  coverageDirectory: "coverage",
-  globals: {
-    "ts-jest": {
-      tsConfig: "tsconfig.json",
-    },
-  },
-  moduleFileExtensions: ["js", "jsx", "ts", "tsx"],
-  testEnvironment: "node",
-  testPathIgnorePatterns: ["e2e/"],
-  transform: {
-    "^.+\\.(ts)$": "ts-jest",
-  },
+	clearMocks: false,
+	coverageDirectory: "coverage",
+	globals: {
+		"ts-jest": {
+			tsConfig: "tsconfig.json",
+		},
+	},
+	moduleFileExtensions: ["js", "jsx", "ts", "tsx"],
+	testEnvironment: "node",
+	testPathIgnorePatterns: ["e2e/"],
+	transform: {
+		"^.+\\.(ts)$": "ts-jest",
+	},
 };
