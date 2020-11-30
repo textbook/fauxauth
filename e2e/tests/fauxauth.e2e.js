@@ -110,19 +110,21 @@ describe("fauxauth", () => {
 		const button = await browser.$("#submit-button");
 		await button.click();
 
-		const codePattern = /code=([a-z0-9]{20})/i;
 		const url = await browser.getUrl();
-		expect(url).toMatch(/^http:\/\/example.org\/test/);
-		expect(url).toMatch(/state=bananas/);
-		expect(url).toMatch(codePattern);
-		const [, code] = codePattern.exec(url);
+		const { host, pathname, query } = parse(url, true);
+		expect(host).toBe("example.org");
+		expect(pathname).toBe("/test");
+		expect(query).toEqual({
+			code: expect.stringMatching(/[a-z0-9]{20}/i),
+			state: "bananas",
+		});
 
 		res = await makeRequest("/access_token", {
 			method: "POST",
 			body: new URLSearchParams({
 				client_id: "1ae9b0ca17e754106b51",
 				client_secret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
-				code,
+				code: query.code,
 			}).toString(),
 		});
 		expect(res.statusCode).toBe(200);

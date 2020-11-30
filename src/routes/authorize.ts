@@ -49,9 +49,6 @@ export default (configuration: Configuration): Router => {
 			return res.redirect(format({ pathname, query }));
 		}
 
-		query.code = "placeholder";
-		const redirectUrl = format({ pathname, query });
-
 		const roles: { [role: string]: string } = {};
 		for (const role of Object.keys(configuration.tokenMap)) {
 			const code = generateHex(20);
@@ -59,7 +56,7 @@ export default (configuration: Configuration): Router => {
 			configuration.codes[code] = configuration.tokenMap[role];
 		}
 
-		res.render("index", { query: { ...query, redirect_uri: redirectUrl }, roles });
+		res.render("index", { query: { ...query, redirect_uri: pathname }, roles });
 	});
 
 	router.post("/", (req, res) => {
