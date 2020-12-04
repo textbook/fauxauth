@@ -98,8 +98,9 @@ latest versions of three Node LTS releases: Dubnium (10), Erbium (12) and
 Fermium (14). Compilation is carried out using TypeScript in the Node version
 specified in `.nvmrc`.
 
-### Configuration
+### Options
 
+#### PORT
 You can configure the port that the `fauxauth` server runs on by setting the
 `PORT` environment variable, e.g. using [`cross-env`][3] in your scripts:
 
@@ -112,6 +113,16 @@ You can configure the port that the `fauxauth` server runs on by setting the
     }
 }
 ```
+
+#### DEBUG
+
+_(New in v4.2.2)_
+
+You can configure debug logging using the `DEBUG` environment variable.
+`fauxauth` uses the standard [`debug`][6] package, so you can enable all logs
+by setting `DEBUG=fauxauth:*` or enable more specific namespaces as needed.
+
+#### Configuration
 
 You can also set the OAuth configuration; it is initially hardcoded as follows:
 
@@ -196,3 +207,4 @@ run ship`.
 [4]:
   https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#web-application-flow
 [5]: http://jsonpatch.com/
+[6]: https://www.npmjs.com/package/debug
