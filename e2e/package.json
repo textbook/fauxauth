@@ -21,7 +21,7 @@
     "jest-junit": "^12.0.0",
     "wait-on": "^5.2.1",
     "webdriver-manager": "^12.1.8",
-    "webdriverio": "^6.11.3"
+    "webdriverio": "^6.12.0"
   },
   "jest": {
     "testEnvironment": "node",
