@@ -55,6 +55,7 @@ jobs:
       - restore_cache:
           keys:
             - fauxauth-npm-{{ checksum "package-lock.json" }}
+            - fauxauth-npm-
       - run:
           name: Info
           command: 'echo "Node: $(node -v)" && echo "NPM: v$(npm -v)"'
