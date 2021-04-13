@@ -1,6 +1,6 @@
 ARG NODE_RELEASE
 
-FROM node:${NODE_RELEASE}-alpine
+FROM node:${NODE_RELEASE}-alpine3.13
 
 ARG NODE_RELEASE
 
