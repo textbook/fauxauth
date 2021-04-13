@@ -29,7 +29,15 @@
       ],
       "rules": {
         "@typescript-eslint/no-explicit-any": "off",
-        "jest/expect-expect": "off"
+        "jest/expect-expect": [
+          "error",
+          {
+            "assertFunctionNames": [
+              "expect",
+              "request.**.expect"
+            ]
+          }
+        ]
       }
     }
   ],
