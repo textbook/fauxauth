@@ -1,0 +1,23 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  target-branch: main
+  assignees:
+  - textbook
+- package-ecosystem: npm
+  directory: "/e2e"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  target-branch: main
+  assignees:
+  - textbook
+  versioning-strategy: increase
+  ignore:
+  - dependency-name: webdriverio
+    versions:
+    - 7.4.6
