@@ -21,4 +21,4 @@ docker build . \
   -t "$NAME:$MAJOR.$MINOR" \
   -t "$NAME:$CIRCLE_TAG"
 
-docker push textbook/fauxauth
+docker push "$NAME"
