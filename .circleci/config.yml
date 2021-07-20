@@ -2,7 +2,7 @@ version: 2
 
 node: &node
   docker:
-    - image: circleci/node:14.16.1-browsers
+    - image: circleci/node:14.17.3-browsers
 
 all_builds: &all_builds
   filters:

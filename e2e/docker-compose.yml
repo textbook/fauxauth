@@ -5,11 +5,12 @@ services:
   e2e:
     build:
       args:
-        - NODE_RELEASE=14.16.1
+        ALPINE_RELEASE: 3.14
+        NODE_RELEASE: 14.17.3
       context: .
     environment:
-      - FAUXAUTH_URL=http://fauxauth
-      - SELENIUM_HOST=selenium
+      FAUXAUTH_URL: http://fauxauth
+      SELENIUM_HOST: selenium
     links:
       - fauxauth
       - selenium

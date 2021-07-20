@@ -14,11 +14,12 @@ MINOR="$(echo $CIRCLE_TAG | cut -d. -f2)"
 NAME='textbook/fauxauth'
 
 docker build . \
-  --label="version=$CIRCLE_TAG" \
+  --label "version=$CIRCLE_TAG" \
+  --build-arg 'ALPINE_RELEASE=3.14' \
   --build-arg "NODE_RELEASE=$NODE_RELEASE" \
-  -t "$NAME" \
-  -t "$NAME:$MAJOR" \
-  -t "$NAME:$MAJOR.$MINOR" \
-  -t "$NAME:$CIRCLE_TAG"
+  --tag "$NAME" \
+  --tag "$NAME:$MAJOR" \
+  --tag "$NAME:$MAJOR.$MINOR" \
+  --tag "$NAME:$CIRCLE_TAG"
 
 docker push "$NAME"
