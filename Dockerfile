@@ -3,8 +3,6 @@ ARG NODE_RELEASE
 
 FROM node:${NODE_RELEASE}-alpine${ALPINE_RELEASE}
 
-ARG NODE_RELEASE
-
 WORKDIR /home/node
 
 LABEL maintainer="Jonathan Sharpe"
@@ -12,14 +10,14 @@ LABEL maintainer="Jonathan Sharpe"
 COPY ./package*.json ./
 
 ENV NODE_ENV=production
-ENV PORT=80
-
 RUN npm ci
 
 COPY ./lib ./lib
 COPY ./views ./views
 
-EXPOSE 80
+ENV PORT=80
+EXPOSE $PORT
 
-ENTRYPOINT [ "npm" ]
-CMD [ "start" ]
+USER node
+
+CMD [ "node", "/home/node/lib/server.js" ]
