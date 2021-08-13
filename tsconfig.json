@@ -2,6 +2,9 @@
   "compilerOptions": {
     "declaration": true,
     "esModuleInterop": true,
+    "lib": [
+      "es2018"
+    ],
     "module": "commonjs",
     "moduleResolution": "node",
     "noUnusedLocals": true,
@@ -9,10 +12,12 @@
     "outDir": "lib",
     "sourceMap": false,
     "strict": true,
-    "target": "es6"
+    "target": "es2018"
   },
   "files": [
     "src/jiff.d.ts"
   ],
-  "include": ["src/**/*"]
+  "include": [
+    "src/**/*"
+  ]
 }

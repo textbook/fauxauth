@@ -91,6 +91,6 @@ export const validateRedirect = (
 		&& redirect.port === callback.port
 		&& typeof redirect.path === "string"
 		&& typeof callback.path === "string"
-		&& redirect.path.indexOf(callback.path) === 0
+		&& redirect.path.startsWith(callback.path)
 	);
 };
