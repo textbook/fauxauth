@@ -1,7 +1,7 @@
 import debug from "debug";
 import { Request, Response, Router } from "express";
 import { ParsedUrlQueryInput } from "querystring";
-import { format, parse } from "url";
+import { format, URL } from "url";
 
 import { Configuration, generateHex } from "../utils";
 
@@ -84,13 +84,11 @@ export const validateRedirect = (
 	redirectUri: string,
 	callbackUrl: string,
 ): boolean => {
-	const redirect = parse(redirectUri);
-	const callback = parse(callbackUrl);
+	const redirect = new URL(redirectUri);
+	const callback = new URL(callbackUrl);
 	return (
 		redirect.host === callback.host
 		&& redirect.port === callback.port
-		&& typeof redirect.path === "string"
-		&& typeof callback.path === "string"
-		&& redirect.path.startsWith(callback.path)
+		&& redirect.pathname.startsWith(callback.pathname)
 	);
 };
