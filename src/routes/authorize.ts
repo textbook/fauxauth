@@ -88,6 +88,7 @@ export const validateRedirect = (
 	const callback = new URL(callbackUrl);
 	return (
 		redirect.host === callback.host
+		&& redirect.protocol == callback.protocol
 		&& redirect.port === callback.port
 		&& redirect.pathname.startsWith(callback.pathname)
 	);

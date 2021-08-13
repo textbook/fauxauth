@@ -23,6 +23,7 @@ describe("validateRedirect function", () => {
 		"http://example.com:8080/path",
 		"http://oauth.example.com:8080/path",
 		"http://example.org",
+		"https://example.com/path",
 	].forEach((invalidRedirect) => {
 		it(`should reject ${invalidRedirect}`, () => {
 			expect(validateRedirect(invalidRedirect, callback)).toBe(false);
