@@ -1,5 +1,5 @@
 import debug from "debug";
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import qs from "querystring";
 import { Builder } from "xml2js";
 
@@ -13,26 +13,36 @@ type AccessTokenQuery = {
 	code: string;
 };
 
+type Payload = {
+	error: string;
+} | {
+	access_token: string;
+	token_type: "bearer";
+};
+
 const builder = new Builder({
 	headless: true,
 	renderOpts: { pretty: false },
 });
 const router = Router();
 
-router.post("/", (req, res) => {
+router.post("/", (
+	req: Request<unknown, unknown, AccessTokenQuery>,
+	res: Response<Payload | string>,
+) => {
 	log("POST received %j", req.body);
 	const configuration = getAll();
 	const {
 		client_id: clientId,
 		client_secret: clientSecret,
 		code,
-	} = req.body as AccessTokenQuery;
+	} = req.body;
 
 	if (clientId !== configuration.clientId) {
 		return res.sendStatus(404);
 	}
 
-	let payload = {};
+	let payload: Payload;
 
 	if (clientSecret !== configuration.clientSecret) {
 		log("incorrect client secret: '%s' vs '%s'", clientSecret, configuration.clientSecret);

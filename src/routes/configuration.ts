@@ -1,25 +1,25 @@
 import { Request, Response, Router } from "express";
 import jiff from "jiff";
 
-import * as configuration from "../config";
+import { Configuration, getAll, reset, update } from "../config";
 
 const router = Router();
 
-router.get("/", (_: Request, res: Response) => {
-	res.send(configuration.getAll());
+router.get("/", (_: Request, res: Response<Configuration>) => {
+	res.send(getAll());
 });
 
-router.patch("/", (req: Request, res: Response) => {
+router.patch("/", (req: Request, res: Response<Configuration>) => {
 	try {
-		configuration.update(jiff.patch(req.body, configuration.getAll()));
-		res.send(configuration.getAll());
+		update(jiff.patch(req.body, getAll()));
+		res.send(getAll());
 	} catch (e) {
-		res.status(422).send(configuration.getAll());
+		res.status(422).send(getAll());
 	}
 });
 
 router.delete("/", (_: Request, res: Response) => {
-	configuration.reset();
+	reset();
 	res.sendStatus(204);
 });
 

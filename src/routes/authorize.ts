@@ -16,14 +16,17 @@ type AuthorizeQuery = {
 
 const router = Router();
 
-router.get("/", (req: Request, res: Response) => {
+router.get("/", (
+	req: Request<unknown, unknown, unknown, AuthorizeQuery>,
+	res: Response,
+) => {
 	log("GET received %j", req.query);
 	const configuration = getAll();
 	const {
 		client_id: clientId,
 		redirect_uri: redirectUri,
 		state,
-	} = req.query as AuthorizeQuery;
+	} = req.query;
 
 	if (clientId !== configuration.clientId) {
 		log("incorrect client ID: '%s' vs '%s'", clientId, configuration.clientId);
@@ -72,7 +75,10 @@ router.get("/", (req: Request, res: Response) => {
 	res.render("index", { query: { ...query, redirect_uri: pathname }, roles });
 });
 
-router.post("/", (req, res) => {
+router.post("/", (
+	req: Request<unknown, unknown, { [key: string]: string }>,
+	res: Response
+) => {
 	log("POST received %j", req.body);
 	const { redirect_uri: pathname, ...query } = req.body;
 	res.redirect(format({ pathname, query }));
