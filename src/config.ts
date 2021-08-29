@@ -18,8 +18,6 @@ const defaultConfiguration: Omit<Configuration, "codes"> = {
 	clientSecret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
 };
 
-export const get = <T extends keyof Configuration>(key: T): Configuration[T] => currentConfiguration[key];
-
 export const getAll = (): Configuration => currentConfiguration;
 
 export const initialise = (overrides?: Partial<Configuration>): void => {
