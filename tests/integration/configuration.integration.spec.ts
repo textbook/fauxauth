@@ -1,18 +1,21 @@
 import { Application } from "express";
 import request from "supertest";
 
-import appFactory, { Configuration, generateConfiguration } from "../../src";
+import appFactory, { Configuration } from "../../src";
 
 describe("_configure endpoint", () => {
 	const endpoint = "/_configuration";
-	const startingConfiguration = generateConfiguration();
+	const initialConfig: Configuration = {
+		callbackUrl: "http://example.org/",
+		clientId: "1ae9b0ca17e754106b51",
+		clientSecret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
+		codes: {},
+	};
 
 	let app: Application;
-	let initialConfig: Configuration;
 
 	beforeEach(() => {
-		initialConfig = generateConfiguration();
-		app = appFactory(initialConfig);
+		app = appFactory();
 	});
 
 	it("exposes current configuration", () => {
@@ -22,7 +25,7 @@ describe("_configure endpoint", () => {
 	});
 
 	it("allows overriding initial configuration", async () => {
-		const oldClientId = initialConfig.clientId;
+		const oldClientId = "1ae9b0ca17e754106b51";
 		const newClientId = "something-else";
 
 		await request(app)
@@ -33,7 +36,10 @@ describe("_configure endpoint", () => {
 		await request(app)
 			.patch(endpoint)
 			.send([{ op: "replace", path: "/clientId", value: newClientId }])
-			.expect(200, { ...initialConfig, clientId: newClientId });
+			.expect(200)
+			.then(({ body }) => {
+				expect(body).toMatchObject({ clientId: newClientId });
+			});
 
 		await request(app)
 			.get("/authorize")
@@ -47,7 +53,10 @@ describe("_configure endpoint", () => {
 		await request(app)
 			.patch(endpoint)
 			.send([{ op: "add", path: `/codes/${code}`, value: token }])
-			.expect(200, { ...initialConfig, codes: { [code]: token } });
+			.expect(200)
+			.then(({ body }) => {
+				expect(body).toMatchObject({ codes: { [code]: token } });
+			});
 
 		await request(app)
 			.post("/access_token")
@@ -75,7 +84,7 @@ describe("_configure endpoint", () => {
 
 		await request(app)
 			.get(endpoint)
-			.expect(200, generateConfiguration());
+			.expect(200, initialConfig);
 	});
 
 	it("rejects invalid configuration changes", async () => {
@@ -86,10 +95,30 @@ describe("_configure endpoint", () => {
 				{ op: "test", path: "/accessToken", value: "somethingelse" },
 				{ op: "add", path: "/callbackUrl", value: "http://failure.com/" },
 			])
-			.expect(422, startingConfiguration);
+			.expect(422, initialConfig);
 
 		return request(app)
 			.get(endpoint)
-			.expect(200, startingConfiguration);
+			.expect(200, initialConfig);
+	});
+
+	it("supports resetting to overridden configuration", async () => {
+		const overrides: Omit<Configuration, "codes"> = {
+			clientId: "bar",
+			clientSecret: "bar",
+			callbackUrl: "https://example.com",
+		};
+		const configuredApp = appFactory({ ...overrides });
+
+		await request(configuredApp)
+			.delete(endpoint)
+			.expect(204);
+
+		return request(configuredApp)
+			.get(endpoint)
+			.expect(200)
+			.then(({ body }) => {
+				expect(body).toMatchObject(overrides);
+			});
 	});
 });

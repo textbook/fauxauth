@@ -2,11 +2,11 @@
 
 import http from "http";
 
-import appFactory, { generateConfiguration } from ".";
+import appFactory from ".";
 
 const port = parseInt(process.env.PORT || "3000", 10);
 
-const server = http.createServer(appFactory(generateConfiguration()));
+const server = http.createServer(appFactory());
 
 server.listen(port);
 

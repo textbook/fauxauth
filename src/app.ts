@@ -3,13 +3,14 @@ import express, { Application } from "express";
 import morgan from "morgan";
 import path from "path";
 
+import { Configuration, initialise } from "./config";
 import tokenRouter from "./routes/accessToken";
 import authRouter from "./routes/authorize";
 import configRouter from "./routes/configuration";
-import { Configuration } from "./utils";
 
-export default (configuration: Configuration): Application => {
+export default (overrides?: Partial<Configuration>): Application => {
 	const app = express();
+	initialise(overrides);
 
 	app.set("view engine", "ejs");
 	app.set("views", path.join(__dirname, "..", "views"));
@@ -18,9 +19,9 @@ export default (configuration: Configuration): Application => {
 	app.use(express.urlencoded({ extended: false }));
 	app.use(morgan("dev"));
 
-	app.use("/authorize", authRouter(configuration));
-	app.use("/_configuration", configRouter(configuration));
-	app.use("/access_token", tokenRouter(configuration));
+	app.use("/authorize", authRouter);
+	app.use("/_configuration", configRouter);
+	app.use("/access_token", tokenRouter);
 
 	return app;
 };

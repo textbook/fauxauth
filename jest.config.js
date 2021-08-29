@@ -12,6 +12,7 @@ module.exports = {
 	moduleFileExtensions: ["js", "jsx", "ts", "tsx"],
 	testEnvironment: "node",
 	testPathIgnorePatterns: ["e2e/"],
+	testTimeout: 10_000,
 	transform: {
 		"^.+\\.(ts)$": "ts-jest",
 	},

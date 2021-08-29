@@ -49,6 +49,7 @@
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "jiff": "^0.7.3",
+    "lodash.clonedeep": "^4.5.0",
     "morgan": "^1.9.1",
     "xml2js": "^0.4.19"
   },
@@ -58,6 +59,7 @@
     "@types/debug": "^4.1.7",
     "@types/express": "^4.17.5",
     "@types/jest": "^27.0.1",
+    "@types/lodash.clonedeep": "^4.5.6",
     "@types/morgan": "^1.7.35",
     "@types/supertest": "^2.0.7",
     "@types/xml2js": "^0.4.4",

@@ -69,27 +69,18 @@ flow, as documented [here][4].
 
 _(New in v4.2)_
 
-You can also import the app factory and configuration generator, and create
-your own app:
+You can also import the app factory and create your own app:
 
 ```js
-const { default: appFactory, generateConfiguration } = require("fauxauth");
-// or `import appFactory, { generateConfiguration } from "fauxauth";`
+import appFactory from "fauxauth";
+// or `const { default: appFactory } = require("fauxauth");`
 
-const configuration = {
-	...generateConfiguration(),
-	redirectUrl: "http://localhost:3001",
-};
-
-const app = appFactory(configuration);
+const app = appFactory({ redirectUrl: "http://localhost:3001" });
 
 app.listen(4200, () => {
 	console.log("I'm listening...");
 });
 ```
-
-However, note that calling `DELETE /_configuration` (see below) will reset to
-the default configuration and ignore any overrides you made.
 
 ### Compatibility
 
@@ -136,13 +127,11 @@ You can also set the OAuth configuration; it is initially hardcoded as follows:
 
 You can update this configuration by sending a `PATCH` to the `/_configuration`
 endpoint, which accepts the changes as a [JSON patch][5] request. A `GET` to the
-same endpoint provides the current configuration. You can reset to the default
+same endpoint provides the current configuration. You can reset to the initial
 configuration using a `DELETE` request.
 
 Alternatively, provide a JSON string as the `FAUXAUTH_CONFIG` environment
-variable to override all or part of the initial configuration (**note** that a
-`DELETE` reset will return to the combination of the hardcoded configuration
-above and whatever is provided via this environment variable).
+variable to override all or part of the default configuration.
 
 ### Token map
 

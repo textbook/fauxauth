@@ -2,17 +2,21 @@ import { Application } from "express";
 import request from "supertest";
 import { format, parse } from "url";
 
-import appFactory, { Configuration, generateConfiguration } from "../../src";
+import appFactory, { Configuration } from "../../src";
 
 describe("authorize endpoint", () => {
 	const endpoint = "/authorize";
+	const defaultConfiguration: Configuration = {
+		callbackUrl: "http://example.org/",
+		clientId: "1ae9b0ca17e754106b51",
+		clientSecret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
+		codes: {},
+	};
 
 	let app: Application;
-	let defaultConfiguration: Configuration;
 
 	beforeEach(() => {
-		defaultConfiguration = generateConfiguration();
-		app = appFactory(defaultConfiguration);
+		app = appFactory();
 	});
 
 	it("adds CORS headers", () => {
