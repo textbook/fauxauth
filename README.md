@@ -130,8 +130,23 @@ endpoint, which accepts the changes as a [JSON patch][5] request. A `GET` to the
 same endpoint provides the current configuration. You can reset to the initial
 configuration using a `DELETE` request.
 
-Alternatively, provide a JSON string as the `FAUXAUTH_CONFIG` environment
-variable to override all or part of the default configuration.
+Alternatively, use the following methods to override all or part of the default
+configuration (in priority order, highest first):
+
+_(Options other than `FAUXAUTH_CONFIG` new in v5.0)_
+
+- CLI flags, e.g. `fauxauth --client-id=my-client-id`
+- A `fauxauth` key in your `package.json`:
+    ```json
+    {
+      ...
+      "fauxauth": {
+        "callbackUrl": "http://localhost:4321"
+      }
+    }
+    ```
+- Individual environment variables, e.g. `FAUXAUTH_CLIENT_SECRET=supersecret fauxauth`
+- A JSON string as the `FAUXAUTH_CONFIG` environment variable
 
 ### Token map
 

@@ -51,7 +51,8 @@
     "jiff": "^0.7.3",
     "lodash.clonedeep": "^4.5.0",
     "morgan": "^1.9.1",
-    "xml2js": "^0.4.19"
+    "xml2js": "^0.4.19",
+    "yargs": "^17.1.1"
   },
   "devDependencies": {
     "@codeyourfuture/eslint-config-standard": "^3.0.0",
@@ -63,6 +64,7 @@
     "@types/morgan": "^1.7.35",
     "@types/supertest": "^2.0.7",
     "@types/xml2js": "^0.4.4",
+    "@types/yargs": "^17.0.2",
     "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.3",
     "eslint": "^7.32.0",
