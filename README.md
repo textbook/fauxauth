@@ -85,7 +85,7 @@ app.listen(4200, () => {
 ### Compatibility
 
 The compiled version of `fauxauth`, as released to NPM, is tested against the
-latest versions of three Node LTS releases: Dubnium (10), Erbium (12) and
+latest versions of the active Node LTS releases, currently Erbium (12) and
 Fermium (14). Compilation is carried out using TypeScript in the Node version
 specified in `.nvmrc`.
 

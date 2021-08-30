@@ -149,11 +149,6 @@ jobs:
     docker:
       - image: circleci/node:12-browsers
 
-  e2e-dubnium:
-    <<: *e2e
-    docker:
-      - image: circleci/node:10-browsers
-
   deploy-docker:
     <<: *node
     steps:
@@ -223,22 +218,14 @@ workflows:
             - lint
             - test
             - e2e
-      - e2e-dubnium:
-          <<: *all_builds
-          requires:
-            - lint
-            - test
-            - e2e
       - deploy-docker:
           <<: *release_only
           requires:
-            - e2e-dubnium
             - e2e-erbium
             - e2e-fermium
       - deploy-npm:
           <<: *release_only
           requires:
-            - e2e-dubnium
             - e2e-erbium
             - e2e-fermium
       - smoke-test:
