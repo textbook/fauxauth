@@ -182,6 +182,9 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - restore_cache:
+          keys:
+            - fauxauth-npm-{{ checksum "package-lock.json" }}-{{ checksum "e2e/package-lock.json" }}
       - run:
           name: Smoke Test
           command: './smoke-test.sh "$CIRCLE_TAG"'
