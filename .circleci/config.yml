@@ -23,7 +23,7 @@ e2e: &e2e
         at: .
     - restore_cache:
         keys:
-          - fauxauth-npm-{{ checksum "package-lock.json" }}
+          - fauxauth-npm-{{ checksum "package-lock.json" }}-{{ checksum "e2e/package-lock.json" }}
     - run:
         name: Info
         command: 'echo "Node: $(node -v)" && echo "NPM: v$(npm -v)"'
@@ -32,7 +32,7 @@ e2e: &e2e
         command: npm ci --only=prod
     - run:
         name: Install E2E
-        command: npm ci --only=prod
+        command: npm ci
         working_directory: e2e
     - run:
         name: Install Selenium
@@ -54,6 +54,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
+            - fauxauth-npm-{{ checksum "package-lock.json" }}-{{ checksum "e2e/package-lock.json" }}
             - fauxauth-npm-{{ checksum "package-lock.json" }}
             - fauxauth-npm-
       - run:
@@ -69,8 +70,12 @@ jobs:
       - run:
           name: Install
           command: npm ci
+      - run:
+          name: Install E2E
+          command: npm ci
+          working_directory: e2e
       - save_cache:
-          key: fauxauth-npm-{{ checksum "package-lock.json" }}
+          key: fauxauth-npm-{{ checksum "package-lock.json" }}-{{ checksum "e2e/package-lock.json" }}
           paths:
             - ~/.npm
 
@@ -80,7 +85,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - fauxauth-npm-{{ checksum "package-lock.json" }}
+            - fauxauth-npm-{{ checksum "package-lock.json" }}-{{ checksum "e2e/package-lock.json" }}
       - run:
           name: Install
           command: npm ci
@@ -94,7 +99,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - fauxauth-npm-{{ checksum "package-lock.json" }}
+            - fauxauth-npm-{{ checksum "package-lock.json" }}-{{ checksum "e2e/package-lock.json" }}
       - run:
           name: Install
           command: npm ci
@@ -121,7 +126,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - fauxauth-npm-{{ checksum "package-lock.json" }}
+            - fauxauth-npm-{{ checksum "package-lock.json" }}-{{ checksum "e2e/package-lock.json" }}
       - run:
           name: Install
           command: npm ci
