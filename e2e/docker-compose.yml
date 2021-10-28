@@ -11,8 +11,9 @@ services:
     environment:
       FAUXAUTH_URL: http://fauxauth
       SELENIUM_HOST: selenium
+      SELENIUM_PATH: /
     links:
       - fauxauth
       - selenium
   selenium:
-    image: selenium/standalone-chrome:3
+    image: selenium/standalone-chrome:4

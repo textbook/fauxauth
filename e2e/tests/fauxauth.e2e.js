@@ -9,7 +9,7 @@ const webdriverConfig = {
 	capabilities: { browserName: "chrome" },
 	hostname: process.env.SELENIUM_HOST || "localhost",
 	logLevel: "warn",
-	path: "/wd/hub",
+	path: process.env.SELENIUM_PATH || "/wd/hub",
 };
 
 describe("fauxauth", () => {

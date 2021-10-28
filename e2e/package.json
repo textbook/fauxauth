@@ -10,7 +10,7 @@
     "e2e:dev": "concurrently -k -s first -n \"app,e2e,sln\" \"npm --prefix=.. start\" \"npm test\" \"npm run selenium\"",
     "selenium": "webdriver-manager start",
     "start": "fauxauth",
-    "pretest": "wait-on -t 30000 -l \"http-get://${SELENIUM_HOST:-localhost}:4444/wd/hub\"",
+    "pretest": "wait-on -t 30000 -l \"http-get://${SELENIUM_HOST:-localhost}:4444${SELENIUM_PATH:-/wd/hub}\"",
     "test": "jest --reporters=\"default\" --reporters=\"jest-junit\""
   },
   "dependencies": {
