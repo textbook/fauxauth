@@ -6,7 +6,7 @@ services:
     build:
       args:
         ALPINE_RELEASE: 3.14
-        NODE_RELEASE: 14.18.1
+        NODE_RELEASE: 16.13.0
       context: .
     environment:
       FAUXAUTH_URL: http://fauxauth
