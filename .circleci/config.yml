@@ -2,7 +2,7 @@ version: 2
 
 node: &node
   docker:
-    - image: circleci/node:14.18.1-browsers
+    - image: circleci/node:16.13.0-browsers
 
 all_builds: &all_builds
   filters:
@@ -144,6 +144,11 @@ jobs:
     <<: *node
     <<: *e2e
 
+  e2e-gallium:
+    <<: *e2e
+    docker:
+      - image: circleci/node:16-browsers
+
   e2e-fermium:
     <<: *e2e
     docker:
@@ -214,6 +219,12 @@ workflows:
           <<: *all_builds
           requires:
             - build
+      - e2e-gallium:
+          <<: *all_builds
+          requires:
+            - lint
+            - test
+            - e2e
       - e2e-fermium:
           <<: *all_builds
           requires:
@@ -231,11 +242,13 @@ workflows:
           requires:
             - e2e-erbium
             - e2e-fermium
+            - e2e-gallium
       - deploy-npm:
           <<: *release_only
           requires:
             - e2e-erbium
             - e2e-fermium
+            - e2e-gallium
       - smoke-test:
           <<: *release_only
           requires:
