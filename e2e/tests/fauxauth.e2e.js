@@ -141,7 +141,10 @@ const makeRequest = (url, options) => axios
 		maxRedirects: options.followRedirect !== false ? 5 : 0,
 		url,
 	})
-	.catch((error) => error.response)
+	.catch((error) => {
+		console.error(error);
+		return error.response;
+	})
 	.then(({ data, headers, status }) => ({
 		body: data,
 		headers,

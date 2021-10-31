@@ -9,13 +9,14 @@
     "e2e": "concurrently -k -s first -n \"app,e2e,sln\" \"npm start\" \"npm test\" \"npm run selenium\"",
     "e2e:dev": "concurrently -k -s first -n \"app,e2e,sln\" \"npm --prefix=.. start\" \"npm test\" \"npm run selenium\"",
     "selenium": "webdriver-manager start",
-    "start": "fauxauth",
+    "start": "cross-env DEBUG=fauxauth:* fauxauth",
     "pretest": "wait-on -t 30000 -l \"http-get://${SELENIUM_HOST:-localhost}:4444${SELENIUM_PATH:-/wd/hub}\"",
     "test": "jest --reporters=\"default\" --reporters=\"jest-junit\""
   },
   "dependencies": {
     "axios": "^0.24.0",
     "concurrently": "^6.3.0",
+    "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "jest": "^27.3.1",
     "jest-junit": "^13.0.0",

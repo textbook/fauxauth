@@ -39,6 +39,7 @@ router.post("/", (
 	} = req.body;
 
 	if (clientId !== configuration.clientId) {
+		log("incorrect client ID: '%s' vs '%s'", clientId, configuration.clientId);
 		return res.sendStatus(404);
 	}
 
