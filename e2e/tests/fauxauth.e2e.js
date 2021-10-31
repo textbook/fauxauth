@@ -142,8 +142,10 @@ const makeRequest = (url, options) => axios
 		url,
 	})
 	.catch((error) => {
-		console.error(error);
-		return error.response;
+		if (error.response) {
+			return error.response;
+		}
+		throw error;
 	})
 	.then(({ data, headers, status }) => ({
 		body: data,
