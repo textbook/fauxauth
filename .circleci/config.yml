@@ -1,8 +1,11 @@
-version: 2
+version: 2.1
+
+orbs:
+  browser-tools: circleci/browser-tools@1.2.3
 
 node: &node
   docker:
-    - image: circleci/node:14.18.1-browsers
+    - image: cimg/node:16.13.0-browsers
 
 all_builds: &all_builds
   filters:
@@ -18,6 +21,8 @@ release_only: &release_only
 
 e2e: &e2e
   steps:
+    - browser-tools/install-chrome
+    - browser-tools/install-chromedriver
     - checkout
     - attach_workspace:
         at: .
@@ -144,15 +149,20 @@ jobs:
     <<: *node
     <<: *e2e
 
+  e2e-gallium:
+    <<: *e2e
+    docker:
+      - image: cimg/node:16.13-browsers
+
   e2e-fermium:
     <<: *e2e
     docker:
-      - image: circleci/node:14-browsers
+      - image: cimg/node:14.18-browsers
 
   e2e-erbium:
     <<: *e2e
     docker:
-      - image: circleci/node:12-browsers
+      - image: cimg/node:12.22-browsers
 
   deploy-docker:
     <<: *node
@@ -214,6 +224,12 @@ workflows:
           <<: *all_builds
           requires:
             - build
+      - e2e-gallium:
+          <<: *all_builds
+          requires:
+            - lint
+            - test
+            - e2e
       - e2e-fermium:
           <<: *all_builds
           requires:
@@ -231,11 +247,13 @@ workflows:
           requires:
             - e2e-erbium
             - e2e-fermium
+            - e2e-gallium
       - deploy-npm:
           <<: *release_only
           requires:
             - e2e-erbium
             - e2e-fermium
+            - e2e-gallium
       - smoke-test:
           <<: *release_only
           requires:
