@@ -4,6 +4,7 @@ services:
     image: textbook/fauxauth:${TAG}
     environment:
       DEBUG: "fauxauth:*"
+      PORT: 3210
   e2e:
     build:
       args:
@@ -11,7 +12,7 @@ services:
         NODE_RELEASE: 16.13.0
       context: .
     environment:
-      FAUXAUTH_URL: http://fauxauth
+      FAUXAUTH_URL: http://fauxauth:3210
       SELENIUM_HOST: selenium
       SELENIUM_PATH: /
     links:
