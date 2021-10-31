@@ -22,4 +22,4 @@ docker build . \
   --tag "$NAME:$MAJOR.$MINOR" \
   --tag "$NAME:$CIRCLE_TAG"
 
-docker push "$NAME"
+docker push "$NAME" --all-tags
