@@ -190,6 +190,8 @@ jobs:
   smoke-test:
     <<: *node
     steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - checkout
       - setup_remote_docker
       - restore_cache:
