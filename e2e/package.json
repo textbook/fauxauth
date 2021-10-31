@@ -5,7 +5,7 @@
     "chromedriver": "webdriver-manager update --gecko=false --versions.chrome=${CHROME_VERSION:-latest}",
     "predocker": "docker-compose build",
     "docker": "docker-compose run e2e test || (npm run postdocker && exit 1)",
-    "postdocker": "docker-compose down",
+    "postdocker": "docker-compose logs fauxauth && docker-compose down",
     "e2e": "concurrently -k -s first -n \"app,e2e,sln\" \"npm start\" \"npm test\" \"npm run selenium\"",
     "e2e:dev": "concurrently -k -s first -n \"app,e2e,sln\" \"npm --prefix=.. start\" \"npm test\" \"npm run selenium\"",
     "selenium": "webdriver-manager start",
