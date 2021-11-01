@@ -3,8 +3,6 @@ ARG NODE_RELEASE
 
 FROM node:${NODE_RELEASE}-alpine${ALPINE_RELEASE}
 
-ARG NODE_RELEASE
-
 WORKDIR /home/node
 
 LABEL maintainer="Jonathan Sharpe"
@@ -20,6 +18,6 @@ COPY ./lib ./lib
 COPY ./views ./views
 
 EXPOSE 80
+USER node
 
-ENTRYPOINT [ "npm" ]
-CMD [ "start" ]
+CMD [ "node", "lib/server.js" ]
