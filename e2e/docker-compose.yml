@@ -9,12 +9,13 @@ services:
     build:
       args:
         ALPINE_RELEASE: 3.14
-        NODE_RELEASE: 16.13.0
+        NODE_RELEASE: ${NODE_RELEASE}
       context: .
     environment:
       FAUXAUTH_URL: http://fauxauth:3210
       SELENIUM_HOST: selenium
       SELENIUM_PATH: /
+    image: textbook/fauxauth-e2e
     links:
       - fauxauth
       - selenium

@@ -5,7 +5,7 @@ orbs:
 
 node: &node
   docker:
-    - image: cimg/node:16.13.0-browsers
+    - image: cimg/node:16.13.1-browsers
 
 all_builds: &all_builds
   filters:
