@@ -15,7 +15,7 @@ NAME='textbook/fauxauth'
 
 docker build . \
   --label "version=$CIRCLE_TAG" \
-  --build-arg 'ALPINE_RELEASE=3.14' \
+  --build-arg 'ALPINE_RELEASE=3.15' \
   --build-arg "NODE_RELEASE=$NODE_RELEASE" \
   --tag "$NAME" \
   --tag "$NAME:$MAJOR" \
