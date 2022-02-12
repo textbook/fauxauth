@@ -44,6 +44,7 @@
     "url": "https://github.com/textbook/fauxauth/issues"
   },
   "homepage": "https://github.com/textbook/fauxauth#readme",
+  "funding": "https://ko-fi.com/textbook",
   "dependencies": {
     "cors": "^2.8.5",
     "debug": "^4.3.3",
