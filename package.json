@@ -1,6 +1,6 @@
 {
   "name": "fauxauth",
-  "version": "5.0.13",
+  "version": "5.0.14",
   "keywords": [
     "express",
     "mock",
