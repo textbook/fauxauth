@@ -37,7 +37,9 @@
               "request.**.expect"
             ]
           }
-        ]
+        ],
+        "jest/no-commented-out-tests": "error",
+        "jest/no-disabled-tests": "error"
       }
     }
   ],
