@@ -47,14 +47,14 @@
   "funding": "https://ko-fi.com/textbook",
   "dependencies": {
     "cors": "^2.8.5",
-    "debug": "^4.3.3",
-    "ejs": "^3.1.5",
-    "express": "^4.17.1",
+    "debug": "^4.3.4",
+    "ejs": "^3.1.6",
+    "express": "^4.17.3",
     "jiff": "^0.7.3",
     "lodash.clonedeep": "^4.5.0",
-    "morgan": "^1.9.1",
-    "xml2js": "^0.4.19",
-    "yargs": "^17.2.1"
+    "morgan": "^1.10.0",
+    "xml2js": "^0.4.23",
+    "yargs": "^17.4.1"
   },
   "devDependencies": {
     "@codeyourfuture/eslint-config-standard": "^3.0.2",
