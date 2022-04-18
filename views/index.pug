@@ -1,0 +1,13 @@
+doctype html
+html(lang="en")
+  body
+  form(action="/authorize", method="post", id="root-form")
+    label(for="role-select")
+      | Select token
+      select(id="role-select", name="code")
+        each code, role in roles
+          option(value=code) #{role}
+    // hidden inputs
+    each value, name in query
+      input(hidden=true, name=name, type="text", value=value)
+    button(id="submit-button", type="submit") Authenticate
