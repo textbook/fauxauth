@@ -20,7 +20,7 @@
   ],
   "description": "Helper application for testing OAuth clients",
   "engines": {
-    "node": ">=12.9"
+    "node": ">=14"
   },
   "scripts": {
     "e2e": "npm --prefix=e2e run e2e:dev",

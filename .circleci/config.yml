@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  browser-tools: circleci/browser-tools@1.2.3
+  browser-tools: circleci/browser-tools@1.3.0
 
 node: &node
   docker:
@@ -159,11 +159,6 @@ jobs:
     docker:
       - image: cimg/node:14.19-browsers
 
-  e2e-erbium:
-    <<: *e2e
-    docker:
-      - image: cimg/node:12.22-browsers
-
   deploy-docker:
     <<: *node
     steps:
@@ -247,13 +242,11 @@ workflows:
       - deploy-docker:
           <<: *release_only
           requires:
-            - e2e-erbium
             - e2e-fermium
             - e2e-gallium
       - deploy-npm:
           <<: *release_only
           requires:
-            - e2e-erbium
             - e2e-fermium
             - e2e-gallium
       - smoke-test:
