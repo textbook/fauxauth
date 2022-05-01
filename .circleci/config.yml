@@ -233,12 +233,6 @@ workflows:
             - lint
             - test
             - e2e
-      - e2e-erbium:
-          <<: *all_builds
-          requires:
-            - lint
-            - test
-            - e2e
       - deploy-docker:
           <<: *release_only
           requires:
