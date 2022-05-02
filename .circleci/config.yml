@@ -163,7 +163,9 @@ jobs:
     <<: *node
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
+          version: 20.10.12
       - attach_workspace:
           at: .
       - run:
@@ -188,7 +190,9 @@ jobs:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
+          version: 20.10.12
       - restore_cache:
           keys:
             - fauxauth-npm-{{ checksum "package-lock.json" }}-{{ checksum "e2e/package-lock.json" }}
