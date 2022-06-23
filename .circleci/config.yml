@@ -30,6 +30,12 @@ e2e: &e2e
         keys:
           - fauxauth-npm-{{ checksum "package-lock.json" }}
     - run:
+        name: NPM 8
+        command: |
+          if [[ "$(npm -v | cut -d. -f1)" != "8" ]];
+          then npm install --global npm@8;
+          fi
+    - run:
         name: Info
         command: 'echo "Node: $(node -v)" && echo "NPM: v$(npm -v)"'
     - run:
