@@ -1,34 +1,38 @@
 {
-  "name": "fauxauth-e2e",
-  "version": "1.0.0",
+  "name": "e2e",
+  "version": "0.1.0",
+  "private": true,
+  "description": "E2E tests for fauxauth",
+  "main": "index.js",
+  "devDependencies": {
+    "axios": "^0.27.2",
+    "concurrently": "^7.2.2",
+    "cross-env": "^7.0.3",
+    "express": "^4.18.1",
+    "jest-junit": "^13.2.0",
+    "wait-on": "^6.0.1",
+    "webdriver-manager": "^12.1.8",
+    "webdriverio": "^7.20.5"
+  },
   "scripts": {
     "chromedriver": "webdriver-manager update --gecko=false --versions.chrome=${CHROME_VERSION:-latest}",
     "predocker": "docker-compose build",
     "docker": "docker-compose run e2e test || (npm run postdocker && exit 1)",
     "postdocker": "docker-compose logs fauxauth && docker-compose down",
     "e2e": "concurrently -k -s first -n \"app,e2e,sln\" \"npm start\" \"npm test\" \"npm run selenium\"",
-    "e2e:dev": "concurrently -k -s first -n \"app,e2e,sln\" \"npm --prefix=.. start\" \"npm test\" \"npm run selenium\"",
     "selenium": "webdriver-manager start",
     "start": "cross-env DEBUG=fauxauth:* fauxauth",
     "pretest": "wait-on -t 30000 -l \"http-get://${SELENIUM_HOST:-localhost}:4444${SELENIUM_PATH:-/wd/hub}\"",
     "test": "jest --reporters=\"default\" --reporters=\"jest-junit\""
   },
-  "dependencies": {
-    "axios": "^0.27.2",
-    "concurrently": "^7.2.2",
-    "cross-env": "^7.0.3",
-    "express": "^4.18.1",
-    "jest": "^28.1.1",
-    "jest-junit": "^13.2.0",
-    "wait-on": "^6.0.1",
-    "webdriver-manager": "^12.1.8",
-    "webdriverio": "^7.20.5"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/textbook/fauxauth.git"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "testMatch": [
-      "**/*.e2e.js"
-    ],
-    "testTimeout": 30000
-  }
+  "author": "Jonathan Sharpe <mail@jonrshar.pe>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/textbook/fauxauth/issues"
+  },
+  "homepage": "https://github.com/textbook/fauxauth#readme"
 }

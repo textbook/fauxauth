@@ -171,6 +171,7 @@ jobs:
       - run:
           name: Deploy to Docker Hub
           command: ./deploy-docker.sh
+          working_directory: bin
 
   deploy-npm:
     <<: *node
@@ -182,7 +183,7 @@ jobs:
           name: Deploy to NPM
           command: |
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > "$HOME/.npmrc"
-            npm publish
+            npm --workspace packages/fauxauth publish
 
   smoke-test:
     <<: *node
@@ -199,7 +200,7 @@ jobs:
       - run:
           name: Smoke Test
           command: './smoke-test.sh "$CIRCLE_TAG"'
-          working_directory: e2e
+          working_directory: bin
           environment:
             CHROMEDRIVER: 'false'
 
