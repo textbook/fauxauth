@@ -3,7 +3,7 @@
 
 module.exports = {
 	clearMocks: false,
-	coverageDirectory: "../../coverage",
+	coverageDirectory: "./coverage",
 	globals: {
 		"ts-jest": {
 			tsconfig: "tsconfig.json",

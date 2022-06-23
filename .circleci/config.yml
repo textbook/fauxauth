@@ -101,6 +101,7 @@ jobs:
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
             ./cc-test-reporter before-build
+          working_directory: packages/fauxauth
       - run:
           name: Test
           command: npm --workspace packages/fauxauth run test:report
@@ -109,6 +110,7 @@ jobs:
       - run:
           name: Use CodeClimate Reporter
           command: ./cc-test-reporter after-build
+          working_directory: packages/fauxauth
       - store_test_results:
           path: ./reports
 
