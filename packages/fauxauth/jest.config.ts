@@ -1,7 +1,6 @@
-// For a detailed explanation regarding each configuration property, visit:
-// https://jestjs.io/docs/en/configuration.html
+import { Config } from "@jest/types";
 
-module.exports = {
+const config: Config.InitialOptions = {
 	clearMocks: false,
 	coverageDirectory: "./coverage",
 	globals: {
@@ -10,6 +9,10 @@ module.exports = {
 		},
 	},
 	moduleFileExtensions: ["js", "jsx", "ts", "tsx"],
+	reporters: [
+		"default",
+		["jest-junit", { outputDirectory: "./reports/jest" }],
+	],
 	testEnvironment: "node",
 	testPathIgnorePatterns: ["e2e/"],
 	testTimeout: 10_000,
@@ -17,3 +20,5 @@ module.exports = {
 		"^.+\\.(ts)$": "ts-jest",
 	},
 };
+
+export default config;

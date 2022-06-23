@@ -40,9 +40,8 @@ e2e: &e2e
         command: npm run e2e
         environment:
           DEBUG: fauxauth:*
-          JEST_JUNIT_OUTPUT_DIR: ./reports/jest
     - store_test_results:
-        path: ./reports
+        path: ./packages/e2e/reports
 
 jobs:
   dependencies:
@@ -104,15 +103,13 @@ jobs:
           working_directory: packages/fauxauth
       - run:
           name: Test
-          command: npm --workspace packages/fauxauth run test:report
-          environment:
-            JEST_JUNIT_OUTPUT_DIR: ./reports/jest
+          command: npm --workspace packages/fauxauth run test:cover
       - run:
           name: Use CodeClimate Reporter
           command: ./cc-test-reporter after-build
           working_directory: packages/fauxauth
       - store_test_results:
-          path: ./reports
+          path: ./packages/fauxauth/reports
 
   build:
     <<: *node

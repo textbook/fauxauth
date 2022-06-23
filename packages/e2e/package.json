@@ -23,7 +23,7 @@
     "selenium": "webdriver-manager start",
     "start": "cross-env DEBUG=fauxauth:* fauxauth",
     "pretest": "wait-on -t 30000 -l \"http-get://${SELENIUM_HOST:-localhost}:4444${SELENIUM_PATH:-/wd/hub}\"",
-    "test": "jest --reporters=\"default\" --reporters=\"jest-junit\""
+    "test": "jest"
   },
   "repository": {
     "type": "git",
