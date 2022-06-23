@@ -28,21 +28,13 @@ e2e: &e2e
         at: .
     - restore_cache:
         keys:
-          - fauxauth-npm-{{ checksum "package-lock.json" }}-{{ checksum "e2e/package-lock.json" }}
+          - fauxauth-npm-{{ checksum "package-lock.json" }}
     - run:
         name: Info
         command: 'echo "Node: $(node -v)" && echo "NPM: v$(npm -v)"'
     - run:
         name: Install Fauxauth
-        command: npm ci --only=prod
-    - run:
-        name: Install E2E
         command: npm ci
-        working_directory: e2e
-    - run:
-        name: Install Selenium
-        command: npm run chromedriver -- --chrome=false
-        working_directory: e2e
     - run:
         name: Test
         command: npm run e2e
@@ -50,7 +42,7 @@ e2e: &e2e
           DEBUG: fauxauth:*
           JEST_JUNIT_OUTPUT_DIR: ./reports/jest
     - store_test_results:
-        path: ./e2e/reports
+        path: ./reports
 
 jobs:
   dependencies:
@@ -59,7 +51,6 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - fauxauth-npm-{{ checksum "package-lock.json" }}-{{ checksum "e2e/package-lock.json" }}
             - fauxauth-npm-{{ checksum "package-lock.json" }}
             - fauxauth-npm-
       - run:
@@ -68,19 +59,15 @@ jobs:
       - run:
           name: Check Node
           command: |
-            if [[ "$(node -v)" == "v$(cat .nvmrc)" ]]; \
-            then echo 'Node version OK'; \
-            else echo 'Node version mismatch' && exit 1; \
+            if [[ "$(node -v)" == "v$(cat .nvmrc)" ]];
+            then echo 'Node version OK';
+            else echo 'Node version mismatch' && exit 1;
             fi
       - run:
           name: Install
           command: npm ci
-      - run:
-          name: Install E2E
-          command: npm ci
-          working_directory: e2e
       - save_cache:
-          key: fauxauth-npm-{{ checksum "package-lock.json" }}-{{ checksum "e2e/package-lock.json" }}
+          key: fauxauth-npm-{{ checksum "package-lock.json" }}
           paths:
             - ~/.npm
 
@@ -90,7 +77,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - fauxauth-npm-{{ checksum "package-lock.json" }}-{{ checksum "e2e/package-lock.json" }}
+            - fauxauth-npm-{{ checksum "package-lock.json" }}
       - run:
           name: Install
           command: npm ci
@@ -104,7 +91,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - fauxauth-npm-{{ checksum "package-lock.json" }}-{{ checksum "e2e/package-lock.json" }}
+            - fauxauth-npm-{{ checksum "package-lock.json" }}
       - run:
           name: Install
           command: npm ci
@@ -116,7 +103,7 @@ jobs:
             ./cc-test-reporter before-build
       - run:
           name: Test
-          command: npm run test:report
+          command: npm --workspace packages/fauxauth run test:report
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/jest
       - run:
@@ -131,7 +118,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - fauxauth-npm-{{ checksum "package-lock.json" }}-{{ checksum "e2e/package-lock.json" }}
+            - fauxauth-npm-{{ checksum "package-lock.json" }}
       - run:
           name: Install
           command: npm ci
@@ -143,7 +130,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - ./lib
+            - ./packages/fauxauth/lib
 
   e2e:
     <<: *node
@@ -196,7 +183,7 @@ jobs:
           version: 20.10.12
       - restore_cache:
           keys:
-            - fauxauth-npm-{{ checksum "package-lock.json" }}-{{ checksum "e2e/package-lock.json" }}
+            - fauxauth-npm-{{ checksum "package-lock.json" }}
       - run:
           name: Smoke Test
           command: './smoke-test.sh "$CIRCLE_TAG"'
