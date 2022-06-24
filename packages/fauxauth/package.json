@@ -1,6 +1,6 @@
 {
   "name": "fauxauth",
-  "version": "6.0.3",
+  "version": "6.0.5",
   "description": "Helper application for testing OAuth clients",
   "bin": {
     "fauxauth": "./lib/server.js"
@@ -41,6 +41,7 @@
     "url": "https://github.com/textbook/fauxauth/issues"
   },
   "homepage": "https://github.com/textbook/fauxauth#readme",
+  "funding": "https://ko-fi.com/textbook",
   "dependencies": {
     "cors": "^2.8.5",
     "debug": "^4.3.4",

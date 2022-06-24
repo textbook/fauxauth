@@ -1,23 +1,7 @@
 {
   "name": "fauxauth",
   "version": "6.0.4",
-  "keywords": [
-    "express",
-    "mock",
-    "oauth",
-    "stub",
-    "test",
-    "testing"
-  ],
-  "bin": {
-    "fauxauth": "./lib/server.js"
-  },
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "files": [
-    "/lib",
-    "/packages/fauxauth/views"
-  ],
+  "private": true,
   "description": "Helper application for testing OAuth clients",
   "engines": {
     "node": ">=14"
