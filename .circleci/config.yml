@@ -22,7 +22,6 @@ release_only: &release_only
 e2e: &e2e
   steps:
     - browser-tools/install-chrome
-    - browser-tools/install-chromedriver
     - checkout
     - attach_workspace:
         at: .
