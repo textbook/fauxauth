@@ -6,7 +6,7 @@ const baseUrl = process.env.FAUXAUTH_URL || "http://localhost:3000";
 
 const webdriverConfig = {
 	baseUrl,
-	capabilities: { browserName: "chrome" },
+	capabilities: { browserName: process.env.BROWSER || "chrome" },
 	hostname: process.env.SELENIUM_HOST || "localhost",
 	logLevel: "warn",
 	path: process.env.SELENIUM_PATH || "/wd/hub",

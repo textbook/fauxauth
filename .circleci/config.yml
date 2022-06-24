@@ -42,6 +42,9 @@ e2e: &e2e
         name: Install Fauxauth
         command: npm ci
     - run:
+        name: Install Chromedriver
+        command: npm run install:chromedriver
+    - run:
         name: Test
         command: npm run e2e
         environment:

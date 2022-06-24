@@ -10,8 +10,10 @@ services:
       args:
         ALPINE_RELEASE: 3.15
         NODE_RELEASE: ${NODE_RELEASE}
-      context: .
+      context: ../..
+      dockerfile: ./packages/e2e/Dockerfile
     environment:
+      BROWSER: firefox
       FAUXAUTH_URL: http://fauxauth:3210
       SELENIUM_HOST: selenium
       SELENIUM_PATH: /
@@ -20,4 +22,4 @@ services:
       - fauxauth
       - selenium
   selenium:
-    image: selenium/standalone-chrome:4
+    image: selenium/standalone-firefox:4

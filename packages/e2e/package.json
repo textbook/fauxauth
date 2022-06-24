@@ -9,6 +9,7 @@
     "concurrently": "^7.2.2",
     "cross-env": "^7.0.3",
     "express": "^4.18.1",
+    "jest": "^28.1.1",
     "jest-junit": "^13.2.0",
     "wait-on": "^6.0.1",
     "webdriver-manager": "^12.1.8",
@@ -17,7 +18,7 @@
   "scripts": {
     "chromedriver": "webdriver-manager update --gecko=false --versions.chrome=${CHROME_VERSION:-latest}",
     "predocker": "docker-compose build",
-    "docker": "docker-compose run e2e test || (npm run postdocker && exit 1)",
+    "docker": "docker-compose run e2e || (npm run postdocker && exit 1)",
     "postdocker": "docker-compose logs fauxauth && docker-compose down",
     "e2e": "concurrently -k -s first -n \"app,e2e,sln\" \"npm start\" \"npm test\" \"npm run selenium\"",
     "selenium": "webdriver-manager start",

@@ -14,7 +14,7 @@ MINOR="$(echo $CIRCLE_TAG | cut -d. -f2)"
 NAME='textbook/fauxauth'
 
 docker build \
-  ./packages/fauxauth \
+  . \
   --label "version=$CIRCLE_TAG" \
   --build-arg 'ALPINE_RELEASE=3.15' \
   --build-arg "NODE_RELEASE=$NODE_RELEASE" \
