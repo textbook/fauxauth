@@ -17,6 +17,7 @@
   "scripts": {
     "prebuild": "rimraf lib/*",
     "build": "tsc",
+    "postbuild": "chmod u+x ./lib/server.js",
     "start": "node $npm_package_bin_fauxauth",
     "test": "jest",
     "test:cover": "npm run test -- --coverage",
