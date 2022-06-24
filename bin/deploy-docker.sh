@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 
-set -e
+set -euo pipefail
 
-NODE_RELEASE="$(cat .nvmrc)"
+NODE_RELEASE="$(cat ../.nvmrc)"
 
 docker -v
 echo "Node version $NODE_RELEASE"
@@ -14,7 +14,7 @@ MINOR="$(echo $CIRCLE_TAG | cut -d. -f2)"
 NAME='textbook/fauxauth'
 
 docker build \
-  . \
+  .. \
   --label "version=$CIRCLE_TAG" \
   --build-arg 'ALPINE_RELEASE=3.16' \
   --build-arg "NODE_RELEASE=$NODE_RELEASE" \
