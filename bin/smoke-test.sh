@@ -10,17 +10,35 @@ fi
 
 TAG=$1
 
-HERE="$(dirname "$0")"
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$HERE/.."
+E2E="$ROOT/packages/e2e"
 
-pushd "$HERE/../packages/e2e"
-    NODE_RELEASE="$(cat ../../.nvmrc)"
+pushd "$ROOT"
+  NODE_RELEASE="$(cat .nvmrc)"
+popd
 
-    docker -v
-    echo "Node version $NODE_RELEASE"
+docker -v
+echo "Node version $NODE_RELEASE"
 
-    npm install
-    npm install "fauxauth@$TAG" --no-save
+pushd "$E2E"
+    NODE_RELEASE="$NODE_RELEASE" TAG="$TAG" npm run docker
+popd
+
+cleanup() {
+    pushd "$ROOT"
+        git checkout package{,-lock}.json
+    popd
+}
+
+pushd "$ROOT"
+    rm -f package*.json
+    trap cleanup EXIT
+popd
+
+pushd "$E2E"
+    npm install --no-package-lock
+    npm install "fauxauth@$TAG" --no-package-lock --no-save
     npm run chromedriver
     npm run e2e
-    NODE_RELEASE="$NODE_RELEASE" TAG="$TAG" npm run docker
 popd

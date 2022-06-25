@@ -8,7 +8,7 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
-HERE="$(dirname "$0")"
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 pushd "$HERE/.."
     VERSION="$(npm version --no-git-tag-version "$1")"

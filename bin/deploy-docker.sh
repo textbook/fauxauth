@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-HERE="$(dirname "$0")"
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 NODE_RELEASE="$(cat "$HERE/../.nvmrc")"
 
 docker -v
