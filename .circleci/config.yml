@@ -138,6 +138,7 @@ jobs:
           root: .
           paths:
             - ./packages/fauxauth/lib
+            - ./packages/fauxauth/README.md
 
   e2e:
     <<: *node

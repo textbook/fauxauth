@@ -17,7 +17,7 @@
   "scripts": {
     "prebuild": "rimraf lib/*",
     "build": "tsc",
-    "postbuild": "chmod u+x ./lib/server.js",
+    "postbuild": "chmod u+x ./lib/server.js && cpy ../../README.md packages/fauxauth/",
     "start": "node $npm_package_bin_fauxauth",
     "test": "jest",
     "test:cover": "npm run test -- --coverage",
@@ -63,6 +63,7 @@
     "@types/supertest": "^2.0.12",
     "@types/xml2js": "^0.4.11",
     "@types/yargs": "^17.0.10",
+    "cpy-cli": "^4.1.0",
     "jest": "^28.1.1",
     "jest-junit": "^13.2.0",
     "rimraf": "^3.0.2",
