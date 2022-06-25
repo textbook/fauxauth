@@ -1,6 +1,5 @@
 import debug from "debug";
 import { Request, Response, Router } from "express";
-import qs from "querystring";
 import { Builder } from "xml2js";
 
 import { getAll } from "../config";
@@ -70,7 +69,7 @@ router.post("/", (
 		return res.type(accept).send(builder.buildObject({ OAuth: payload }));
 	}
 
-	res.send(qs.stringify(payload));
+	res.send(new URLSearchParams(payload).toString());
 });
 
 export default router;

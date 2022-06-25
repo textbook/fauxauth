@@ -1,5 +1,4 @@
 import { Application } from "express";
-import qs from "querystring";
 import request from "supertest";
 import { parse } from "url";
 import { parseString } from "xml2js";
@@ -44,9 +43,9 @@ describe("access_token endpoint", () => {
 			})
 			.expect(200)
 			.then((res) => {
-				const content = qs.parse(res.text);
-				expect(content.access_token).toMatch(/[0-9a-f]{40}/);
-				expect(content.token_type).toBe("bearer");
+				const content = new URLSearchParams(res.text);
+				expect(content.get("access_token")).toMatch(/[0-9a-f]{40}/);
+				expect(content.get("token_type")).toBe("bearer");
 			});
 	});
 
