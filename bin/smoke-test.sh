@@ -12,14 +12,15 @@ TAG=$1
 
 HERE="$(dirname "$0")"
 
-pushd "$HERE/.."
-    NODE_RELEASE="$(cat .nvmrc)"
+pushd "$HERE/../packages/e2e"
+    NODE_RELEASE="$(cat ../../.nvmrc)"
 
     docker -v
     echo "Node version $NODE_RELEASE"
 
-    npm ci
-    npm --workspace packages/e2e install "fauxauth@$TAG" --no-save
+    npm install
+    npm install "fauxauth@$TAG" --no-save
+    npm run chromedriver
     npm run e2e
-    NODE_RELEASE="$NODE_RELEASE" TAG="$TAG" npm --workspace packages/e2e run docker
+    NODE_RELEASE="$NODE_RELEASE" TAG="$TAG" npm run docker
 popd
