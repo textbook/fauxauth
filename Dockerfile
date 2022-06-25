@@ -13,6 +13,7 @@ RUN npm --workspace packages/fauxauth ci
 
 COPY ./README.md ./
 COPY ./packages/fauxauth/tsconfig.json ./packages/fauxauth/
+COPY ./packages/fauxauth/tsconfig.build.json ./packages/fauxauth/
 COPY ./packages/fauxauth/src/ ./packages/fauxauth/src/
 RUN npm run build
 
