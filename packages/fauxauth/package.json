@@ -16,7 +16,7 @@
   },
   "scripts": {
     "prebuild": "rimraf lib/*",
-    "build": "tsc",
+    "build": "tsc --project tsconfig.build.json",
     "postbuild": "chmod u+x ./lib/server.js && cpy ../../README.md packages/fauxauth/",
     "start": "node $npm_package_bin_fauxauth",
     "test": "jest",
