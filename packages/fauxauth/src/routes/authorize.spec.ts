@@ -1,4 +1,4 @@
-import { validateRedirect } from "../src/routes/authorize";
+import { validateRedirect } from "./authorize";
 
 describe("validateRedirect function", () => {
 	const callback = "http://example.com/path";

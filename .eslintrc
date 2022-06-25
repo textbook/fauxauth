@@ -13,8 +13,7 @@
         "plugin:jest/recommended"
       ],
       "files": [
-        "**/*.spec.ts",
-        "**/*.e2e.js"
+        "**/*.spec.[jt]s"
       ],
       "rules": {
         "@typescript-eslint/no-explicit-any": "off",

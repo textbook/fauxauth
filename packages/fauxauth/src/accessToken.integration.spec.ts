@@ -3,7 +3,7 @@ import request from "supertest";
 import { parse } from "url";
 import { parseString } from "xml2js";
 
-import appFactory, { Configuration } from "../../src";
+import appFactory, { Configuration } from "./index";
 
 describe("access_token endpoint", () => {
 	let app: Application;

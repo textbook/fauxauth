@@ -1,4 +1,4 @@
-import { generateHex } from "../src/utils";
+import { generateHex } from "./utils";
 
 describe("generateHex function", () => {
 	it("generates valid hex strings", () => {

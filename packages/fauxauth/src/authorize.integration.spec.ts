@@ -2,7 +2,7 @@ import { Application } from "express";
 import request from "supertest";
 import { format, parse } from "url";
 
-import appFactory, { Configuration } from "../../src";
+import appFactory, { Configuration } from "./index";
 
 describe("authorize endpoint", () => {
 	const endpoint = "/authorize";
