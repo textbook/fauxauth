@@ -9,7 +9,7 @@
     "concurrently": "^7.2.2",
     "cross-env": "^7.0.3",
     "express": "^4.18.1",
-    "jest": "^28.1.1",
+    "jest": "^28.1.2",
     "jest-junit": "^14.0.0",
     "wait-on": "^6.0.1",
     "webdriver-manager": "^12.1.8",
