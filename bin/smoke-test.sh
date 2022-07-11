@@ -8,6 +8,11 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
+if [ -n "$(git status --porcelain)" ]; then
+  echo 'Git working directory not clean.'
+  exit 1
+fi
+
 TAG=$1
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
