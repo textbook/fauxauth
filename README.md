@@ -75,7 +75,7 @@ You can also import the app factory and create your own app:
 import appFactory from "fauxauth";
 // or `const { default: appFactory } = require("fauxauth");`
 
-const app = appFactory({ redirectUrl: "http://localhost:3001" });
+const app = appFactory({ callbackUrl: "http://localhost:3001" });
 
 app.listen(4200, () => {
 	console.log("I'm listening...");
