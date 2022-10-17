@@ -31,8 +31,8 @@ e2e: &e2e
     - run:
         name: NPM 8
         command: |
-          if [[ "$(npm -v | cut -d. -f1)" != "8" ]];
-          then npm install --global npm@8;
+          if [[ "$(npm -v | cut -d. -f1)" != "8" ]]; then
+            sudo npm install --global npm@8
           fi
     - run:
         name: Info
