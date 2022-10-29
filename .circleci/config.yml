@@ -5,7 +5,7 @@ orbs:
 
 node: &node
   docker:
-    - image: cimg/node:16.18.0-browsers
+    - image: cimg/node:18.12.0-browsers
 
 all_builds: &all_builds
   filters:
@@ -144,6 +144,11 @@ jobs:
     <<: *node
     <<: *e2e
 
+  e2e-hydrogen:
+    <<: *e2e
+    docker:
+      - image: cimg/node:18.12-browsers
+
   e2e-gallium:
     <<: *e2e
     docker:
@@ -221,6 +226,12 @@ workflows:
           <<: *all_builds
           requires:
             - build
+      - e2e-hydrogen:
+          <<: *all_builds
+          requires:
+            - lint
+            - test
+            - e2e
       - e2e-gallium:
           <<: *all_builds
           requires:
@@ -238,11 +249,13 @@ workflows:
           requires:
             - e2e-fermium
             - e2e-gallium
+            - e2e-hydrogen
       - deploy-npm:
           <<: *release_only
           requires:
             - e2e-fermium
             - e2e-gallium
+            - e2e-hydrogen
       - smoke-test:
           <<: *release_only
           requires:
