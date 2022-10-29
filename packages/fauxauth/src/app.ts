@@ -1,19 +1,19 @@
 import cors from "cors";
 import express, { Application } from "express";
 import morgan from "morgan";
-import path from "path";
+import url from "url";
 
-import { Configuration, initialise } from "./config";
-import tokenRouter from "./routes/accessToken";
-import authRouter from "./routes/authorize";
-import configRouter from "./routes/configuration";
+import { Configuration, initialise } from "./config.js";
+import tokenRouter from "./routes/accessToken.js";
+import authRouter from "./routes/authorize.js";
+import configRouter from "./routes/configuration.js";
 
 export default (overrides?: Partial<Configuration>): Application => {
 	const app = express();
 	initialise(overrides);
 
 	app.set("view engine", "pug");
-	app.set("views", path.join(__dirname, "..", "views"));
+	app.set("views", url.fileURLToPath(new URL("../views", import.meta.url)));
 	app.use(cors());
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: false }));

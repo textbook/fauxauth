@@ -73,7 +73,6 @@ You can also import the app factory and create your own app:
 
 ```js
 import appFactory from "fauxauth";
-// or `const { default: appFactory } = require("fauxauth");`
 
 const app = appFactory({ callbackUrl: "http://localhost:3001" });
 

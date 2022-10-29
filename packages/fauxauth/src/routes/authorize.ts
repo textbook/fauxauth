@@ -3,8 +3,8 @@ import { Request, Response, Router } from "express";
 import { ParsedUrlQueryInput } from "querystring";
 import { format, URL } from "url";
 
-import { getAll } from "../config";
-import { generateHex } from "../utils";
+import { getAll } from "../config.js";
+import { generateHex } from "../utils.js";
 
 const log = debug("fauxauth:authorize");
 

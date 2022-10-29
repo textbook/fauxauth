@@ -2,7 +2,7 @@
 
 import http from "http";
 
-import appFactory from ".";
+import appFactory from "./index.js";
 
 const port = parseInt(process.env.PORT || "3000", 10);
 

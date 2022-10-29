@@ -2,7 +2,7 @@ import debug from "debug";
 import { Request, Response, Router } from "express";
 import { Builder } from "xml2js";
 
-import { getAll } from "../config";
+import { getAll } from "../config.js";
 
 const log = debug("fauxauth:accessToken");
 

@@ -1,6 +1,6 @@
-const axios = require("axios");
-const { format, parse, URLSearchParams } = require("url");
-const { remote } = require("webdriverio");
+import axios from "axios";
+import { format, parse, URLSearchParams } from "url";
+import { remote } from "webdriverio";
 
 const baseUrl = process.env.FAUXAUTH_URL || "http://localhost:3000";
 

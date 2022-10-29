@@ -4,6 +4,7 @@
   "private": true,
   "description": "E2E tests for fauxauth",
   "main": "index.js",
+  "type": "module",
   "devDependencies": {
     "axios": "^1.1.3",
     "concurrently": "^7.5.0",
@@ -17,6 +18,7 @@
   },
   "scripts": {
     "chromedriver": "webdriver-manager update --gecko=false --versions.chrome=${CHROME_VERSION:-latest}",
+    "custom-e2e": "concurrently --kill-others --names app,run,sln --success first \"node server.js\" \"npm:e2e:run\" \"npm:e2e:sln\"",
     "predocker": "docker-compose build",
     "docker": "docker-compose run e2e || (npm run postdocker && exit 1)",
     "postdocker": "docker-compose logs fauxauth selenium && docker-compose down",
@@ -25,7 +27,7 @@
     "e2e:run": "npm run test",
     "e2e:sln": "webdriver-manager start",
     "pretest": "wait-on --timeout 30000 --log \"http-get://${SELENIUM_HOST:-localhost}:4444${SELENIUM_PATH:-/wd/hub}\"",
-    "test": "jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "repository": {
     "type": "git",

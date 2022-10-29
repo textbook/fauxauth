@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import jiff from "jiff";
 
-import { Configuration, getAll, reset, update } from "../config";
+import { Configuration, getAll, reset, update } from "../config.js";
 
 const router = Router();
 

@@ -1,4 +1,4 @@
-import appFactory from "./app";
+import appFactory from "./app.js";
 export default appFactory;
 
-export { Configuration } from "./config";
+export type { Configuration } from "./config.js";

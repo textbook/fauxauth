@@ -7,6 +7,7 @@
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "type": "module",
   "files": [
     "/lib",
     "/views"
@@ -19,7 +20,7 @@
     "build": "tsc --project tsconfig.build.json",
     "postbuild": "chmod u+x ./lib/server.js && cpy ../../README.md packages/fauxauth/",
     "start": "node $npm_package_bin_fauxauth",
-    "test": "jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "test:cover": "npm run test -- --coverage",
     "test:watch": "npm run test -- --watch"
   },
