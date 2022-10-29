@@ -1,13 +1,27 @@
 doctype html
 html(lang="en")
   body
-  form(action="/authorize", method="post", id="root-form")
-    label(for="role-select")
-      | Select token
-      select(id="role-select", name="code")
-        each code, role in roles
-          option(value=code) #{role}
-    // hidden inputs
-    each value, name in query
-      input(hidden=true, name=name, type="text", value=value)
-    button(id="submit-button", type="submit") Authenticate
+    h1= "Fauxauth"
+    p= "Helper application for testing OAuth clients."
+    form(action="/authorize", method="post", id="root-form")
+      label(for="role-select")
+        | Select identity:
+        |
+        select(id="role-select", name="code")
+          each code, role in roles
+            option(value=code) #{role}
+        // hidden inputs
+        each value, name in query
+          input(hidden=true, name=name, type="text", value=value)
+        |
+        button(id="submit-button", type="submit") Authenticate
+    hr
+    p
+      | Each identity above corresponds to a token for the OAuth provider's API.
+      | When you click "Authenticate" you'll be redirected back to the client with a temporary code.
+      | The client will then exchange this code with Fauxauth for the relevant token.
+    p
+      | For more information about Fauxauth itself, see
+      |
+      a(href="https://github.com/textbook/fauxauth") GitHub
+      |.
