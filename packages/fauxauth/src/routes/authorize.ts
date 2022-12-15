@@ -90,10 +90,10 @@ router.post("/", (
 ) => {
 	const configuration = getAll();
 	log("POST received %j", req.body);
-	const { redirect_uri: pathname, ...query } = req.body;
+	const { scope, redirect_uri: pathname, ...query } = req.body;
 	const code = configuration.codes[query.code];
 	if (code) {
-		code.scopes = query.scope;
+		code.scopes = scope;
 	}
 	res.redirect(format({ pathname, query }));
 });

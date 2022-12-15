@@ -84,6 +84,20 @@ describe("authorize endpoint", () => {
 			});
 	});
 
+	it("does not include scope if specified", () => {
+		return request(app)
+			.get(endpoint)
+			.query({
+				client_id: defaultConfiguration.clientId,
+				scope: "foo bar",
+			})
+			.expect(302)
+			.then((res) => {
+				const { query } = parse(res.get("Location"), true);
+				expect(query).toEqual({ code: expect.stringMatching(/^[a-f\d]{20}$/) });
+			});
+	});
+
 	it("provides a code", () => {
 		return request(app)
 			.get(endpoint)
@@ -130,7 +144,7 @@ describe("authorize endpoint", () => {
 			return request(app)
 				.post(endpoint)
 				.type("form")
-				.send({ redirect_uri: redirectUri, state, code })
+				.send({ redirect_uri: redirectUri, scope: "foo", state, code })
 				.expect(302)
 				.then((res) => {
 					const { query, pathname } = parse(res.get("Location"), true);

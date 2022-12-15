@@ -103,7 +103,7 @@ describe("fauxauth", () => {
 			}).toString(),
 		});
 		expect(Object.fromEntries(new URLSearchParams(body).entries())).toEqual({
-			access_token: expect.stringMatching(/^[a-z0-9]{40}$/),
+			access_token: expect.stringMatching(/^[a-f\d]{40}$/),
 			scope: "public_repo,read:user",
 			token_type: "bearer",
 		});
@@ -133,7 +133,7 @@ describe("fauxauth", () => {
 			}).toString(),
 		});
 		expect(Object.fromEntries(new URLSearchParams(body).entries())).toEqual({
-			access_token: expect.stringMatching(/^[a-z0-9]{40}\/public_repo\/read:user$/),
+			access_token: expect.stringMatching(/^[a-f\d]{40}\/public_repo\/read:user$/),
 			scope: "public_repo,read:user",
 			token_type: "bearer",
 		});
@@ -147,7 +147,12 @@ describe("fauxauth", () => {
 			}));
 			expect(res.statusCode).toBe(200);
 
-			await browser.url("/authorize?client_id=1ae9b0ca17e754106b51&state=bananas&redirect_uri=http%3A%2F%2Fexample.org%2Ftest");
+			const options = new URLSearchParams({
+				client_id: "1ae9b0ca17e754106b51",
+				state: "bananas",
+				redirect_uri: "http://example.org/test",
+			});
+			await browser.url(`/authorize?${options}`);
 			const select = await browser.$("#role-select");
 			await select.selectByVisibleText("User");
 			const button = await browser.$("#submit-button");
@@ -158,7 +163,7 @@ describe("fauxauth", () => {
 			expect(host).toBe("example.org");
 			expect(pathname).toBe("/test");
 			expect(query).toEqual({
-				code: expect.stringMatching(/[a-z0-9]{20}/i),
+				code: expect.stringMatching(/^[a-f\d]{20}$/i),
 				state: "bananas",
 			});
 
