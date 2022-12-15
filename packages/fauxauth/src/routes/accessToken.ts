@@ -53,7 +53,11 @@ router.post("/", (
 		log("removing '%s' from %j", code, configuration.codes);
 		const { scopes, token } = stored;
 		delete configuration.codes[code];
-		payload = { access_token: token, scope: scopes?.join(","), token_type: "bearer" };
+		payload = {
+			access_token: configuration.appendScopes ? [token, ...scopes ?? []].join("/") : token,
+			scope: scopes?.join(","),
+			token_type: "bearer",
+		};
 	} else {
 		log("missing code: '%s' in %j", code, configuration.codes);
 		payload = { error: "bad_verification_code" };

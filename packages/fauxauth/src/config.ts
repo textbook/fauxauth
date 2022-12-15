@@ -5,6 +5,7 @@ import yargs from "yargs/yargs";
 const log = debug("fauxauth:config");
 
 export interface Configuration {
+	appendScopes: boolean;
 	callbackUrl: string;
 	clientId: string;
 	clientSecret: string;
@@ -12,17 +13,20 @@ export interface Configuration {
 	tokenMap?: { [role: string]: string };
 }
 
-type RawConfiguration = { [Property in keyof Configuration]: string };
-
 let currentConfiguration: Configuration;
 
 let initialConfiguration: Configuration;
 
-const getYargs = (): RawConfiguration => yargs(process.argv.slice(2))
+const getYargs = () => yargs(process.argv.slice(2))
 	.env("FAUXAUTH")
 	.pkgConf("fauxauth")
 	.config(process.env.FAUXAUTH_CONFIG ? JSON.parse(process.env.FAUXAUTH_CONFIG) : {})
 	.options({
+		appendScopes: {
+			default: false,
+			describe: "Whether to append the selected scopes to the token",
+			type: "boolean",
+		},
 		callbackUrl: {
 			default: "http://example.org/",
 			describe: "The base URL to return or validate redirect_uri against",
@@ -55,6 +59,7 @@ export const getAll = (): Configuration => currentConfiguration;
 export const initialise = (overrides?: Partial<Configuration>): void => {
 	const argv = getYargs();
 	initialConfiguration = {
+		appendScopes: argv.appendScopes,
 		callbackUrl: argv.callbackUrl,
 		clientId: argv.clientId,
 		clientSecret: argv.clientSecret,

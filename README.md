@@ -117,7 +117,8 @@ by setting `DEBUG=fauxauth:*` or enable more specific namespaces as needed.
 You can also set the OAuth configuration; it is initially hardcoded as follows:
 
 | Name           | Description                                                | Initial value                                |
-| -------------- | ---------------------------------------------------------- | -------------------------------------------- |
+|----------------|------------------------------------------------------------|----------------------------------------------|
+| `appendScopes` | Add the scopes to the token (e.g. `"token/scope1/scope2"`) | `false`                                      |
 | `callbackUrl`  | The base URL to return or validate `redirect_uri` against  | `"http://example.org/"`                      |
 | `clientId`     | The client ID to be accepted by the `/authorize` endpoint  | `"1ae9b0ca17e754106b51"`                     |
 | `clientSecret` | The client secret required by the `/access_token` endpoint | `"3efb56fdbac1cb21f3d4fea9b70036e04a34d068"` |

@@ -9,6 +9,7 @@ describe("access_token endpoint", () => {
 	let app: Application;
 	let code: string;
 	const defaultConfiguration: Configuration = {
+		appendScopes: false,
 		callbackUrl: "http://example.org/",
 		clientId: "1ae9b0ca17e754106b51",
 		clientSecret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
@@ -120,24 +121,47 @@ describe("access_token endpoint", () => {
 			});
 	});
 
-	it("includes scopes if provided", async () => {
-		const appWithScopes = appFactory({ codes: {
-			"some-cool-code": { token: "even-cooler-token", scopes: ["read:user", "user:email"] } },
-		});
-		await request(appWithScopes)
-			.post(endpoint)
-			.type("form")
-			.send({
-				client_id: defaultConfiguration.clientId,
-				client_secret: defaultConfiguration.clientSecret,
-				code: "some-cool-code",
-			})
-			.accept("json")
-			.expect(200, {
-				access_token: "even-cooler-token",
-				scope: "read:user,user:email",
-				token_type: "bearer",
+	describe("scopes", () => {
+		it("includes scopes if provided", async () => {
+			const appWithScopes = appFactory({ codes: {
+				"some-cool-code": { token: "even-cooler-token", scopes: ["read:user", "user:email"] } },
 			});
+			await request(appWithScopes)
+				.post(endpoint)
+				.type("form")
+				.send({
+					client_id: defaultConfiguration.clientId,
+					client_secret: defaultConfiguration.clientSecret,
+					code: "some-cool-code",
+				})
+				.accept("json")
+				.expect(200, {
+					access_token: "even-cooler-token",
+					scope: "read:user,user:email",
+					token_type: "bearer",
+				});
+		});
+
+		it("includes scopes in token if requested", async () => {
+			const appWithScopes = appFactory({
+				appendScopes: true,
+				codes: { "some-cool-code": { token: "even-cooler-token", scopes: ["read:user", "user:email"] } } },
+			);
+			await request(appWithScopes)
+				.post(endpoint)
+				.type("form")
+				.send({
+					client_id: defaultConfiguration.clientId,
+					client_secret: defaultConfiguration.clientSecret,
+					code: "some-cool-code",
+				})
+				.accept("json")
+				.expect(200, {
+					access_token: "even-cooler-token/read:user/user:email",
+					scope: "read:user,user:email",
+					token_type: "bearer",
+				});
+		});
 	});
 
 	describe("accept types", () => {
