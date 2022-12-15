@@ -181,7 +181,7 @@ something like the following form will be rendered:
 
     <!-- hidden inputs -->
 
-    <!-- scope checkboxes -->
+    <!-- scope checkboxes (if relevant, see below) -->
 
     <button id="submit-button" type="submit">Authenticate</button>
 </form>
@@ -196,6 +196,34 @@ redirect URI but with the code replaced with the choice value (e.g.
 For example, this allows you to configure tokens representing different roles,
 so that a developer or automated test can choose the appropriate role to "log
 in" as.
+
+### Scopes
+
+_(New in v8.0)_
+
+From v8, `fauxauth` handles the scopes in the `GET /authorize` request. By
+default these will simply be retained through the process and included in the
+response to `POST /access_token`. For example if the initial request was:
+
+```none
+GET .../authorize?client_id=...&scope=foo+bar
+```
+
+then the response to the `POST /access_token` request using the resulting
+code would include `foo,bar` as the value of the `scope` property.
+
+If you use the `tokenMap` browser-based flow, the scopes will be rendered as
+a set of checkboxes (all checked by default). The user can remove any or all
+of these scopes; the response to `POST /access_token` will reflect this in the
+`scope` property.
+
+If you set the `appendScopes` configuration option, the scopes are appended to
+the token returned in the response to `POST /access_token`. For example, if
+the scopes were `read:user` and `user:email` and the token (whether generated
+automatically or provided in a token map) was `somerandomtoken`, the token in
+the response would be `somerandomtoken/read:user/user:email`. This allows
+testing of workflows where the user doesn't accept all of the requested
+scopes.
 
 ## How can I work on it?
 
