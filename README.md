@@ -180,6 +180,8 @@ something like the following form will be rendered:
 
     <!-- hidden inputs -->
 
+    <!-- scope checkboxes -->
+
     <button id="submit-button" type="submit">Authenticate</button>
 </form>
 ```

@@ -16,6 +16,7 @@ type Payload = {
 	error: string;
 } | {
 	access_token: string;
+	scope?: string;
 	token_type: "bearer";
 };
 
@@ -43,15 +44,16 @@ router.post("/", (
 	}
 
 	let payload: Payload;
+	const stored = configuration.codes[code];
 
 	if (clientSecret !== configuration.clientSecret) {
 		log("incorrect client secret: '%s' vs '%s'", clientSecret, configuration.clientSecret);
 		payload = { error: "incorrect_client_credentials" };
-	} else if (configuration.codes[code]) {
+	} else if (stored) {
 		log("removing '%s' from %j", code, configuration.codes);
-		const token = configuration.codes[code];
+		const { scopes, token } = stored;
 		delete configuration.codes[code];
-		payload = { access_token: token, token_type: "bearer" };
+		payload = { access_token: token, scope: scopes?.join(","), token_type: "bearer" };
 	} else {
 		log("missing code: '%s' in %j", code, configuration.codes);
 		payload = { error: "bad_verification_code" };

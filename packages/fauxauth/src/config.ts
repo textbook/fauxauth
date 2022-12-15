@@ -8,7 +8,7 @@ export interface Configuration {
 	callbackUrl: string;
 	clientId: string;
 	clientSecret: string;
-	codes: { [code: string]: string };
+	codes: { [code: string]: { token: string; scopes?: string[] } | undefined };
 	tokenMap?: { [role: string]: string };
 }
 

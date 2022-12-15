@@ -11,6 +11,7 @@ const log = debug("fauxauth:authorize");
 type AuthorizeQuery = {
 	client_id: string;
 	redirect_uri?: string;
+	scope?: string;
 	state?: string;
 };
 
@@ -22,11 +23,7 @@ router.get("/", (
 ) => {
 	log("GET received %j", req.query);
 	const configuration = getAll();
-	const {
-		client_id: clientId,
-		redirect_uri: redirectUri,
-		state,
-	} = req.query;
+	const { client_id: clientId, redirect_uri: redirectUri, scope, state } = req.query;
 
 	if (clientId !== configuration.clientId) {
 		log("incorrect client ID: '%s' vs '%s'", clientId, configuration.clientId);
@@ -55,7 +52,7 @@ router.get("/", (
 
 	if (!configuration.tokenMap) {
 		const code = generateHex(20);
-		configuration.codes[code] = generateHex(40);
+		configuration.codes[code] = { token: generateHex(40) };
 		query.code = code;
 		log("sending '%s' from %j", code, configuration.codes);
 		const location = format({ pathname, query });
@@ -67,20 +64,36 @@ router.get("/", (
 	for (const role of Object.keys(configuration.tokenMap)) {
 		const code = generateHex(20);
 		roles[role] = code;
-		configuration.codes[code] = configuration.tokenMap[role];
+		configuration.codes[code] = { token: configuration.tokenMap[role] };
 	}
 
 	log("sending '%j' from %j", roles, configuration.codes);
 
-	res.render("index", { query: { ...query, redirect_uri: pathname }, roles });
+	res.render("index", {
+		query: { ...query, redirect_uri: pathname },
+		roles,
+		scopes: scope?.split(" "),
+	});
 });
 
+type AuthorizeBody = {
+	code: string;
+	redirect_uri?: string;
+	scope: string[];
+	state?: string;
+};
+
 router.post("/", (
-	req: Request<unknown, unknown, { [key: string]: string }>,
+	req: Request<unknown, unknown, AuthorizeBody>,
 	res: Response
 ) => {
+	const configuration = getAll();
 	log("POST received %j", req.body);
 	const { redirect_uri: pathname, ...query } = req.body;
+	const code = configuration.codes[query.code];
+	if (code) {
+		code.scopes = query.scope;
+	}
 	res.redirect(format({ pathname, query }));
 });
 

@@ -120,6 +120,26 @@ describe("access_token endpoint", () => {
 			});
 	});
 
+	it("includes scopes if provided", async () => {
+		const appWithScopes = appFactory({ codes: {
+			"some-cool-code": { token: "even-cooler-token", scopes: ["read:user", "user:email"] } },
+		});
+		await request(appWithScopes)
+			.post(endpoint)
+			.type("form")
+			.send({
+				client_id: defaultConfiguration.clientId,
+				client_secret: defaultConfiguration.clientSecret,
+				code: "some-cool-code",
+			})
+			.accept("json")
+			.expect(200, {
+				access_token: "even-cooler-token",
+				scope: "read:user,user:email",
+				token_type: "bearer",
+			});
+	});
+
 	describe("accept types", () => {
 		it("handles application/json", () => {
 			return request(app)

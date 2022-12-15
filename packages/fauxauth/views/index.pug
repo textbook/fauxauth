@@ -4,16 +4,25 @@ html(lang="en")
     h1= "Fauxauth"
     p= "Helper application for testing OAuth clients."
     form(action="/authorize", method="post", id="root-form")
-      label(for="role-select")
-        | Select identity:
-        |
-        select(id="role-select", name="code")
-          each code, role in roles
-            option(value=code) #{role}
-        // hidden inputs
-        each value, name in query
-          input(hidden=true, name=name, type="text", value=value)
-        |
+      div
+        label(for="role-select")
+          | Select identity:
+          |
+          select(id="role-select", name="code")
+            each code, role in roles
+              option(value=code) #{role}
+      // hidden inputs
+      each value, name in query
+        input(hidden=true, name=name, type="text", value=value)
+      if scopes
+        fieldset
+          legend= "Select allowed scopes"
+          each scope in scopes
+            div
+              label(for=`scope-${scope}`)
+                | #{scope}
+                input(checked=true, id=`scope-${scope}`, name="scope", type="checkbox", value=scope)
+      div
         button(id="submit-button", type="submit") Authenticate
     hr
     p
