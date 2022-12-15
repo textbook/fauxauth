@@ -55,9 +55,11 @@ router.post("/", (
 		delete configuration.codes[code];
 		payload = {
 			access_token: configuration.appendScopes ? [token, ...scopes ?? []].join("/") : token,
-			scope: scopes?.join(","),
 			token_type: "bearer",
 		};
+		if (scopes) {
+			payload.scope = scopes.join(",");
+		}
 	} else {
 		log("missing code: '%s' in %j", code, configuration.codes);
 		payload = { error: "bad_verification_code" };

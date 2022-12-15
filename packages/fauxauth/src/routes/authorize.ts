@@ -24,6 +24,7 @@ router.get("/", (
 	log("GET received %j", req.query);
 	const configuration = getAll();
 	const { client_id: clientId, redirect_uri: redirectUri, scope, state } = req.query;
+	const scopes = scope?.split(" ");
 
 	if (clientId !== configuration.clientId) {
 		log("incorrect client ID: '%s' vs '%s'", clientId, configuration.clientId);
@@ -52,7 +53,7 @@ router.get("/", (
 
 	if (!configuration.tokenMap) {
 		const code = generateHex(20);
-		configuration.codes[code] = { token: generateHex(40) };
+		configuration.codes[code] = { scopes, token: generateHex(40) };
 		query.code = code;
 		log("sending '%s' from %j", code, configuration.codes);
 		const location = format({ pathname, query });
@@ -72,7 +73,7 @@ router.get("/", (
 	res.render("index", {
 		query: { ...query, redirect_uri: pathname },
 		roles,
-		scopes: scope?.split(" "),
+		scopes,
 	});
 });
 
