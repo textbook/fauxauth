@@ -1,7 +1,6 @@
 import debug from "debug";
 import { Request, Response, Router } from "express";
 import { ParsedUrlQueryInput } from "querystring";
-import { format, URL } from "url";
 
 import { getAll } from "../config.js";
 import { generateHex } from "../utils.js";
@@ -99,6 +98,14 @@ router.post("/", (
 });
 
 export default router;
+
+const format = ({ pathname, query }: { pathname?: string; query: ParsedUrlQueryInput }): string => {
+	const url = new URL("", pathname);
+	Object.entries(query).forEach(([key, value]) => {
+		url.searchParams.set(key, `${value}`);
+	});
+	return url.toString();
+};
 
 export const validateRedirect = (
 	redirectUri: string,

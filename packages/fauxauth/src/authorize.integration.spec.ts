@@ -1,6 +1,5 @@
 import { Application } from "express";
 import request from "supertest";
-import { format, parse } from "url";
 
 import appFactory, { Configuration } from "./index.js";
 
@@ -32,8 +31,8 @@ describe("authorize endpoint", () => {
 			.query({ client_id: defaultConfiguration.clientId })
 			.expect(302)
 			.then((res) => {
-				const { query, search, ...url } = parse(res.get("Location"), true);
-				expect(format(url)).toBe(defaultConfiguration.callbackUrl);
+				const url = new URL(res.get("Location"));
+				expect(`${url.origin}/`).toBe(defaultConfiguration.callbackUrl);
 			});
 	});
 
@@ -48,8 +47,8 @@ describe("authorize endpoint", () => {
 			})
 			.expect(302)
 			.then((res) => {
-				const { query, search, ...url } = parse(res.get("Location"), true);
-				expect(format(url)).toBe(redirectUri);
+				const url = new URL(res.get("Location"));
+				expect(url.pathname).toBe("/foo/");
 			});
 	});
 
@@ -62,9 +61,9 @@ describe("authorize endpoint", () => {
 			})
 			.expect(302)
 			.then((res) => {
-				const { query, search, ...url } = parse(res.get("Location"), true);
-				expect(format(url)).toBe(defaultConfiguration.callbackUrl);
-				expect(query.error).toBe("redirect_uri_mismatch");
+				const url = new URL(res.get("Location"));
+				expect(`${url.origin}/`).toBe(defaultConfiguration.callbackUrl);
+				expect(url.searchParams.get("error")).toBe("redirect_uri_mismatch");
 			});
 	});
 
@@ -79,8 +78,8 @@ describe("authorize endpoint", () => {
 			})
 			.expect(302)
 			.then((res) => {
-				const { query } = parse(res.get("Location"), true);
-				expect(query.state).toBe(state);
+				const url = new URL(res.get("Location"));
+				expect(url.searchParams.get("state")).toBe(state);
 			});
 	});
 
@@ -93,8 +92,10 @@ describe("authorize endpoint", () => {
 			})
 			.expect(302)
 			.then((res) => {
-				const { query } = parse(res.get("Location"), true);
-				expect(query).toEqual({ code: expect.stringMatching(/^[a-f\d]{20}$/) });
+				const url = new URL(res.get("Location"));
+				expect(Object.fromEntries(url.searchParams.entries())).toEqual({
+					code: expect.stringMatching(/^[a-f\d]{20}$/),
+				});
 			});
 	});
 
@@ -106,8 +107,8 @@ describe("authorize endpoint", () => {
 			})
 			.expect(302)
 			.then((res) => {
-				const { query } = parse(res.get("Location"), true);
-				expect(query.code).toMatch(/[0-9a-f]{20}/);
+				const url = new URL(res.get("Location"));
+				expect(url.searchParams.get("code")).toMatch(/[0-9a-f]{20}/);
 			});
 	});
 
@@ -138,7 +139,7 @@ describe("authorize endpoint", () => {
 
 		it("handles the post from the form", () => {
 			const code = "mycode";
-			const redirectUri = "/path/to";
+			const redirectUri = `${defaultConfiguration.callbackUrl}path/to`;
 			const state = "state";
 
 			return request(app)
@@ -147,9 +148,9 @@ describe("authorize endpoint", () => {
 				.send({ redirect_uri: redirectUri, scope: "foo", state, code })
 				.expect(302)
 				.then((res) => {
-					const { query, pathname } = parse(res.get("Location"), true);
-					expect(pathname).toBe(redirectUri);
-					expect(query).toEqual({ code, state });
+					const url = new URL(res.get("Location"));
+					expect(url.pathname).toBe("/path/to");
+					expect(Object.fromEntries(url.searchParams.entries())).toEqual({ code, state });
 				});
 		});
 	});

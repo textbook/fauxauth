@@ -1,6 +1,5 @@
 import { Application } from "express";
 import request from "supertest";
-import { parse } from "url";
 import { parseString } from "xml2js";
 
 import appFactory, { Configuration } from "./index.js";
@@ -28,8 +27,8 @@ describe("access_token endpoint", () => {
 			})
 			.expect(302)
 			.then((res) => {
-				const { query } = parse(res.get("Location"), true);
-				code = query.code as string;
+				const url = new URL(res.get("Location"));
+				code = url.searchParams.get("code") as string;
 			});
 	});
 
