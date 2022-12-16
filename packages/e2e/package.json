@@ -1,6 +1,6 @@
 {
   "name": "e2e",
-  "version": "8.0.2",
+  "version": "8.0.3",
   "private": true,
   "description": "E2E tests for fauxauth",
   "main": "index.js",
@@ -30,7 +30,9 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "fauxauth": {
-    "codes": { "abc123": "def456" }
+    "codes": {
+      "abc123": "def456"
+    }
   },
   "repository": {
     "type": "git",
