@@ -79,7 +79,7 @@ router.get("/", (
 type AuthorizeBody = {
 	code: string;
 	redirect_uri?: string;
-	scope: string[];
+	scope: string | string[];
 	state?: string;
 };
 
@@ -92,7 +92,7 @@ router.post("/", (
 	const { scope, redirect_uri: pathname, ...query } = req.body;
 	const code = configuration.codes[query.code];
 	if (code) {
-		code.scopes = scope;
+		code.scopes = Array.isArray(scope) ? scope : [scope];
 	}
 	res.redirect(format({ pathname, query }));
 });

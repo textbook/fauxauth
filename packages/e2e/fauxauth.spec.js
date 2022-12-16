@@ -123,7 +123,7 @@ describe("fauxauth", () => {
 			const options = new URLSearchParams({
 				client_id: "1ae9b0ca17e754106b51",
 				redirect_uri: "http://example.org/test",
-				scope: ["read:user", "user:email", "read:org"].join(" "),
+				scope: ["read:user", "read:org"].join(" "),
 				state: "bananas",
 			});
 			await browser.url(`/authorize?${options}`);
@@ -131,7 +131,7 @@ describe("fauxauth", () => {
 			await select.selectByVisibleText("Administrator");
 			const readScope = await browser.$("#scope-read\\:user");
 			await expect(readScope.isSelected()).resolves.toBe(true);
-			const emailScope = await browser.$("#scope-user\\:email");
+			const emailScope = await browser.$("#scope-read\\:org");
 			await expect(emailScope.isSelected()).resolves.toBe(true);
 			await emailScope.click();
 			await expect(emailScope.isSelected()).resolves.toBe(false);
@@ -143,7 +143,7 @@ describe("fauxauth", () => {
 			const { body } = await accessToken({ code: url.searchParams.get("code") });
 			expect(Object.fromEntries(new URLSearchParams(body).entries())).toEqual({
 				access_token: "secretadmintoken",
-				scope: "read:user,read:org",
+				scope: "read:user",
 				token_type: "bearer",
 			});
 		});
