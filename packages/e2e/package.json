@@ -29,6 +29,9 @@
     "pretest": "wait-on --timeout 30000 --log \"http-get://${SELENIUM_HOST:-localhost}:4444${SELENIUM_PATH:-/wd/hub}\"",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
+  "fauxauth": {
+    "codes": { "abc123": "def456" }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/textbook/fauxauth.git"

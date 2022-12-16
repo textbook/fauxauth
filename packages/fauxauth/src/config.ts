@@ -63,12 +63,19 @@ export const initialise = (overrides?: Partial<Configuration>): void => {
 		callbackUrl: argv.callbackUrl,
 		clientId: argv.clientId,
 		clientSecret: argv.clientSecret,
-		codes: JSON.parse(argv.codes),
-		tokenMap: argv.tokenMap && JSON.parse(argv.tokenMap),
+		codes: parseIfNeeded<Configuration["codes"]>(argv.codes),
+		tokenMap: parseIfNeeded<Configuration["tokenMap"]>(argv.tokenMap),
 		...cloneDeep(overrides),
 	};
 	log("configured with %j", initialConfiguration);
 	reset();
+};
+
+const parseIfNeeded = <T extends object | undefined>(value: T | string): T => {
+	if (value === undefined || typeof value === "object") {
+		return value;
+	}
+	return JSON.parse(value);
 };
 
 export const reset = (): void => {
