@@ -1,0 +1,19 @@
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    font-size: 18px;
+    margin: 2rem;
+}
+
+button, input, select {
+    font-size: inherit
+}
+
+form > * {
+    margin: 1rem;
+}
+
+input[type="checkbox"] {
+    margin: 0.5rem;
+}
