@@ -1,5 +1,4 @@
 import axios from "axios";
-import { format, parse, URLSearchParams } from "url";
 import { remote } from "webdriverio";
 
 const baseUrl = process.env.FAUXAUTH_URL || "http://localhost:3000";
@@ -35,73 +34,33 @@ describe("fauxauth", () => {
 	it("works with default configuration", async () => {
 		const state = "testing";
 
-		let res = await makeRequest("/authorize", {
-			followRedirect: false,
-			qs: { client_id: "1ae9b0ca17e754106b51", state },
-		});
-		expect(res.statusCode).toBe(302);
-		const { query, search, ...url } = parse(res.headers.location, true);
-		expect(format(url)).toBe("http://example.org/");
-		expect(query.state).toBe(state);
-		expect(query.code).toMatch(/[0-9a-f]{20}/);
+		const { headers: { location } } = await authorize({ state });
+		const url = new URL(location);
+		expect(url.origin).toBe("http://example.org");
+		expect(url.searchParams.get("state")).toBe(state);
+		expect(url.searchParams.get("code")).toMatch(/[0-9a-f]{20}/);
 
-		res = await makeRequest("/access_token", {
-			method: "POST",
-			body: new URLSearchParams({
-				client_id: "1ae9b0ca17e754106b51",
-				client_secret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
-				code: query.code,
-				state,
-			}).toString(),
-		});
-		expect(res.statusCode).toBe(200);
-		expect(res.body).toMatch(/access_token=[0-9a-f]{40}/);
+		const { body } = await accessToken({ code: url.searchParams.get("code"), state });
+		expect(body).toMatch(/access_token=[0-9a-f]{40}/);
 	});
 
 	it("works with custom configuration", async () => {
 		const code = "deadbeef";
 		const token = "somereallylongtoken";
-		let res = await makeRequest("/_configuration", {
-			body: [
-				{
-					op: "add",
-					path: `/codes/${code}`,
-					value: { token },
-				},
-				{ op: "replace", path: "/clientSecret", value: "notsosecret" },
-			],
-			json: true,
-			method: "PATCH",
-		});
-		expect(res.statusCode).toBe(200);
+		await configure([
+			{ op: "add", path: `/codes/${code}`, value: { token } },
+			{ op: "replace", path: "/clientSecret", value: "notsosecret" },
+		]);
 
-		res = await makeRequest("/access_token", {
-			method: "POST",
-			body: new URLSearchParams({
-				client_id: "1ae9b0ca17e754106b51",
-				client_secret: "notsosecret",
-				code,
-			}).toString(),
-		});
-		expect(res.statusCode).toBe(200);
-		expect(res.body).toContain(`access_token=${token}`);
+		const { body } = await accessToken({ client_secret: "notsosecret", code });
+		expect(body).toContain(`access_token=${token}`);
 	});
 
 	it("supports scope management", async () => {
-		const { headers } = await makeRequest("/authorize", {
-			followRedirect: false,
-			qs: { client_id: "1ae9b0ca17e754106b51", scope: "public_repo read:user" },
-		});
-		const { query: { code } } = parse(headers.location, true);
+		const { headers } = await authorize({ scope: "public_repo read:user" });
+		const url = new URL(headers.location);
 
-		const { body } = await makeRequest("/access_token", {
-			method: "POST",
-			body: new URLSearchParams({
-				client_id: "1ae9b0ca17e754106b51",
-				client_secret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
-				code,
-			}).toString(),
-		});
+		const { body } = await accessToken({ code: url.searchParams.get("code") });
 		expect(Object.fromEntries(new URLSearchParams(body).entries())).toEqual({
 			access_token: expect.stringMatching(/^[a-f\d]{40}$/),
 			scope: "public_repo,read:user",
@@ -110,28 +69,12 @@ describe("fauxauth", () => {
 	});
 
 	it("appends scopes if requested", async () => {
-		await makeRequest("/_configuration", {
-			body: [
-				{ op: "replace", path: "/appendScopes", value: true },
-			],
-			json: true,
-			method: "PATCH",
-		});
+		await configure([{ op: "replace", path: "/appendScopes", value: true }]);
 
-		const { headers } = await makeRequest("/authorize", {
-			followRedirect: false,
-			qs: { client_id: "1ae9b0ca17e754106b51", scope: "public_repo read:user" },
-		});
-		const { query: { code } } = parse(headers.location, true);
+		const { headers } = await authorize({ scope: "public_repo read:user" });
+		const url = new URL(headers.location);
 
-		const { body } = await makeRequest("/access_token", {
-			method: "POST",
-			body: new URLSearchParams({
-				client_id: "1ae9b0ca17e754106b51",
-				client_secret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
-				code,
-			}).toString(),
-		});
+		const { body } = await accessToken({ code: url.searchParams.get("code") });
 		expect(Object.fromEntries(new URLSearchParams(body).entries())).toEqual({
 			access_token: expect.stringMatching(/^[a-f\d]{40}\/public_repo\/read:user$/),
 			scope: "public_repo,read:user",
@@ -141,11 +84,11 @@ describe("fauxauth", () => {
 
 	describe("with a token map", () => {
 		it("provides a browser flow", async () => {
-			let res = await makeRequest("/_configuration", addTokenMapOptions({
-				"Administrator": "secretadmintoken",
-				"User": "secretusertoken",
-			}));
-			expect(res.statusCode).toBe(200);
+			await configure([{
+				op: "add",
+				path: "/tokenMap",
+				value: { "Administrator": "secretadmintoken", "User": "secretusertoken" },
+			}]);
 
 			const options = new URLSearchParams({
 				client_id: "1ae9b0ca17e754106b51",
@@ -158,40 +101,32 @@ describe("fauxauth", () => {
 			const button = await browser.$("#submit-button");
 			await button.click();
 
-			const url = await browser.getUrl();
-			const { host, pathname, query } = parse(url, true);
-			expect(host).toBe("example.org");
-			expect(pathname).toBe("/test");
-			expect(query).toEqual({
+			const url = new URL(await browser.getUrl());
+			expect(url.origin).toBe("http://example.org");
+			expect(url.pathname).toBe("/test");
+			expect(Object.fromEntries(url.searchParams.entries())).toEqual({
 				code: expect.stringMatching(/^[a-f\d]{20}$/i),
 				state: "bananas",
 			});
 
-			res = await makeRequest("/access_token", {
-				method: "POST",
-				body: new URLSearchParams({
-					client_id: "1ae9b0ca17e754106b51",
-					client_secret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
-					code: query.code,
-				}).toString(),
-			});
-			expect(res.statusCode).toBe(200);
-			expect(res.body).toContain("access_token=secretusertoken");
+			const { body } = await accessToken({ code: url.searchParams.get("code") });
+			expect(body).toContain("access_token=secretusertoken");
 		});
 
 		it("supports scope management", async () => {
-			await makeRequest("/_configuration", addTokenMapOptions({
-				"Administrator": "secretadmintoken",
-				"User": "secretusertoken",
-			}));
+			await configure([{
+				op: "add",
+				path: "/tokenMap",
+				value: { "Administrator": "secretadmintoken", "User": "secretusertoken" },
+			}]);
+
 			const options = new URLSearchParams({
 				client_id: "1ae9b0ca17e754106b51",
 				redirect_uri: "http://example.org/test",
 				scope: ["read:user", "user:email", "read:org"].join(" "),
 				state: "bananas",
 			});
-
-			await browser.url(`/authorize?${options.toString()}`);
+			await browser.url(`/authorize?${options}`);
 			const select = await browser.$("#role-select");
 			await select.selectByVisibleText("Administrator");
 			const readScope = await browser.$("#scope-read\\:user");
@@ -203,19 +138,10 @@ describe("fauxauth", () => {
 			const button = await browser.$("#submit-button");
 			await button.click();
 
-			const url = await browser.getUrl();
-			const { query: { code } } = parse(url, true);
+			const url = new URL(await browser.getUrl());
 
-			const res = await makeRequest("/access_token", {
-				method: "POST",
-				body: new URLSearchParams({
-					client_id: "1ae9b0ca17e754106b51",
-					client_secret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
-					code,
-				}).toString(),
-			});
-			expect(res.statusCode).toBe(200);
-			expect(Object.fromEntries(new URLSearchParams(res.body).entries())).toEqual({
+			const { body } = await accessToken({ code: url.searchParams.get("code") });
+			expect(Object.fromEntries(new URLSearchParams(body).entries())).toEqual({
 				access_token: "secretadmintoken",
 				scope: "read:user,read:org",
 				token_type: "bearer",
@@ -224,13 +150,33 @@ describe("fauxauth", () => {
 	});
 });
 
-const addTokenMapOptions = (tokenMap) => ({
-	body: [
-		{ op: "add", path: "/tokenMap", value: tokenMap },
-	],
-	json: true,
-	method: "PATCH",
-});
+const accessToken = async (params) => {
+	const res = await makeRequest("/access_token", {
+		method: "POST",
+		body: new URLSearchParams({
+			client_id: "1ae9b0ca17e754106b51",
+			client_secret: "3efb56fdbac1cb21f3d4fea9b70036e04a34d068",
+			...params,
+		}).toString(),
+	});
+	expect(res.statusCode).toBe(200);
+	return res;
+};
+
+const authorize = async (params) => {
+	const res = await makeRequest("/authorize", {
+		followRedirect: false,
+		qs: { client_id: "1ae9b0ca17e754106b51", ...params },
+	});
+	expect(res.statusCode).toBe(302);
+	return res;
+};
+
+const configure = async (body) => {
+	const res = await makeRequest("/_configuration", { body, json: true, method: "PATCH" });
+	expect(res.statusCode).toBe(200);
+	return res;
+};
 
 const makeRequest = (url, options) => axios
 	.request({
