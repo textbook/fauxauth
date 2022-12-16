@@ -171,7 +171,7 @@ something like the following form will be rendered:
 ```html
 <form action="/authorize" method="post" id="root-form">
     <label for="role-select">
-        Select token
+        Select identity:
         <select id="role-select" name="code">
             <option value="288e5e60aa9220000000">Headteacher</option>
             <option value="c4f9e4bfffa600000000">Teacher</option>
