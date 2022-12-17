@@ -14,7 +14,9 @@
     "pree2e:docker": "npm run build:docker",
     "e2e:docker": "cross-env NODE_RELEASE=$(cat .nvmrc) TAG=latest npm --workspace packages/e2e run docker",
     "install:chromedriver": "npm --workspace packages/e2e run chromedriver",
-    "lint": "eslint --ext=js,ts .",
+    "lint": "npm run lint:css && npm run lint:js",
+    "lint:css": "stylelint \"**/*.css\"",
+    "lint:js": "eslint --ext=js,ts .",
     "ship": "npm run lint && npm run test && npm run build && npm run e2e && npm run e2e:custom",
     "test": "npm --workspace packages/fauxauth test"
   },
@@ -34,7 +36,9 @@
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
     "eslint": "^8.29.0",
-    "eslint-plugin-jest": "^27.1.7"
+    "eslint-plugin-jest": "^27.1.7",
+    "stylelint": "^14.16.0",
+    "stylelint-config-standard": "^29.0.0"
   },
   "workspaces": [
     "packages/e2e",

@@ -1,0 +1,9 @@
+{
+  "extends": "stylelint-config-standard",
+  "defaultSeverity": "error",
+  "rules": {
+    "indentation": "tab",
+    "max-line-length": null,
+    "selector-list-comma-newline-after": null
+  }
+}
