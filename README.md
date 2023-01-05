@@ -25,7 +25,7 @@ flow, as documented [here][4].
   Assuming an app that will locate the OAuth provider via an `OAUTH_URL`
   environment variable, your `docker-compose.yml` could look something like:
 
-  ```
+  ```yaml
   version: '3'
   services:
       some_app:
