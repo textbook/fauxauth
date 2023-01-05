@@ -6,7 +6,7 @@
   "main": "index.js",
   "type": "module",
   "devDependencies": {
-    "axios": "^1.2.1",
+    "axios": "^1.2.2",
     "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
     "express": "^4.18.2",
@@ -14,7 +14,7 @@
     "jest-junit": "^15.0.0",
     "wait-on": "^7.0.1",
     "webdriver-manager": "^12.1.8",
-    "webdriverio": "^7.28.0"
+    "webdriverio": "^7.29.1"
   },
   "scripts": {
     "chromedriver": "webdriver-manager update --gecko=false --versions.chrome=${CHROME_VERSION:-latest}",
