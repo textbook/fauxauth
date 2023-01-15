@@ -67,6 +67,12 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
           ./bin/deploy-docker.sh "${{ github.ref_name }}"
+      - name: "Update Docker Hub description"
+        uses: "peter-evans/dockerhub-description@v3"
+        with:
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: "textbook/fauxauth"
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
   deploy-npm:
     needs:
       - "e2e"
