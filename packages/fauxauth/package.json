@@ -18,7 +18,7 @@
   "scripts": {
     "prebuild": "rimraf lib/*",
     "build": "tsc --project tsconfig.build.json",
-    "postbuild": "chmod u+x ./lib/server.js && cpy ../../README.md packages/fauxauth/",
+    "postbuild": "chmod u+x ./lib/server.js && cpy ../../LICENSE ../../README.md packages/fauxauth/",
     "start": "node $npm_package_bin_fauxauth",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "test:cover": "npm run test -- --coverage",
