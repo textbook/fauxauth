@@ -12,7 +12,7 @@ const webdriverConfig = {
 		},
 	},
 	hostname: process.env.SELENIUM_HOST || "localhost",
-	logLevel: "warn",
+	logLevel: process.env.WD_LOG_LEVEL || "warn",
 	path: process.env.SELENIUM_PATH || "/wd/hub",
 };
 
