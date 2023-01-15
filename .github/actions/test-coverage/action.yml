@@ -11,7 +11,8 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: |
+    - name: "Set up CodeClimate reporter"
+      run: |
         curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
         chmod +x ./cc-test-reporter
         ./cc-test-reporter before-build
@@ -22,7 +23,8 @@ runs:
     - run: "npm run test:cover"
       shell: "bash"
       working-directory: "packages/fauxauth"
-    - run: "./cc-test-reporter after-build"
+    - name: "Report test outcomes"
+      run: "./cc-test-reporter after-build"
       env:
         CC_TEST_REPORTER_ID: ${{ inputs.reporter-id }}
       shell: "bash"
