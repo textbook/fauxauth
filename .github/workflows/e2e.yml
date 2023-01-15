@@ -35,7 +35,7 @@ jobs:
       - name: "Retrieve build output"
         uses: actions/download-artifact@v3
         with:
-          name: ${{ input.artifact-name }}
+          name: ${{ inputs.artifact-name }}
           path: "packages/fauxauth/lib"
       - name: "Run E2E tests"
         run: "npm run e2e"
