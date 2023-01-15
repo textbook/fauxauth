@@ -65,7 +65,8 @@ jobs:
         env:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        run: "./bin/deploy-docker.sh"
+        run: |
+          ./bin/deploy-docker.sh "${{ github.ref_name }}"
   deploy-npm:
     needs:
       - "e2e"
