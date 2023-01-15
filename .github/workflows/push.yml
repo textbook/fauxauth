@@ -1,0 +1,38 @@
+---
+name: "Node.js CI"
+
+on:
+  - "push"
+  - "pull_request"
+
+jobs:
+  build:
+    runs-on: "ubuntu-22.04"
+    outputs:
+      node-version: ${{ steps.node-version.outputs.node-version }}
+    steps:
+      - uses: "actions/checkout@v3"
+      - run: 'echo "node-version=$(cat .nvmrc)" >> $GITHUB_OUTPUTS'
+        id: "node-version"
+      - uses: "actions/setup-node@v3"
+        with:
+          cache: "npm"
+          node-version: ${{ steps.node-version.outputs.node-version }}
+      - run: "npm ci"
+      - run: "npm run lint"
+      - uses: "./.github/actions/test-coverage"
+        with:
+          reporter-id: ${{ secrets.CC_TEST_REPORTER_ID }}
+  e2e:
+    needs:
+      - "build"
+    strategy:
+      matrix:
+        node-version:
+          - ${{ needs.build.outputs.node-version }}
+          - "fermium"
+          - "gallium"
+          - "hydrogen"
+      uses: "./.github/workflows/e2e.yml"
+      with:
+        node-version: ${{ matrix.node-version }}

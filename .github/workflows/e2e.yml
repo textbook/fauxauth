@@ -1,0 +1,30 @@
+---
+name: "Run E2E tests in specified Node version"
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        required: true
+        type: "string"
+
+jobs:
+  e2e:
+    runs-on: "ubuntu-22.04"
+    steps:
+      - uses: "actions/checkout@v3"
+      - uses: "actions/setup-node@v3"
+        with:
+          cache: "npm"
+          node-version: ${{ inputs.node-version }}
+      - name: "Install NPM 8+ for workspace support"
+        run: |
+          if [[ "$(npm -v | cut -d. -f1)" -lt "8" ]]; then
+            npm install --global npm@8
+          fi
+        shell: "bash"
+      - run: "npm ci"
+      - run: "npm run install:chromedriver"
+      - run: "npm run e2e"
+        env:
+          DEBUG: "fauxauth:*"
