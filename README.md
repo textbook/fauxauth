@@ -1,7 +1,7 @@
 # fauxauth
 
 [![License](https://img.shields.io/github/license/textbook/fauxauth.svg)](https://github.com/textbook/fauxauth/blob/main/LICENSE)
-[![Build Status](https://circleci.com/gh/textbook/fauxauth.svg?style=shield)](https://circleci.com/gh/textbook/fauxauth)
+[![Build Status](https://github.com/textbook/fauxauth/actions/workflows/push.yml/badge.svg)](https://github.com/textbook/fauxauth/actions/workflows/push.yml)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/ec914e9fdeba3ccb3e0b/test_coverage)](https://codeclimate.com/github/textbook/fauxauth/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ec914e9fdeba3ccb3e0b/maintainability)](https://codeclimate.com/github/textbook/fauxauth/maintainability)
 [![NPM Version](https://img.shields.io/npm/v/fauxauth.svg)](https://www.npmjs.com/package/fauxauth)
