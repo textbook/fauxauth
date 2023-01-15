@@ -13,7 +13,6 @@
     "e2e:custom": "npm --workspace packages/e2e run custom-e2e",
     "pree2e:docker": "npm run build:docker",
     "e2e:docker": "cross-env NODE_RELEASE=$(cat .nvmrc) TAG=latest npm --workspace packages/e2e run docker",
-    "install:chromedriver": "npm --workspace packages/e2e run chromedriver",
     "lint": "npm run lint:css && npm run lint:js",
     "lint:css": "stylelint \"**/*.css\"",
     "lint:js": "eslint --ext=js,ts .",

@@ -44,6 +44,5 @@ popd
 pushd "$E2E"
     npm install --no-package-lock
     npm install "fauxauth@$TAG" --no-package-lock --no-save
-    npm run chromedriver
     npm run e2e
 popd

@@ -14,4 +14,5 @@ RUN npm --workspace packages/e2e --include-workspace-root ci
 COPY ./packages/e2e/jest.config.js ./packages/e2e/
 COPY ./packages/e2e/fauxauth.spec.js ./packages/e2e/
 
-ENTRYPOINT [ "npm", "--workspace=packages/e2e", "test" ]
+ENTRYPOINT [ "npm" ]
+CMD [ "--workspace=packages/e2e", "test" ]

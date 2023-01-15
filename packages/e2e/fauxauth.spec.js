@@ -11,9 +11,9 @@ const webdriverConfig = {
 			args: ["disable-gpu", "headless"],
 		},
 	},
-	hostname: process.env.SELENIUM_HOST || "localhost",
+	hostname: process.env.SELENIUM_HOST,
 	logLevel: process.env.WD_LOG_LEVEL || "warn",
-	path: process.env.SELENIUM_PATH || "/wd/hub",
+	path: process.env.SELENIUM_PATH,
 };
 
 describe("fauxauth", () => {
