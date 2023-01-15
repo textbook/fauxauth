@@ -26,7 +26,6 @@
     "e2e:app": "cross-env DEBUG=fauxauth:* fauxauth",
     "e2e:run": "npm run test",
     "e2e:sln": "webdriver-manager start",
-    "pretest": "wait-on --timeout 30000 --log \"http-get://${SELENIUM_HOST:-localhost}:4444${SELENIUM_PATH:-/wd/hub}\"",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "fauxauth": {
