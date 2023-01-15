@@ -18,7 +18,7 @@ jobs:
       - name: "Check out repository"
         uses: "actions/checkout@v3"
       - name: "Retrieve build output"
-        uses: actions/download-artifact@v3
+        uses: "actions/download-artifact@v3"
         with:
           name: ${{ inputs.artifact-name }}
           path: "packages/fauxauth/lib"

@@ -49,3 +49,51 @@ jobs:
     with:
       artifact-name: "fauxauth-lib"
       node-version: ${{ matrix.node-version }}
+  deploy-docker:
+    needs:
+      - "e2e"
+    if: "startsWith(github.ref, 'refs/tags/v')"
+    runs-on: "ubuntu-22.04"
+    steps:
+      - name: "Check out repository"
+        uses: "actions/checkout@v3"
+      - name: "Set up Docker Buildx"
+        uses: "docker/setup-buildx-action@v2"
+        with:
+          install: true
+      - name: "Publish to Docker Hub"
+        run: "./bin/deploy-docker.sh"
+  deploy-npm:
+    needs:
+      - "e2e"
+    if: "startsWith(github.ref, 'refs/tags/v')"
+    runs-on: "ubuntu-22.04"
+    steps:
+      - name: "Check out repository"
+        uses: "actions/checkout@v3"
+      - name: "Retrieve build output"
+        uses: "actions/download-artifact@v3"
+        with:
+          name: "fauxauth-lib"
+          path: "packages/fauxauth/lib"
+      - name: "Publish to NPM"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > "$HOME/.npmrc"
+          npm --workspace packages/fauxauth publish
+  smoke-test:
+    needs:
+      - "deploy-docker"
+      - "deploy-npm"
+    runs-on: "ubuntu-22.04"
+    steps:
+      - name: "Check out repository"
+        uses: "actions/checkout@v3"
+      - name: "Set up Docker Buildx"
+        uses: "docker/setup-buildx-action@v2"
+        with:
+          install: true
+      - name: "Validate published artifacts"
+        run: |
+          ./bin/smoke-test.sh "${{ github.ref_name }}"
