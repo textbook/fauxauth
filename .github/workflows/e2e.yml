@@ -4,6 +4,9 @@ name: "Run E2E tests in specified Node version"
 on:
   workflow_call:
     inputs:
+      artifact-name:
+        required: true
+        type: "string"
       node-version:
         required: true
         type: "string"
@@ -29,6 +32,11 @@ jobs:
         run: |
           npm ci
           npm run install:chromedriver
+      - name: "Retrieve build output"
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ input.artifact-name }}
+          path: "packages/fauxauth/lib"
       - name: "Run E2E tests"
         run: "npm run e2e"
         env:
