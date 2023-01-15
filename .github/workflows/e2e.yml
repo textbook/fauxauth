@@ -18,7 +18,7 @@ jobs:
       - name: "Get Chrome version"
         id: "chrome"
         run: |
-          echo "version=$(google-chrome --version | cut -d ' ' -f 3)" >> $GITHUB_OUTPUT'
+          echo "version=$(google-chrome --version | cut -d ' ' -f 3)" >> $GITHUB_OUTPUT
       - name: "Check out repository"
         uses: "actions/checkout@v3"
       - name: "Retrieve build output"
