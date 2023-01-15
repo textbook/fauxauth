@@ -82,6 +82,11 @@ jobs:
         with:
           name: "fauxauth-lib"
           path: "packages/fauxauth/lib"
+      - name: "Set up Node environment"
+        uses: "actions/setup-node@v3"
+        id: "setup-node"
+        with:
+          node-version-file: ".nvmrc"
       - name: "Create package"
         run: "npm --workspace packages/fauxauth pack"
       - name: "Publish to GitHub"
