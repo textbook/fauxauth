@@ -39,4 +39,3 @@ jobs:
         run: "npm run e2e"
         env:
           DEBUG: "fauxauth:*"
-          WD_LOG_LEVEL: "debug"

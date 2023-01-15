@@ -42,10 +42,9 @@ jobs:
       matrix:
         node-version:
           - ${{ needs.build.outputs.node-version }}
-# TODO: fix E2E and turn these back on
-#          - "lts/fermium"
-#          - "lts/gallium"
-#          - "lts/hydrogen"
+          - "lts/fermium"
+          - "lts/gallium"
+          - "lts/hydrogen"
     uses: "./.github/workflows/e2e.yml"
     with:
       artifact-name: "fauxauth-lib"
