@@ -227,11 +227,8 @@ scopes.
 
 ## How can I work on it?
 
-Fork and clone the repository to your local machine, run `npm install` or
-`npm ci`to install the relevant dependencies, then run `npm run
-install:chromedriver` to install Chromedriver for the E2E tests. If you need
-to install a specific version of Chromedriver, you can set the
-`CHROME_VERSION` environment variable while running `install:chromedriver`.
+Fork and clone the repository to your local machine and run `npm install` or
+`npm ci`to install the relevant dependencies.
 
 To run the full automated validation suite (lint, build and test), run `npm
 run ship`.
