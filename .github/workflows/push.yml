@@ -36,9 +36,9 @@ jobs:
       matrix:
         node-version:
           - ${{ needs.build.outputs.node-version }}
-          - "fermium"
-          - "gallium"
-          - "hydrogen"
+          - "lts/fermium"
+          - "lts/gallium"
+          - "lts/hydrogen"
     uses: "./.github/workflows/e2e.yml"
     with:
       node-version: ${{ matrix.node-version }}
