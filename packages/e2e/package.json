@@ -25,6 +25,22 @@
     "e2e:run": "npm run test",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "^#(.+)": "<rootDir>/../../node_modules/$1"
+    },
+    "reporters": [
+      "default",
+      [
+        "jest-junit",
+        {
+          "outputDirectory": "<rootDir>/reports/jest"
+        }
+      ]
+    ],
+    "testTimeout": 30000,
+    "transform": {}
+  },
   "fauxauth": {
     "codes": {
       "abc123": "def456"

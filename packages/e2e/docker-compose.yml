@@ -15,7 +15,7 @@ services:
     entrypoint: "sh"
     command:
       - "-c"
-      - "npx wait-on --log --timeout 60000 http-get://selenium:4444/ && npm --workspace=packages/e2e test"
+      - "npx wait-on --log --timeout 60000 http-get://selenium:4444/ && npm --workspace=packages/e2e test -- --testTimeout 60000"
     environment:
       BROWSER: firefox
       FAUXAUTH_URL: http://fauxauth:3210

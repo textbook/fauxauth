@@ -32,12 +32,14 @@ popd
 
 cleanup() {
     pushd "$ROOT"
-        git checkout package{,-lock}.json
+        git checkout package{,-lock}.json packages/e2e/package.json
     popd
 }
 
 pushd "$ROOT"
     rm -f package*.json
+    # shellcheck disable=SC2016
+    npm --prefix="$E2E" pkg set 'jest.moduleNameMapper={"^#(.+)": "<rootDir>/node_modules/$1"}' --json
     trap cleanup EXIT
 popd
 
