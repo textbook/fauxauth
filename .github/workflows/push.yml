@@ -62,6 +62,9 @@ jobs:
         with:
           install: true
       - name: "Publish to Docker Hub"
+        env:
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: "./bin/deploy-docker.sh"
   deploy-npm:
     needs:
