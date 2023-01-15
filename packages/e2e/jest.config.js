@@ -1,4 +1,7 @@
 export default {
+	moduleNameMapper: {
+		"^#(.*)": "<rootDir>/../../node_modules/$1",
+	},
 	reporters: [
 		"default",
 		["jest-junit", { outputDirectory: "./reports/jest" }],
