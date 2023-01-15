@@ -69,6 +69,27 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: "textbook/fauxauth"
           username: ${{ secrets.DOCKER_USERNAME }}
+  deploy-github:
+    needs:
+      - "e2e"
+    if: "startsWith(github.ref, 'refs/tags/v')"
+    runs-on: "ubuntu-22.04"
+    steps:
+      - name: "Check out repository"
+        uses: "actions/checkout@v3"
+      - name: "Retrieve build output"
+        uses: "actions/download-artifact@v3"
+        with:
+          name: "fauxauth-lib"
+          path: "packages/fauxauth/lib"
+      - name: "Create package"
+        run: "npm --workspace packages/fauxauth pack"
+      - name: "Publish to GitHub"
+        run: |
+          gh release create \
+            '${{ github.ref_name }}' \
+            --title '${{ github.ref_name }}' \
+            "fauxauth-$(jq --raw-output '.version' package.json).tgz#NPM package"
   deploy-npm:
     needs:
       - "e2e"

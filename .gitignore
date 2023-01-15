@@ -5,3 +5,4 @@ packages/fauxauth/README.md
 lib/
 node_modules/
 reports/
+fauxauth-*.tgz

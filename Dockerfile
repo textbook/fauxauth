@@ -11,6 +11,7 @@ COPY ./package*.json ./
 COPY ./packages/fauxauth/package.json ./packages/fauxauth/
 RUN npm --workspace packages/fauxauth ci
 
+COPY ./LICENSE ./
 COPY ./README.md ./
 COPY ./packages/fauxauth/tsconfig.json ./packages/fauxauth/
 COPY ./packages/fauxauth/tsconfig.build.json ./packages/fauxauth/
