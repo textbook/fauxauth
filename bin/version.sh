@@ -2,9 +2,9 @@
 
 set -euo pipefail
 
-if [ $# -ne 1 ]; then
-  echo "usage: ./bin/version.sh <version>"
-  echo "This will update the version for all packages"
+if [ $# -lt 1 ]; then
+  echo "usage: ./bin/version.sh <version> [--gitstub]"
+  echo "This will update the version for all relevant packages"
   exit 1
 fi
 
@@ -29,9 +29,14 @@ npmRun() {
   npm --prefix="$ROOT" "$@"
 }
 
-VERSION="$(npmRun version --no-git-tag-version "$1")"
-for PACKAGE in e2e fauxauth; do
-  npmRun --workspace "$ROOT/packages/$PACKAGE" version "$VERSION"
-  npmRun install  # update lockfile
-done;
-commitAndTag "$VERSION"
+if [[ "$*" =~ '--gitstub' ]]; then
+  npmRun --workspace packages/gitstub version "$1"
+  commitAndTag "gitstub-v$(jq --raw-output '.version' "$ROOT/packages/gitstub/package.json")"
+else
+  VERSION="$(npmRun version --no-git-tag-version "$1")"
+  for PACKAGE in e2e fauxauth; do
+    npmRun --workspace "$ROOT/packages/$PACKAGE" version "$VERSION"
+    npmRun install  # update lockfile
+  done;
+  commitAndTag "$VERSION"
+fi

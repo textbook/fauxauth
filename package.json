@@ -41,6 +41,7 @@
   },
   "workspaces": [
     "packages/e2e",
-    "packages/fauxauth"
+    "packages/fauxauth",
+    "packages/gitstub"
   ]
 }
