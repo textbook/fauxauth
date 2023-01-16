@@ -19,7 +19,6 @@ services:
     environment:
       BROWSER: firefox
       FAUXAUTH_URL: http://fauxauth:3210
-      JEST_TIMEOUT: 60000
       SELENIUM_HOST: selenium
       SELENIUM_PATH: /
     image: textbook/fauxauth-e2e
