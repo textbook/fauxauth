@@ -81,6 +81,33 @@ app.listen(4200, () => {
 });
 ```
 
+#### Core router
+
+_(New in v8.1)_
+
+Alternatively, you can get direct access to the core router, although you have
+to take more responsibility for setup:
+
+```js
+import express from "express";
+import { coreRouter } from "fauxauth";
+
+const app = express();
+const { middleware, routes, views } = coreRouter({/* any configuration */});
+
+// Ensure the select page can render
+app.set("view engine", views.engine);
+app.set("views", views.directory);
+
+// Register required middleware
+app.use(middleware);
+
+// Mount the routes wherever you like
+app.use("/login/oauth", routes);
+```
+
+Note that only the `/authorize` and `/access_token` routes are exposed this way.
+
 ### Compatibility
 
 The compiled version of `fauxauth`, as released to NPM, is tested against the
