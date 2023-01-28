@@ -32,8 +32,8 @@
   "funding": "https://ko-fi.com/textbook",
   "devDependencies": {
     "@codeyourfuture/eslint-config-standard": "^3.0.3",
-    "@typescript-eslint/eslint-plugin": "^5.48.2",
-    "@typescript-eslint/parser": "^5.48.2",
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/parser": "^5.49.0",
     "eslint": "^8.32.0",
     "eslint-plugin-jest": "^27.2.1",
     "stylelint": "^14.16.1",
