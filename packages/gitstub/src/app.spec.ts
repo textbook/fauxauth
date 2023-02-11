@@ -10,4 +10,14 @@ describe("app", () => {
 			.query({ client_id: clientId })
 			.expect(200);
 	});
+
+	it("exposes API routes", async () => {
+		const app = appFactory();
+		await request(app)
+			.get("/api/user")
+			.expect(401, { message: "Requires authentication" });
+		await request(app)
+			.get("/api/user/emails")
+			.expect(401, { message: "Requires authentication" });
+	});
 });
