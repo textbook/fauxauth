@@ -12,6 +12,8 @@
   "scripts": {
     "prebuild": "rimraf lib/*",
     "build": "tsc --project tsconfig.build.json",
+    "prestart": "npm run build",
+    "start": "node lib/server.js",
     "test": "echo 'Run tests from root directory'"
   },
   "repository": {
@@ -29,6 +31,7 @@
     "fauxauth": "^8.1.1"
   },
   "devDependencies": {
-    "@octokit/openapi-types": "^16.0.0"
+    "@octokit/openapi-types": "^16.0.0",
+    "cheerio": "^1.0.0-rc.12"
   }
 }
