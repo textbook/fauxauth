@@ -23,12 +23,12 @@ jobs:
         run: "npm ci"
       - name: "Check code style"
         run: "npm run lint"
+      - name: "Build package"
+        run: "npm run build"
       - name: "Run tests and report coverage"
         uses: "./.github/actions/test-coverage"
         with:
           reporter-id: ${{ secrets.CC_TEST_REPORTER_ID }}
-      - name: "Build package"
-        run: "npm run build"
       - name: "Store build output"
         uses: "actions/upload-artifact@v3"
         with:
