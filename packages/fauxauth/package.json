@@ -20,9 +20,7 @@
     "build": "tsc --project tsconfig.build.json",
     "postbuild": "chmod u+x ./lib/server.js && cpy ../../LICENSE ../../README.md packages/fauxauth/",
     "start": "node $npm_package_bin_fauxauth",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "test:cover": "npm run test -- --coverage",
-    "test:watch": "npm run test -- --watch"
+    "test": "echo 'Run tests from root directory'"
   },
   "repository": {
     "type": "git",
@@ -58,17 +56,10 @@
     "@types/cors": "^2.8.13",
     "@types/debug": "^4.1.7",
     "@types/express": "^4.17.16",
-    "@types/jest": "^29.4.0",
     "@types/lodash.clonedeep": "^4.5.7",
     "@types/morgan": "^1.9.4",
-    "@types/supertest": "^2.0.12",
     "@types/xml2js": "^0.4.11",
     "@types/yargs": "^17.0.20",
-    "cpy-cli": "^4.2.0",
-    "jest": "^29.4.1",
-    "jest-junit": "^15.0.0",
-    "supertest": "^6.3.3",
-    "ts-jest": "^29.0.5",
-    "ts-node": "^10.9.1"
+    "cpy-cli": "^4.2.0"
   }
 }

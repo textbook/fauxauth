@@ -12,7 +12,7 @@
   "scripts": {
     "prebuild": "rimraf lib/*",
     "build": "tsc --project tsconfig.build.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo 'Run tests from root directory'"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,9 @@
   },
   "homepage": "https://github.com/textbook/fauxauth#readme",
   "dependencies": {
-    "fauxauth": "^8.1.0"
+    "fauxauth": "^8.1.1"
+  },
+  "devDependencies": {
+    "@octokit/openapi-types": "^16.0.0"
   }
 }
