@@ -21,8 +21,11 @@ runs:
       shell: "bash"
     - run: "npm run test:cover"
       shell: "bash"
+    - name: "Generate coverage report"
+      run: "./cc-test-reporter format-coverage -t clover ./reports/coverage/clover.xml"
+      shell: "bash"
     - name: "Report test outcomes"
-      run: "./cc-test-reporter after-build"
+      run: "./cc-test-reporter upload-coverage"
       env:
         CC_TEST_REPORTER_ID: ${{ inputs.reporter-id }}
       shell: "bash"
