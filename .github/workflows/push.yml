@@ -29,12 +29,18 @@ jobs:
         uses: "./.github/actions/test-coverage"
         with:
           reporter-id: ${{ secrets.CC_TEST_REPORTER_ID }}
-      - name: "Store build output"
+      - name: "Store Fauxauth build output"
         uses: "actions/upload-artifact@v3"
         with:
           if-no-files-found: "error"
           name: "fauxauth-lib"
           path: "packages/fauxauth/lib"
+      - name: "Store GitStub build output"
+        uses: "actions/upload-artifact@v3"
+        with:
+          if-no-files-found: "error"
+          name: "gitstub-lib"
+          path: "packages/gitstub/lib"
   e2e:
     needs:
       - "build"
