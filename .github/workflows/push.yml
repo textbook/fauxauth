@@ -82,6 +82,8 @@ jobs:
         with:
           name: "fauxauth-lib"
           path: "packages/fauxauth/lib"
+      - name: "Include LICENSE and README"
+        run: "cp LICENSE README.md packages/fauxauth/"
       - name: "Set up Node environment"
         uses: "actions/setup-node@v3"
         id: "setup-node"
@@ -110,6 +112,13 @@ jobs:
         with:
           name: "fauxauth-lib"
           path: "packages/fauxauth/lib"
+      - name: "Include LICENSE and README"
+        run: "cp LICENSE README.md packages/fauxauth/"
+      - name: "Set up Node environment"
+        uses: "actions/setup-node@v3"
+        id: "setup-node"
+        with:
+          node-version-file: ".nvmrc"
       - name: "Publish to NPM"
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
