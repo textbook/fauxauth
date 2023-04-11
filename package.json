@@ -37,7 +37,7 @@
     "eslint": "^8.38.0",
     "eslint-plugin-jest": "^27.2.1",
     "stylelint": "^15.4.0",
-    "stylelint-config-standard": "^30.0.1"
+    "stylelint-config-standard": "^32.0.0"
   },
   "workspaces": [
     "packages/e2e",
