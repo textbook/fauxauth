@@ -1,6 +1,6 @@
 {
   "name": "fauxauth",
-  "version": "8.1.5",
+  "version": "9.0.0",
   "private": true,
   "description": "Helper application for testing OAuth clients",
   "engines": {
