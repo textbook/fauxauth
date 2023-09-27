@@ -4,7 +4,8 @@
   },
   "extends": [
     "@codeyourfuture/standard",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/strict",
+    "plugin:@typescript-eslint/stylistic"
   ],
   "parser": "@typescript-eslint/parser",
   "overrides": [

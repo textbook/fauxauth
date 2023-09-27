@@ -6,11 +6,11 @@ import { getAll } from "../config.js";
 
 const log = debug("fauxauth:accessToken");
 
-type AccessTokenQuery = {
+interface AccessTokenQuery {
 	client_id: string;
 	client_secret: string;
 	code: string;
-};
+}
 
 type Payload = {
 	error: string;
@@ -52,6 +52,7 @@ router.post("/", (
 	} else if (stored) {
 		log("removing '%s' from %j", code, configuration.codes);
 		const { scopes, token } = stored;
+		// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 		delete configuration.codes[code];
 		payload = {
 			access_token: configuration.appendScopes ? [token, ...scopes ?? []].join("/") : token,

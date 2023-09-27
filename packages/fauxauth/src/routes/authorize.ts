@@ -7,12 +7,12 @@ import { generateHex } from "../utils.js";
 
 const log = debug("fauxauth:authorize");
 
-type AuthorizeQuery = {
+interface AuthorizeQuery {
 	client_id: string;
 	redirect_uri?: string;
 	scope?: string;
 	state?: string;
-};
+}
 
 const router = Router();
 
@@ -60,7 +60,7 @@ router.get("/", (
 		return res.redirect(location);
 	}
 
-	const roles: { [role: string]: string } = {};
+	const roles: Record<string, string> = {};
 	for (const role of Object.keys(configuration.tokenMap)) {
 		const code = generateHex(20);
 		roles[role] = code;
@@ -76,12 +76,12 @@ router.get("/", (
 	});
 });
 
-type AuthorizeBody = {
+interface AuthorizeBody {
 	code: string;
 	redirect_uri?: string;
 	scope: string | string[];
 	state?: string;
-};
+}
 
 router.post("/", (
 	req: Request<unknown, unknown, AuthorizeBody>,
