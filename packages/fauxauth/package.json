@@ -13,7 +13,7 @@
     "/views"
   ],
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
   "scripts": {
     "prebuild": "rimraf lib/*",
@@ -44,6 +44,7 @@
   "homepage": "https://github.com/textbook/fauxauth#readme",
   "funding": "https://ko-fi.com/textbook",
   "dependencies": {
+    "@tsconfig/node18": "^18.2.2",
     "cors": "^2.8.5",
     "debug": "^4.3.4",
     "express": "^4.18.2",

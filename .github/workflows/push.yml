@@ -48,9 +48,8 @@ jobs:
       matrix:
         node-version:
           - ${{ needs.build.outputs.node-version }}
-          - "lts/fermium"
-          - "lts/gallium"
           - "lts/hydrogen"
+          - "20"  # lts tag not yet available
     uses: "./.github/workflows/e2e.yml"
     with:
       artifact-name: "fauxauth-lib"
@@ -58,7 +57,7 @@ jobs:
   deploy-docker:
     needs:
       - "e2e"
-    if: "startsWith(github.ref, 'refs/tags/v')"
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: "ubuntu-22.04"
     steps:
       - name: "Check out repository"
@@ -78,7 +77,7 @@ jobs:
   deploy-github:
     needs:
       - "e2e"
-    if: "startsWith(github.ref, 'refs/tags/v')"
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: "ubuntu-22.04"
     steps:
       - name: "Check out repository"
@@ -108,7 +107,7 @@ jobs:
   deploy-npm:
     needs:
       - "e2e"
-    if: "startsWith(github.ref, 'refs/tags/v')"
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: "ubuntu-22.04"
     steps:
       - name: "Check out repository"

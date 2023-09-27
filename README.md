@@ -111,9 +111,9 @@ Note that only the `/authorize` and `/access_token` routes are exposed this way.
 ### Compatibility
 
 The compiled version of `fauxauth`, as released to NPM, is tested against the
-latest versions of the active Node LTS releases, currently Fermium (14),
-Gallium (16) and Hydrogen (18). Compilation is carried out using TypeScript in
-the Node version specified in `.nvmrc`.
+latest versions of the active Node LTS releases, currently Hydrogen (18) and Iron
+(20). Compilation is carried out using TypeScript in the Node version specified
+in `.nvmrc`.
 
 ### Options
 
