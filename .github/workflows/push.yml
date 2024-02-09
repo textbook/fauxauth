@@ -18,9 +18,9 @@ jobs:
       node-version: ${{ steps.setup-node.outputs.node-version }}
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
       - name: "Set up Node environment"
-        uses: "actions/setup-node@v3"
+        uses: "actions/setup-node@v4"
         id: "setup-node"
         with:
           cache: "npm"
@@ -36,7 +36,7 @@ jobs:
       - name: "Build package"
         run: "npm run build"
       - name: "Store build output"
-        uses: "actions/upload-artifact@v3"
+        uses: "actions/upload-artifact@v4"
         with:
           if-no-files-found: "error"
           name: "fauxauth-lib"
@@ -61,7 +61,7 @@ jobs:
     runs-on: "ubuntu-22.04"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
       - name: "Publish to Docker Hub"
         env:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -69,7 +69,7 @@ jobs:
         run: |
           ./bin/deploy-docker.sh "${{ github.ref_name }}"
       - name: "Update Docker Hub description"
-        uses: "peter-evans/dockerhub-description@v3"
+        uses: "peter-evans/dockerhub-description@v4"
         with:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: "textbook/fauxauth"
@@ -81,16 +81,16 @@ jobs:
     runs-on: "ubuntu-22.04"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
       - name: "Retrieve build output"
-        uses: "actions/download-artifact@v3"
+        uses: "actions/download-artifact@v4"
         with:
           name: "fauxauth-lib"
           path: "packages/fauxauth/lib"
       - name: "Include LICENSE and README"
         run: "cp LICENSE README.md packages/fauxauth/"
       - name: "Set up Node environment"
-        uses: "actions/setup-node@v3"
+        uses: "actions/setup-node@v4"
         id: "setup-node"
         with:
           node-version-file: ".nvmrc"
@@ -111,16 +111,16 @@ jobs:
     runs-on: "ubuntu-22.04"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
       - name: "Retrieve build output"
-        uses: "actions/download-artifact@v3"
+        uses: "actions/download-artifact@v4"
         with:
           name: "fauxauth-lib"
           path: "packages/fauxauth/lib"
       - name: "Include LICENSE and README"
         run: "cp LICENSE README.md packages/fauxauth/"
       - name: "Set up Node environment"
-        uses: "actions/setup-node@v3"
+        uses: "actions/setup-node@v4"
         id: "setup-node"
         with:
           node-version-file: ".nvmrc"
@@ -137,7 +137,7 @@ jobs:
     runs-on: "ubuntu-22.04"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
       - name: "Validate published artifacts"
         run: |
           ./bin/smoke-test.sh "${{ github.ref_name }}"

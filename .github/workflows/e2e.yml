@@ -16,14 +16,14 @@ jobs:
     runs-on: "ubuntu-22.04"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
       - name: "Retrieve build output"
-        uses: "actions/download-artifact@v3"
+        uses: "actions/download-artifact@v4"
         with:
           name: ${{ inputs.artifact-name }}
           path: "packages/fauxauth/lib"
       - name: "Set up Node environment"
-        uses: "actions/setup-node@v3"
+        uses: "actions/setup-node@v4"
         with:
           cache: "npm"
           node-version: ${{ inputs.node-version }}
