@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "npm --workspace packages/fauxauth run build",
-    "build:docker": "docker build . --build-arg ALPINE_RELEASE=3.17 --build-arg NODE_RELEASE=$(cat .nvmrc) --tag textbook/fauxauth",
+    "build:docker": "docker build . --build-arg ALPINE_RELEASE=3.19 --build-arg NODE_RELEASE=$(cat .nvmrc) --tag textbook/fauxauth",
     "e2e": "npm --workspace packages/e2e run e2e",
     "e2e:custom": "npm --workspace packages/e2e run custom-e2e",
     "pree2e:docker": "npm run build:docker",
