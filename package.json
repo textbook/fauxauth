@@ -32,11 +32,11 @@
   "funding": "https://ko-fi.com/textbook",
   "devDependencies": {
     "@codeyourfuture/eslint-config-standard": "^4.0.3",
-    "@typescript-eslint/eslint-plugin": "^6.7.3",
-    "@typescript-eslint/parser": "^6.7.3",
-    "eslint": "^8.50.0",
-    "eslint-plugin-jest": "^27.4.0",
-    "stylelint": "^15.10.3",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-jest": "^27.6.3",
+    "stylelint": "^15.11.0",
     "stylelint-config-standard": "^34.0.0"
   },
   "workspaces": [
