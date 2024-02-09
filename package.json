@@ -36,8 +36,8 @@
     "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.56.0",
     "eslint-plugin-jest": "^27.6.3",
-    "stylelint": "^15.11.0",
-    "stylelint-config-standard": "^34.0.0"
+    "stylelint": "^16.2.1",
+    "stylelint-config-standard": "^36.0.0"
   },
   "workspaces": [
     "packages/e2e",
