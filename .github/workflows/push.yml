@@ -91,7 +91,7 @@ jobs:
           tags: |
             textbook/fauxauth
             textbook/fauxauth:${{ steps.metadata.outputs.major }}
-            textbook/fauxauth:${{ steps.metadata.outputs.minor }}
+            textbook/fauxauth:${{ steps.metadata.outputs.major }}.${{ steps.metadata.outputs.minor }}
             textbook/fauxauth:${{ steps.metadata.outputs.tag }}
       - name: "Update Docker Hub description"
         uses: "peter-evans/dockerhub-description@v4"
