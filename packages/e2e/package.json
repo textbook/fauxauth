@@ -1,6 +1,6 @@
 {
   "name": "e2e",
-  "version": "9.0.2",
+  "version": "9.0.3",
   "private": true,
   "description": "E2E tests for fauxauth",
   "main": "index.js",
