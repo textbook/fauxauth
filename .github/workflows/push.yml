@@ -88,6 +88,7 @@ jobs:
           labels: |
             version=${{ github.ref_name }}
           push: true
+          sbom: true
           tags: |
             textbook/fauxauth
             textbook/fauxauth:${{ steps.metadata.outputs.major }}
