@@ -8,7 +8,7 @@ services:
   e2e:
     build:
       args:
-        ALPINE_RELEASE: 3.17
+        ALPINE_RELEASE: 3.19
         NODE_RELEASE: ${NODE_RELEASE}
       context: ../..
       dockerfile: ./packages/e2e/Dockerfile
@@ -21,6 +21,7 @@ services:
       FAUXAUTH_URL: http://fauxauth:3210
       SELENIUM_HOST: selenium
       SELENIUM_PATH: /
+      SELENIUM_PORT: 4444
     image: textbook/fauxauth-e2e
     links:
       - fauxauth

@@ -3,6 +3,7 @@ import { remote } from "webdriverio";
 
 const baseUrl = process.env.FAUXAUTH_URL || "http://localhost:3000";
 
+/** @type {import("webdriverio").RemoteOptions} */
 const webdriverConfig = {
 	baseUrl,
 	capabilities: {
@@ -14,6 +15,7 @@ const webdriverConfig = {
 	hostname: process.env.SELENIUM_HOST,
 	logLevel: process.env.WD_LOG_LEVEL || "warn",
 	path: process.env.SELENIUM_PATH,
+	port: process.env.SELENIUM_PORT ? parseInt(process.env.SELENIUM_PORT, 10) : undefined,
 };
 
 describe("fauxauth", () => {
