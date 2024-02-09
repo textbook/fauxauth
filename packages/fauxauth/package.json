@@ -1,6 +1,6 @@
 {
   "name": "fauxauth",
-  "version": "9.0.3",
+  "version": "9.0.4",
   "description": "Helper application for testing OAuth clients",
   "bin": {
     "fauxauth": "./lib/server.js"
