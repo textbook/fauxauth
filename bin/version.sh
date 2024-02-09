@@ -32,6 +32,6 @@ npmRun() {
 VERSION="$(npmRun version --no-git-tag-version "$1")"
 for PACKAGE in e2e fauxauth; do
   npmRun --workspace "$ROOT/packages/$PACKAGE" version "$VERSION"
-  npmRun install  # update lockfile
+  npmRun install --package-lock-only
 done;
 commitAndTag "$VERSION"
