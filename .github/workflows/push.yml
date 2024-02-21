@@ -47,9 +47,10 @@ jobs:
     strategy:
       matrix:
         node-version:
+          - "18.0"
           - ${{ needs.build.outputs.node-version }}
           - "lts/hydrogen"
-          - "20"  # lts tag not yet available
+          - "lts/iron"
     uses: "./.github/workflows/e2e.yml"
     with:
       artifact-name: "fauxauth-lib"
