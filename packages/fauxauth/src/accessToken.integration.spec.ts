@@ -27,8 +27,8 @@ describe("access_token endpoint", () => {
 			})
 			.expect(302)
 			.then((res) => {
-				const url = new URL(res.get("Location"));
-				code = url.searchParams.get("code") as string;
+				const url = new URL(res.get("Location")!);
+				code = url.searchParams.get("code")!;
 			});
 	});
 

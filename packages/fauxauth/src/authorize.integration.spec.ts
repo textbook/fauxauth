@@ -31,7 +31,7 @@ describe("authorize endpoint", () => {
 			.query({ client_id: defaultConfiguration.clientId })
 			.expect(302)
 			.then((res) => {
-				const url = new URL(res.get("Location"));
+				const url = new URL(res.get("Location")!);
 				expect(`${url.origin}/`).toBe(defaultConfiguration.callbackUrl);
 			});
 	});
@@ -47,7 +47,7 @@ describe("authorize endpoint", () => {
 			})
 			.expect(302)
 			.then((res) => {
-				const url = new URL(res.get("Location"));
+				const url = new URL(res.get("Location")!);
 				expect(url.pathname).toBe("/foo/");
 			});
 	});
@@ -61,7 +61,7 @@ describe("authorize endpoint", () => {
 			})
 			.expect(302)
 			.then((res) => {
-				const url = new URL(res.get("Location"));
+				const url = new URL(res.get("Location")!);
 				expect(`${url.origin}/`).toBe(defaultConfiguration.callbackUrl);
 				expect(url.searchParams.get("error")).toBe("redirect_uri_mismatch");
 			});
@@ -78,7 +78,7 @@ describe("authorize endpoint", () => {
 			})
 			.expect(302)
 			.then((res) => {
-				const url = new URL(res.get("Location"));
+				const url = new URL(res.get("Location")!);
 				expect(url.searchParams.get("state")).toBe(state);
 			});
 	});
@@ -92,7 +92,7 @@ describe("authorize endpoint", () => {
 			})
 			.expect(302)
 			.then((res) => {
-				const url = new URL(res.get("Location"));
+				const url = new URL(res.get("Location")!);
 				expect(Object.fromEntries(url.searchParams.entries())).toEqual({
 					code: expect.stringMatching(/^[a-f\d]{20}$/),
 				});
@@ -107,7 +107,7 @@ describe("authorize endpoint", () => {
 			})
 			.expect(302)
 			.then((res) => {
-				const url = new URL(res.get("Location"));
+				const url = new URL(res.get("Location")!);
 				expect(url.searchParams.get("code")).toMatch(/[0-9a-f]{20}/);
 			});
 	});
@@ -148,7 +148,7 @@ describe("authorize endpoint", () => {
 				.send({ redirect_uri: redirectUri, scope: "foo", state, code })
 				.expect(302)
 				.then((res) => {
-					const url = new URL(res.get("Location"));
+					const url = new URL(res.get("Location")!);
 					expect(url.pathname).toBe("/path/to");
 					expect(Object.fromEntries(url.searchParams.entries())).toEqual({ code, state });
 				});
