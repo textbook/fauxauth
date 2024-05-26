@@ -14,6 +14,7 @@ export default (overrides?: Partial<Configuration>): Application => {
 	app.use(middleware);
 	app.use(morgan("dev"));
 
+	app.get("/", (_, res) => res.render("index"));
 	app.use("/", routes);
 	app.use("/_configuration", configRouter);
 

@@ -69,7 +69,7 @@ router.get("/", (
 
 	log("sending '%j' from %j", roles, configuration.codes);
 
-	res.render("index", {
+	res.render("authorize", {
 		query: { ...query, redirect_uri: pathname },
 		roles,
 		scopes,

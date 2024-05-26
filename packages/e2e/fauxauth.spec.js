@@ -38,6 +38,12 @@ describe("fauxauth", () => {
 		}
 	});
 
+	it("renders a basic home page", async () => {
+		await browser.url("/");
+		const title = await browser.$("h1");
+		await expect(title.getText()).resolves.toBe("Fauxauth");
+	});
+
 	it("works with default configuration", async () => {
 		const state = "testing";
 

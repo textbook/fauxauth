@@ -1,40 +1,8 @@
-doctype html
-html(lang="en")
-  head
-    style
-      include style.css
-  body
-    h1= "Fauxauth"
-    p= "Helper application for testing OAuth clients."
-    hr
-    form(action="authorize", method="post", id="root-form")
-      div
-        label(for="role-select")
-          | Select identity:
-          |
-          select(id="role-select", name="code")
-            each code, role in roles
-              option(value=code) #{role}
-      // hidden inputs
-      each value, name in query
-        input(hidden=true, name=name, type="text", value=value)
-      if scopes
-        fieldset
-          legend= "Select allowed scopes"
-          each scope in scopes
-            div
-              label(for=`scope-${scope}`)
-                input(checked=true, id=`scope-${scope}`, name="scope", type="checkbox", value=scope)
-                | #{scope}
-      div
-        button(id="submit-button", type="submit") Authenticate
-    hr
-    p
-      | Each identity above corresponds to a token for the OAuth provider's API.
-      | When you click "Authenticate" you'll be redirected back to the client with a temporary code.
-      | The client will then exchange this code with Fauxauth for the relevant token.
-    p
-      | For more information about Fauxauth itself, see
-      |
-      a(href="https://github.com/textbook/fauxauth") GitHub
-      |.
+extends _layout.pug
+
+block content
+  p
+    | For more information, see
+    |
+    a(href="https://github.com/textbook/fauxauth") GitHub
+    |.
