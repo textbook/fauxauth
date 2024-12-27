@@ -4,7 +4,7 @@
 [![Build Status](https://github.com/textbook/fauxauth/actions/workflows/push.yml/badge.svg)](https://github.com/textbook/fauxauth/actions/workflows/push.yml)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/ec914e9fdeba3ccb3e0b/test_coverage)](https://codeclimate.com/github/textbook/fauxauth/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ec914e9fdeba3ccb3e0b/maintainability)](https://codeclimate.com/github/textbook/fauxauth/maintainability)
-[![NPM Version](https://img.shields.io/npm/v/fauxauth.svg)](https://www.npmjs.com/package/fauxauth)
+[![npm Version](https://img.shields.io/npm/v/fauxauth.svg)](https://www.npmjs.com/package/fauxauth)
 [![Docker Image](https://img.shields.io/docker/image-size/textbook/fauxauth?sort=semver)](https://hub.docker.com/r/textbook/fauxauth/)
 
 Helper application for testing OAuth clients
@@ -43,10 +43,10 @@ flow, as documented [here][4].
   `:latest`; the build process for release `vX.Y.Z` creates the tags `:vX`,
   `:vX.Y` and `:vX.Y.Z` and publishes them all to Docker Hub, so you can pick
   a level of stability you're comfortable with (e.g. `:v2` is equivalent to
-  NPM semver's `^2.0.0`, whereas `:v2.1` is equivalent to `~2.1.0`).
+  npm semver's `^2.0.0`, whereas `:v2.1` is equivalent to `~2.1.0`).
 
 - **Node Dependency**: alternatively, you may want to run `fauxauth` directly.
-  You can install it from NPM as follows:
+  You can install it from npm as follows:
 
   ```bash
   npm install fauxauth --save-dev  # or "yarn add fauxauth -D"
@@ -110,10 +110,10 @@ Note that only the `/authorize` and `/access_token` routes are exposed this way.
 
 ### Compatibility
 
-The compiled version of `fauxauth`, as released to NPM, is tested against the
-latest versions of the active Node LTS releases, currently Hydrogen (18) and Iron
-(20). Compilation is carried out using TypeScript in the Node version specified
-in `.nvmrc`.
+The compiled version of `fauxauth`, as released to npm, is tested against the
+latest versions of the active Node LTS releases, currently Hydrogen (18), Iron
+(20) and Jod (22). Compilation is carried out using TypeScript in the Node
+version specified in `.nvmrc`.
 
 ### Options
 
