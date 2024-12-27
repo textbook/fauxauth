@@ -85,7 +85,7 @@ interface AuthorizeBody {
 
 router.post("/", (
 	req: Request<unknown, unknown, AuthorizeBody>,
-	res: Response
+	res: Response,
 ) => {
 	const configuration = getAll();
 	log("POST received %j", req.body);

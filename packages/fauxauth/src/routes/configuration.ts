@@ -13,7 +13,7 @@ router.patch("/", (req: Request, res: Response<Configuration>) => {
 	try {
 		update(jiff.patch(req.body, getAll()));
 		res.send(getAll());
-	} catch (e) {
+	} catch {
 		res.status(422).send(getAll());
 	}
 });
