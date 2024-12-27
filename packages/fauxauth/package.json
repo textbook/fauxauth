@@ -13,7 +13,7 @@
     "/views"
   ],
   "engines": {
-    "node": ">=18"
+    "node": ">=18.20"
   },
   "scripts": {
     "prebuild": "rimraf lib/*",

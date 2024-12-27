@@ -26,7 +26,7 @@ flow, as documented [here][4].
   environment variable, your `docker-compose.yml` could look something like:
 
   ```yaml
-  version: '3'
+  ---
   services:
       some_app:
           ...
@@ -113,7 +113,8 @@ Note that only the `/authorize` and `/access_token` routes are exposed this way.
 The compiled version of `fauxauth`, as released to npm, is tested against the
 latest versions of the active Node LTS releases, currently Hydrogen (18), Iron
 (20) and Jod (22). Compilation is carried out using TypeScript in the Node
-version specified in `.nvmrc`.
+version specified in `.nvmrc`. The lowest supported version is documented in
+`package.json`'s `engines` field.
 
 ### Options
 

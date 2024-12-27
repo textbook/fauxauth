@@ -47,7 +47,7 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - "18.0"
+          - "18.20.0"
           - ${{ needs.build.outputs.node-version }}
           - "lts/hydrogen"
           - "lts/iron"
