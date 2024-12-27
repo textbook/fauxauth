@@ -7,12 +7,17 @@ on:
       artifact-name:
         required: true
         type: "string"
+      continue-on-error:
+        default: false
+        required: false
+        type: "boolean"
       node-version:
         required: true
         type: "string"
 
 jobs:
   e2e:
+    continue-on-error: ${{ inputs.continue-on-error }}
     runs-on: "ubuntu-22.04"
     steps:
       - name: "Check out repository"

@@ -53,10 +53,10 @@ jobs:
           - "lts/iron"
           - "lts/jod"
           - "latest"
-    continue-on-error: ${{ matrix.node-version == 'latest' }}
     uses: "./.github/workflows/e2e.yml"
     with:
       artifact-name: "fauxauth-lib"
+      continue-on-error: ${{ matrix.node-version == 'latest' }}
       node-version: ${{ matrix.node-version }}
   deploy-docker:
     needs:
