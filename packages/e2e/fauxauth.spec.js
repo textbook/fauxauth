@@ -115,7 +115,7 @@ describe("fauxauth", () => {
 			await button.click();
 
 			const url = new URL(await browser.getUrl());
-			expect(url.origin).toBe("http://example.org");
+			expect(url.origin).toBe("https://example.org");
 			expect(url.pathname).toBe("/test");
 			expect(Object.fromEntries(url.searchParams.entries())).toEqual({
 				code: expect.stringMatching(/^[a-f\d]{20}$/i),
