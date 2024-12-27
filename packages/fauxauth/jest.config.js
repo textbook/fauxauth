@@ -1,6 +1,5 @@
-import { Config } from "@jest/types";
-
-const config: Config.InitialOptions = {
+/** @type {import("@jest/types").Config.InitialOptions} */
+const config = {
 	coverageDirectory: "./coverage",
 	extensionsToTreatAsEsm: [".ts"],
 	moduleNameMapper: {
