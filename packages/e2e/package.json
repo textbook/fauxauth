@@ -17,9 +17,9 @@
   },
   "scripts": {
     "custom-e2e": "concurrently --kill-others --names app,run --success first \"node server.js\" \"npm:e2e:run\"",
-    "predocker": "docker-compose build",
-    "docker": "docker-compose run e2e || (npm run postdocker && exit 1)",
-    "postdocker": "docker-compose logs fauxauth selenium && docker-compose down",
+    "predocker": "docker compose build",
+    "docker": "docker compose run e2e || (npm run postdocker && exit 1)",
+    "postdocker": "docker compose logs fauxauth selenium && docker compose down",
     "e2e": "concurrently --kill-others --success first \"npm:e2e:*\"",
     "e2e:app": "cross-env DEBUG=fauxauth:* fauxauth",
     "e2e:run": "npm run test",
