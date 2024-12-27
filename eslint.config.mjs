@@ -3,7 +3,7 @@ import jest from "eslint-plugin-jest";
 import globals from "globals";
 import ts from "typescript-eslint";
 
-/** @type {import("eslint").Linter.FlatConfig[]} */
+/** @type {import("eslint").Linter.Config[]} */
 export default [
 	cyf,
 	...ts.configs.strict,
