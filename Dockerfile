@@ -1,7 +1,7 @@
 ARG ALPINE_RELEASE
 ARG NODE_RELEASE
 
-FROM node:${NODE_RELEASE}-alpine${ALPINE_RELEASE} as build
+FROM node:${NODE_RELEASE}-alpine${ALPINE_RELEASE} AS build
 
 USER node
 WORKDIR /home/node
@@ -18,7 +18,7 @@ COPY ./packages/fauxauth/tsconfig.build.json ./packages/fauxauth/
 COPY ./packages/fauxauth/src/ ./packages/fauxauth/src/
 RUN npm run build
 
-FROM node:${NODE_RELEASE}-alpine${ALPINE_RELEASE} as run
+FROM node:${NODE_RELEASE}-alpine${ALPINE_RELEASE} AS run
 
 RUN apk add --no-cache tini
 
