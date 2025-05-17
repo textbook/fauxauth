@@ -33,13 +33,13 @@
   "devDependencies": {
     "@codeyourfuture/eslint-config-standard": "^5.1.0",
     "@types/eslint": "^9.6.1",
-    "eslint": "^9.17.0",
-    "eslint-plugin-jest": "^28.10.0",
-    "globals": "^15.14.0",
-    "stylelint": "^16.12.0",
+    "eslint": "^9.27.0",
+    "eslint-plugin-jest": "^28.11.0",
+    "globals": "^15.15.0",
+    "stylelint": "^16.19.1",
     "stylelint-config-standard": "^36.0.1",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.18.2"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.32.1"
   },
   "workspaces": [
     "packages/e2e",
