@@ -5,7 +5,7 @@ import ts from "typescript-eslint";
 
 /** @type {import("eslint").Linter.Config[]} */
 export default [
-	cyf,
+	...cyf.configs.standard,
 	...ts.configs.strict,
 	...ts.configs.stylistic,
 	{
@@ -18,7 +18,7 @@ export default [
 			"@typescript-eslint/no-unused-vars": [
 				"error",
 				{
-					"ignoreRestSiblings": true,
+					ignoreRestSiblings: true,
 				},
 			],
 			"no-console": "error",
@@ -34,7 +34,7 @@ export default [
 			"jest/expect-expect": [
 				"error",
 				{
-					"assertFunctionNames": [
+					assertFunctionNames: [
 						"expect",
 						"request.**.expect",
 					],

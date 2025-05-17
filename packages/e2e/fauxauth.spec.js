@@ -100,7 +100,7 @@ describe("fauxauth", () => {
 			await configure([{
 				op: "add",
 				path: "/tokenMap",
-				value: { "Administrator": "secretadmintoken", "User": "secretusertoken" },
+				value: { Administrator: "secretadmintoken", User: "secretusertoken" },
 			}]);
 
 			const options = new URLSearchParams({
@@ -130,7 +130,7 @@ describe("fauxauth", () => {
 			await configure([{
 				op: "add",
 				path: "/tokenMap",
-				value: { "Administrator": "secretadmintoken", "User": "secretusertoken" },
+				value: { Administrator: "secretadmintoken", User: "secretusertoken" },
 			}]);
 
 			const options = new URLSearchParams({

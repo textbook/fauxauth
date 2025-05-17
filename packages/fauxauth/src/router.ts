@@ -12,7 +12,7 @@ export interface CoreRouter {
 	views: {
 		directory: string;
 		engine: string;
-	}
+	};
 }
 
 export default (configuration?: Partial<Configuration>): CoreRouter => {
