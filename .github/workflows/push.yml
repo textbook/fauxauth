@@ -47,6 +47,8 @@ jobs:
           if-no-files-found: "error"
           name: "fauxauth-lib"
           path: "packages/fauxauth/lib"
+      - name: "Set up Docker BuildX"
+        uses: "docker/setup-buildx-action@v4"
       - name: "Build Docker container"
         uses: "docker/build-push-action@v7"
         with:
