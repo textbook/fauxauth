@@ -43,6 +43,14 @@ jobs:
           if-no-files-found: "error"
           name: "fauxauth-lib"
           path: "packages/fauxauth/lib"
+      - name: "Build Docker container"
+        uses: "docker/build-push-action@v7"
+        with:
+          build-args: |
+            ALPINE_RELEASE=3.23
+            NODE_RELEASE=${{ steps.setup-node.outputs.node-version }}
+          context: .
+          push: false
   e2e:
     needs:
       - "build"
@@ -88,7 +96,7 @@ jobs:
         uses: "docker/build-push-action@v7"
         with:
           build-args: |
-            ALPINE_RELEASE=3.19
+            ALPINE_RELEASE=3.23
             NODE_RELEASE=${{ steps.metadata.outputs.node }}
           context: .
           labels: |
