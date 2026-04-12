@@ -4,7 +4,7 @@
   "private": true,
   "description": "Helper application for testing OAuth clients",
   "engines": {
-    "node": ">=22.11"
+    "node": "^22.11"
   },
   "scripts": {
     "build": "npm --workspace packages/fauxauth run build",
@@ -31,15 +31,14 @@
   "homepage": "https://github.com/textbook/fauxauth#readme",
   "funding": "https://ko-fi.com/textbook",
   "devDependencies": {
-    "@codeyourfuture/eslint-config-standard": "^7.0.0",
-    "@types/eslint": "^9.6.1",
-    "eslint": "^9.27.0",
-    "eslint-plugin-jest": "^28.11.0",
-    "globals": "^16.1.0",
-    "stylelint": "^16.19.1",
-    "stylelint-config-standard": "^38.0.0",
+    "@codeyourfuture/eslint-config-standard": "^8.1.1",
+    "eslint": "^10.2.0",
+    "eslint-plugin-jest": "^29.15.2",
+    "globals": "^17.5.0",
+    "stylelint": "^17.7.0",
+    "stylelint-config-standard": "^40.0.0",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.32.1"
+    "typescript-eslint": "^8.58.1"
   },
   "workspaces": [
     "packages/e2e",
