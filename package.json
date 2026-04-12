@@ -4,7 +4,7 @@
   "private": true,
   "description": "Helper application for testing OAuth clients",
   "engines": {
-    "node": "^22.11"
+    "node": ">=22.11"
   },
   "scripts": {
     "build": "npm --workspace packages/fauxauth run build",
