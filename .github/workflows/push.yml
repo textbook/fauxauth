@@ -40,13 +40,10 @@ jobs:
         with:
           sonar-token: ${{ secrets.SONAR_TOKEN }}
       - name: "Build package"
-        run: "npm run build"
-      - name: "Store build output"
-        uses: "actions/upload-artifact@v7"
-        with:
-          if-no-files-found: "error"
-          name: "fauxauth-lib"
-          path: "packages/fauxauth/lib"
+        run: |
+          npm run build
+          npm --workspace fauxauth pack
+          mv fauxauth-*.tgz package.tgz
       - name: "Set up Docker BuildX"
         uses: "docker/setup-buildx-action@v4"
       - name: "Build Docker container"
@@ -59,6 +56,18 @@ jobs:
           cache-to: type=gha,mode=max
           context: .
           push: false
+      - name: "Store build output"
+        uses: "actions/upload-artifact@v7"
+        with:
+          if-no-files-found: "error"
+          name: "fauxauth-lib"
+          path: "packages/fauxauth/lib"
+      - name: "Store package output"
+        uses: "actions/upload-artifact@v7"
+        with:
+          if-no-files-found: "error"
+          name: "fauxauth-pkg"
+          path: "package.tgz"
   e2e:
     needs:
       - "build"
@@ -81,6 +90,9 @@ jobs:
       - "e2e"
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: "ubuntu-latest"
+    environment:
+      name: "docker"
+      url: "https://hub.docker.com/r/textbook/fauxauth"
     steps:
       - name: "Check out repository"
         uses: "actions/checkout@v6"
@@ -99,7 +111,7 @@ jobs:
         uses: "docker/login-action@v4"
         with:
           password: ${{ secrets.DOCKER_PASSWORD }}
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: ${{ vars.DOCKER_USERNAME }}
       - name: "Build and push container"
         uses: "docker/build-push-action@v7"
         with:
@@ -123,7 +135,7 @@ jobs:
         with:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: "textbook/fauxauth"
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: ${{ vars.DOCKER_USERNAME }}
   deploy-github:
     needs:
       - "e2e"
@@ -158,28 +170,27 @@ jobs:
     needs:
       - "e2e"
     if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: read
+      id-token: write
+    environment:
+      name: "npm"
+      url: "https://www.npmjs.com/package/fauxauth"
     runs-on: "ubuntu-latest"
     steps:
-      - name: "Check out repository"
-        uses: "actions/checkout@v6"
       - name: "Retrieve build output"
         uses: "actions/download-artifact@v8"
         with:
-          name: "fauxauth-lib"
-          path: "packages/fauxauth/lib"
-      - name: "Include LICENSE and README"
-        run: "cp LICENSE README.md packages/fauxauth/"
+          name: "fauxauth-pkg"
       - name: "Set up Node environment"
         uses: "actions/setup-node@v6"
         id: "setup-node"
         with:
-          node-version-file: ".nvmrc"
+          node-version: "lts/*"
       - name: "Publish to NPM"
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > "$HOME/.npmrc"
-          npm --workspace packages/fauxauth publish
+          npm install --global npm@latest
+          npm publish --provenance package.tgz
   smoke-test:
     needs:
       - "deploy-docker"
