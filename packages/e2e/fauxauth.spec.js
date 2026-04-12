@@ -113,6 +113,10 @@ describe("fauxauth", () => {
 			await select.selectByVisibleText("User");
 			const button = await browser.$("#submit-button");
 			await button.click();
+			await browser.waitUntil(async () => {
+				const url = await browser.getUrl();
+				return url.startsWith("https://example.org");
+			});
 
 			const url = new URL(await browser.getUrl());
 			expect(url.origin).toMatch(/^https?:\/\/example\.org$/);
