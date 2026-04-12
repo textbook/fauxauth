@@ -13,14 +13,14 @@ on:
 
 jobs:
   build:
-    runs-on: "ubuntu-22.04"
+    runs-on: "ubuntu-latest"
     outputs:
       node-version: ${{ steps.setup-node.outputs.node-version }}
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v4"
+        uses: "actions/checkout@v6"
       - name: "Set up Node environment"
-        uses: "actions/setup-node@v4"
+        uses: "actions/setup-node@v6"
         id: "setup-node"
         with:
           cache: "npm"
@@ -32,11 +32,11 @@ jobs:
       - name: "Run tests and report coverage"
         uses: "./.github/actions/test-coverage"
         with:
-          reporter-id: ${{ secrets.CC_TEST_REPORTER_ID }}
+          sonar-token: ${{ secrets.SONAR_TOKEN }}
       - name: "Build package"
         run: "npm run build"
       - name: "Store build output"
-        uses: "actions/upload-artifact@v4"
+        uses: "actions/upload-artifact@v7"
         with:
           if-no-files-found: "error"
           name: "fauxauth-lib"
@@ -47,11 +47,10 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - "18.20.0"
+          - "22.11.0"
           - ${{ needs.build.outputs.node-version }}
-          - "lts/hydrogen"
-          - "lts/iron"
           - "lts/jod"
+          - "lts/krypton"
           - "latest"
     uses: "./.github/workflows/e2e.yml"
     with:
@@ -62,10 +61,10 @@ jobs:
     needs:
       - "e2e"
     if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: "ubuntu-22.04"
+    runs-on: "ubuntu-latest"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v4"
+        uses: "actions/checkout@v6"
       - name: "Get metadata"
         id: metadata
         run: |
@@ -76,14 +75,14 @@ jobs:
         env:
           TAG: ${{ github.ref_name }}
       - name: "Set up Docker BuildX"
-        uses: "docker/setup-buildx-action@v3"
+        uses: "docker/setup-buildx-action@v4"
       - name: "Log in to Docker Hub"
-        uses: docker/login-action@v3
+        uses: "docker/login-action@v4"
         with:
           password: ${{ secrets.DOCKER_PASSWORD }}
           username: ${{ secrets.DOCKER_USERNAME }}
       - name: "Build and push container"
-        uses: "docker/build-push-action@v5"
+        uses: "docker/build-push-action@v7"
         with:
           build-args: |
             ALPINE_RELEASE=3.19
@@ -99,7 +98,7 @@ jobs:
             textbook/fauxauth:${{ steps.metadata.outputs.major }}.${{ steps.metadata.outputs.minor }}
             textbook/fauxauth:${{ steps.metadata.outputs.tag }}
       - name: "Update Docker Hub description"
-        uses: "peter-evans/dockerhub-description@v4"
+        uses: "peter-evans/dockerhub-description@1b9a80c056b620d92cedb9d9b5a223409c68ddfa"  # v5.0.0
         with:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: "textbook/fauxauth"
@@ -108,19 +107,19 @@ jobs:
     needs:
       - "e2e"
     if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: "ubuntu-22.04"
+    runs-on: "ubuntu-latest"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v4"
+        uses: "actions/checkout@v6"
       - name: "Retrieve build output"
-        uses: "actions/download-artifact@v4"
+        uses: "actions/download-artifact@v8"
         with:
           name: "fauxauth-lib"
           path: "packages/fauxauth/lib"
       - name: "Include LICENSE and README"
         run: "cp LICENSE README.md packages/fauxauth/"
       - name: "Set up Node environment"
-        uses: "actions/setup-node@v4"
+        uses: "actions/setup-node@v6"
         id: "setup-node"
         with:
           node-version-file: ".nvmrc"
@@ -138,19 +137,19 @@ jobs:
     needs:
       - "e2e"
     if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: "ubuntu-22.04"
+    runs-on: "ubuntu-latest"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v4"
+        uses: "actions/checkout@v6"
       - name: "Retrieve build output"
-        uses: "actions/download-artifact@v4"
+        uses: "actions/download-artifact@v8"
         with:
           name: "fauxauth-lib"
           path: "packages/fauxauth/lib"
       - name: "Include LICENSE and README"
         run: "cp LICENSE README.md packages/fauxauth/"
       - name: "Set up Node environment"
-        uses: "actions/setup-node@v4"
+        uses: "actions/setup-node@v6"
         id: "setup-node"
         with:
           node-version-file: ".nvmrc"
@@ -164,10 +163,10 @@ jobs:
     needs:
       - "deploy-docker"
       - "deploy-npm"
-    runs-on: "ubuntu-22.04"
+    runs-on: "ubuntu-latest"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v4"
+        uses: "actions/checkout@v6"
       - name: "Validate published artifacts"
         run: |
           ./bin/smoke-test.sh "${{ github.ref_name }}"

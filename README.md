@@ -2,8 +2,8 @@
 
 [![License](https://img.shields.io/github/license/textbook/fauxauth.svg)](https://github.com/textbook/fauxauth/blob/main/LICENSE)
 [![Build Status](https://github.com/textbook/fauxauth/actions/workflows/push.yml/badge.svg)](https://github.com/textbook/fauxauth/actions/workflows/push.yml)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/ec914e9fdeba3ccb3e0b/test_coverage)](https://codeclimate.com/github/textbook/fauxauth/test_coverage)
-[![Maintainability](https://api.codeclimate.com/v1/badges/ec914e9fdeba3ccb3e0b/maintainability)](https://codeclimate.com/github/textbook/fauxauth/maintainability)
+[![Test Coverage](https://sonarcloud.io/api/project_badges/measure?project=textbook_fauxauth&metric=coverage)](https://sonarcloud.io/summary/new_code?id=textbook_fauxauth)
+[![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=textbook_fauxauth&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=textbook_fauxauth)
 [![npm Version](https://img.shields.io/npm/v/fauxauth.svg)](https://www.npmjs.com/package/fauxauth)
 [![Docker Image](https://img.shields.io/docker/image-size/textbook/fauxauth?sort=semver)](https://hub.docker.com/r/textbook/fauxauth/)
 
@@ -111,9 +111,9 @@ Note that only the `/authorize` and `/access_token` routes are exposed this way.
 ### Compatibility
 
 The compiled version of `fauxauth`, as released to npm, is tested against the
-latest versions of the active Node LTS releases, currently Hydrogen (18), Iron
-(20) and Jod (22). Compilation is carried out using TypeScript in the Node
-version specified in `.nvmrc`. The lowest supported version is documented in
+latest versions of the active Node LTS releases, currently Jod (22) and
+Krypton (24). Compilation is carried out using TypeScript in the Node version
+specified in `.nvmrc`. The lowest supported version is documented in
 `package.json`'s `engines` field.
 
 ### Options

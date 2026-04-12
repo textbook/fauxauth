@@ -1,33 +1,19 @@
 ---
 name: "Test with coverage"
 
-description: "Run tests and report coverage to CodeClimate"
+description: "Run tests and report coverage"
 
 inputs:
-  reporter-id:
-    description: "CodeClimate Test Reporter ID"
+  sonar-token:
+    description: "Token for Sonar Cloud"
     required: true
 
 runs:
   using: "composite"
   steps:
-    - name: "Set up CodeClimate reporter"
-      if: ${{ inputs.reporter-id != '' }}
-      run: |
-        curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-        chmod +x ./cc-test-reporter
-        ./cc-test-reporter before-build
-      env:
-        CC_TEST_REPORTER_ID: ${{ inputs.reporter-id }}
-      shell: "bash"
-      working-directory: "packages/fauxauth"
     - run: "npm run test:cover"
       shell: "bash"
       working-directory: "packages/fauxauth"
-    - name: "Report test outcomes"
-      if: ${{ inputs.reporter-id != '' }}
-      run: "./cc-test-reporter after-build"
+    - uses: "SonarSource/sonarqube-scan-action@v7"
       env:
-        CC_TEST_REPORTER_ID: ${{ inputs.reporter-id }}
-      shell: "bash"
-      working-directory: "packages/fauxauth"
+        SONAR_TOKEN: ${{ inputs.sonar-token }}
