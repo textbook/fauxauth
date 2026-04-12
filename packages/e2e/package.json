@@ -8,11 +8,11 @@
   "devDependencies": {
     "axios": "^1.15.0",
     "concurrently": "^9.2.1",
-    "cross-env": "^7.0.3",
+    "cross-env": "^10.1.0",
     "express": "^5.2.1",
     "jest": "^30.3.0",
     "jest-junit": "^16.0.0",
-    "wait-on": "^8.0.5",
+    "wait-on": "^9.0.5",
     "webdriverio": "^9.27.0"
   },
   "scripts": {
