@@ -49,6 +49,8 @@ jobs:
           build-args: |
             ALPINE_RELEASE=3.23
             NODE_RELEASE=${{ steps.setup-node.outputs.node-version }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           context: .
           push: false
   e2e:
@@ -98,6 +100,8 @@ jobs:
           build-args: |
             ALPINE_RELEASE=3.23
             NODE_RELEASE=${{ steps.metadata.outputs.node }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           context: .
           labels: |
             version=${{ github.ref_name }}
