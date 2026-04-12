@@ -150,10 +150,13 @@ describe("fauxauth", () => {
 			await expect(emailScope.isSelected()).resolves.toBe(false);
 			const button = await browser.$("#submit-button");
 			await button.click();
+			await browser.waitUntil(async () => {
+				return await getQueryParam(browser, "code") !== null;
+			});
 
-			const url = new URL(await browser.getUrl());
+			const code = await getQueryParam(browser, "code");
 
-			const { body } = await accessToken({ code: url.searchParams.get("code") });
+			const { body } = await accessToken({ code });
 			expect(Object.fromEntries(new URLSearchParams(body).entries())).toEqual({
 				access_token: "secretadmintoken",
 				scope: "read:user",
@@ -211,3 +214,13 @@ const makeRequest = (url, options) => axios
 		headers,
 		statusCode: status,
 	}));
+
+/**
+ * @param {import("webdriverio").Browser} browser
+ * @param {string} name
+ * @returns {Promise<string | null>}
+ */
+const getQueryParam = async (browser, name) => {
+	const url = new URL(await browser.getUrl());
+	return url.searchParams.get(name);
+};
