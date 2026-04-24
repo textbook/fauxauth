@@ -26,7 +26,7 @@ jobs:
         run: |
           echo "node=$(cat .nvmrc)" >> $GITHUB_OUTPUT
       - name: "Set up Node environment"
-        uses: "actions/setup-node@v6"
+        uses: "actions/setup-node@v6.3.0"
         id: "setup-node"
         with:
           cache: "npm"
@@ -171,7 +171,7 @@ jobs:
         with:
           name: "fauxauth-pkg"
       - name: "Set up Node environment"
-        uses: "actions/setup-node@v6"
+        uses: "actions/setup-node@v6.3.0"
         id: "setup-node"
         with:
           node-version: "lts/*"
