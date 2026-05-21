@@ -11,7 +11,7 @@
     "cross-env": "^10.1.0",
     "express": "^5.2.1",
     "jest": "^30.3.0",
-    "jest-junit": "^16.0.0",
+    "jest-junit": "^17.0.0",
     "wait-on": "^9.0.5",
     "webdriverio": "^9.27.0"
   },
