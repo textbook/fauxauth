@@ -6,14 +6,14 @@
   "main": "index.js",
   "type": "module",
   "devDependencies": {
-    "axios": "^1.15.0",
+    "axios": "^1.16.1",
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
     "express": "^5.2.1",
-    "jest": "^30.3.0",
+    "jest": "^30.4.2",
     "jest-junit": "^16.0.0",
-    "wait-on": "^9.0.5",
-    "webdriverio": "^9.27.0"
+    "wait-on": "^9.0.10",
+    "webdriverio": "^9.27.1"
   },
   "scripts": {
     "custom-e2e": "concurrently --kill-others --names app,run --success first \"node server.js\" \"npm:e2e:run\"",
