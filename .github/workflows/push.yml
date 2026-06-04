@@ -45,7 +45,7 @@ jobs:
           npm --workspace fauxauth pack
           mv fauxauth-*.tgz package.tgz
       - name: "Set up Docker BuildX"
-        uses: "docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd" # v4.0.0
+        uses: "docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5" # v4.1.0
       - name: "Build Docker container"
         uses: "docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f" # v7.1.0
         with:
@@ -106,7 +106,7 @@ jobs:
         env:
           TAG: ${{ github.ref_name }}
       - name: "Set up Docker BuildX"
-        uses: "docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd" # v4.0.0
+        uses: "docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5" # v4.1.0
       - name: "Log in to Docker Hub"
         uses: "docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121" # v4.1.0
         with:
